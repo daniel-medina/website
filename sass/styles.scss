@@ -1,0 +1,11 @@
+$icon-font-path: "node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+@import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "./_variables.scss";
+
+body {
+  background: $test !important;
+}
+
+.row {
+  margin: 0;
+}

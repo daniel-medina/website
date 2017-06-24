@@ -2,5 +2,10 @@ doctype html
 html
   include ./head.pug
 
+  // This is only for development
+  script(src='https://unpkg.com/vue')
+
   body
-    block content
+    div#website.row
+      div.container
+        block content
