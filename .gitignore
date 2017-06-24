@@ -25,7 +25,7 @@ build/Release
 
 # Dependency directories
 node_modules
-public/css/style.css
+public/css/
 jspm_packages
 
 # Optional npm cache directory
