@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, user-scalable=no')
+
+    if title === 'Blog'
+      title= 'Daniel Medina'
+    else
+      title= 'Daniel Medina | ' + title
+
+    link(rel='stylesheet' href='/css/styles.css')
+
+    // This is only for development
+    script(src='https://unpkg.com/vue')
+
+  body
+    div#website.row.wrap
+      div.container.wrap
+        div.content
+          div#menu
+            div.pull-left
+              li #[a(class='active' href='/') #[i.fa.fa-newspaper-o] Blog]
+              li #[a(href='/') #[i.fa.fa-picture-o] Portfolio]
+            div.pull-right
+              li #[a(href='/') #[i.fa.fa-address-card-o] About me]
+              li #[a(href='/') #[i.fa.fa-envelope-o] Contact]
+
+          div.content-wrap
+            block content
+
+        div#footer
+          p.builtwith 
+            | Built with Pug, SASS & Bootstrap
+          p.powered 
+            | Powered by Node.JS & MongoDB
+          p.signature 
+            | Daniel Medina

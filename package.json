@@ -1,41 +1,35 @@
 {
-  "name": "js-express-boilerplate",
+  "name": "experimentation-1",
   "version": "0.1.0",
-  "description": "A Node.js/Express boilerplate",
-  "main": "server.js",
-  "author": {
-    "name": "Brendan Goodenough",
-    "email": "brendan@goodenough.nz",
-    "url": "https://www.goodenough.nz"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nerdenough/js-express-boilerplate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nerdenough/js-express-boilerplate/issues"
-  },
-  "homepage": "https://github.com/nerdenough/js-express-boilerplate#readme",
+  "description": "Experimentation n°1 - Website",
+  "main": "main.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "gulp test"
+    "start": "standard && babel-node main.js --presets es2015,stage-2"
   },
+  "author": "Daniel Medina",
+  "license": "",
   "dependencies": {
-    "body-parser": "^1.15.0",
     "bootstrap-sass": "^3.3.7",
-    "cookie-parser": "^1.4.1",
-    "express": "^4.13.4",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "font-awesome": "^4.7.0",
     "graceful-fs": "^4.1.11",
     "minimatch": "^3.0.4",
-    "morgan": "^1.7.0",
-    "node-gyp": "^3.6.2",
-    "node-sass": "^4.5.3",
-    "pug": "^2.0.0-alpha1"
+    "mongodb": "^2.2.29",
+    "pug": "^2.0.0-rc.2",
+    "source-sans-pro": "^2.0.10"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.1.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
-    "gulp-sourcemaps": "^1.6.0"
+    "gulp-sass": "^3.1.0"
   }
 }

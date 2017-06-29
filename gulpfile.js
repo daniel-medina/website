@@ -1,19 +1,14 @@
-'use strict';
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
+/** Copyright 2017 (c) Daniel Medina - All rights reserved */
 
-gulp.task('default', ['watch', 'sass']);
+const gulp = require('gulp')
+const sass = require('gulp-sass')
 
-gulp.task('sass', function() {
-  return gulp
-    .src('./sass/**/*.scss')
-    .pipe(sourcemaps.init())
+gulp.task('sass-compile', () => {
+  return gulp.src('./sass/**/*.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./public/css'));
-});
+    .pipe(gulp.dest('./public/css'))
+})
 
-gulp.task('watch', function() {
-  gulp.watch('./sass/**/*.scss', ['sass']);
-});
+gulp.task('default', () => {
+  gulp.watch('./sass/**/*.scss', ['sass-compile'])
+})

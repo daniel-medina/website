@@ -1,12 +1,30 @@
-'use strict';
-var express = require('express');
-var router = express.Router();
+/** Copyright 2017 (c) Daniel Medina - All rights reserved */
 
-// GET: /
-router.get('/', function(req, res) {
-  res.render('index/index', {
-    title: 'Hello, World!'
-  });
-});
+/** Importing configurations */
+import {client, url} from '../config/database.js'
 
-module.exports = router;
+/** Importing used NodeJS modules */
+import assert from 'assert'
+import express from 'express'
+
+/** Declaring the router */
+const router = express.Router()
+
+/* >>>>>>>>>>>>>>>>>>>> GET <<<<<<<<<<<<<<<<<<<< */
+
+/** Index - url : '/' */
+router.get('/', (request, resource) => {
+  client.connect(url, (error, connection) => {
+    assert.equal(null, error)
+
+    console.log('Successfully connected to the database.')
+    connection.close()
+  })
+
+  resource.render('blog/index', {
+    title: 'Blog'
+  })
+})
+
+/** Now exporting the routes */
+export default router
