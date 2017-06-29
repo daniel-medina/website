@@ -1,7 +1,7 @@
 {
-  "name": "experimentation-1",
+  "name": "Website",
   "version": "0.1.0",
-  "description": "Experimentation n°1 - Website",
+  "description": "Personnal website",
   "main": "main.js",
   "scripts": {
     "start": "standard && babel-node main.js --presets es2015,stage-2"

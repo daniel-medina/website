@@ -1,5 +1,3 @@
-/** Copyright 2017 (c) Daniel Medina - All rights reserved */
-
 /** Importing used NodeJS modules */
 import mongodb from 'mongodb'
 

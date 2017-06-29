@@ -1,5 +1,3 @@
-/** Copyright 2017 (c) Daniel Medina - All rights reserved */
-
 /** Importing configurations */
 import {client, url} from '../config/database.js'
 
@@ -14,11 +12,11 @@ const router = express.Router()
 
 /** Index - url : '/' */
 router.get('/', (request, resource) => {
-  client.connect(url, (error, connection) => {
+  client.connect(url, (error, database) => {
     assert.equal(null, error)
 
     console.log('Successfully connected to the database.')
-    connection.close()
+    database.close()
   })
 
   resource.render('blog/index', {
