@@ -14,9 +14,11 @@
     "express-session": "^1.15.3",
     "font-awesome": "^4.7.0",
     "graceful-fs": "^4.1.11",
+    "marked": "^0.3.6",
     "minimatch": "^3.0.4",
     "mongodb": "^2.2.29",
     "pug": "^2.0.0-rc.2",
+    "slug": "^0.9.1",
     "source-sans-pro": "^2.0.10"
   },
   "devDependencies": {

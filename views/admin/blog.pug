@@ -1,0 +1,11 @@
+extends ../layout.pug
+
+block content
+  div#admin-blog
+    form
+      div.form-group
+        input(type='text' class='form-control' name='title' placeholder='Article\'s title') 
+      div.form-group
+        textarea(class='form-control' name='content' placeholder='Article\'s content')
+      div.form-group.pull-right
+        input(type='submit' class='btn btn-md btn-success' value='Submit')

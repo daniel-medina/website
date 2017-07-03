@@ -24,5 +24,33 @@ router.get('/', (request, resource) => {
   })
 })
 
+/** Article - url : '/article' */
+router.get('/article', (request, resource) => {
+  resource.render('blog/article', {
+    title: 'Article'
+  })
+})
+
+/** Archive - url : '/archive' */
+router.get('/archive', (request, resource) => {
+  resource.render('blog/archive', {
+    title: 'Archive'
+  })
+})
+
+/** Administration - url : '/admin' */
+router.get('/admin', (request, resource) => {
+  resource.render('admin/index', {
+    title: 'Administration'
+  })
+})
+
+/** Blog administration - url : '/admin/blog' */
+router.get('/admin/blog', (request, resource) => {
+  resource.render('admin/blog', {
+    title: 'Blog administration'
+  })
+})
+
 /** Now exporting the routes */
 export default router

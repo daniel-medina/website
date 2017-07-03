@@ -24,6 +24,14 @@ $menu-a-padding: 10px;
 $menu-a-color: black;
 $menu-a-shadow: 1px 1px 1px $color5;
 $menu-a-hover-color: $color2;
+$menuxs-list-border: 1px solid $color4;
+$menuxs-list-background: $color6;
+$menuxs-list-hover-background: $a-hover-color;
+$menuxs-show-padding: 0 5px;
+$menuxs-button-size: 28px;
+$menuxs-button-i-width: 26px;
+$menuxs-show-font-size: 16px;
+$menuxs-text-pos-bottom: 3px;
 
 /** Content */
 $content-wrap-padding: 10px 5px;
@@ -35,11 +43,16 @@ $content-border: 1px solid $color4;
 $article-margin: 0 0 20px 0;
 $article-header-a-color: black;
 $article-header-a-hover-color: $color2;
-$article-header-font-size: 22px;
+$article-header-font-size: 24px;
 $article-info-font-size: 10px;
 $article-preview-margin: 20px;
-$article-read-font-size: 17px;
+$article-read-margin: $article-preview-margin;
+$article-read-padding: 10px;
+$article-read-font-size: 18px;
+$article-read-color: black;
 $article-readmore-font-size: 15px;
+$article-comments-padding: 5px 0;
+$article-comments-font-size: 10px;
 
 /** Articles old */
 $article-old-header-font-size: 16px;
@@ -50,8 +63,30 @@ $article-old-list-margin: 5px;
 $article-old-archive-font-size: 12px;
 $article-old-archive-margin: 20px;
 
+/** Archive */
+$archive-header-font-size: 18px;
+$archive-header-padding: 5px 0;
+$archive-pagination-font-size: 13px;
+$archive-pagination-padding: 6px 8px;
+$archive-list-margin: 5px 0;
+$archive-list-item-margin: 0;
+$archive-list-item-padding: 3px 5px;
+$archive-list-item-background: $color6;
+$archive-list-item-border-radius: 3px;
+
+/** Administration */
+$admin-index-list-icon-font-size: 64px;
+$admin-index-list-name-font-size: 18px;
+$admin-index-list-name-pos: 5px;
+$admin-index-list-margin: 5px 0;
+$admin-index-list-color: black;
+$admin-index-list-shadow: 1px 1px 2px $color5;
+$admin-index-list-hover-shadow: 0 0 12px $color3;
+$admin-index-list-background: $color4;
+$admin-index-list-border: 2px solid $color7;
+
 /** Footer */
-$footer-bottom-pos: 83px;
+$footer-bottom-pos: 64px;
 $footer-padding: 6px;
 $footer-font-size: 13px;
 $footer-align: center;
