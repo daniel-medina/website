@@ -30,26 +30,14 @@ block content
       a(href='#') #[li.last.article Some older article title]
     div.archive
       a(href='archive') Archive
-    p= articles 
 
-  div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
-    a(href='article') #[div.header Article's title - quite long huh ? Not enough. Better now. Even better.]
-    div.info
-      div.pull-left January 27, 2017
-      div.pull-right 48 views
-    div.preview
-      p
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh e...
-      div.more
-        a(href='article') Read more 
-
-  div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
-    a(href='article') #[div.header Article's title - quite long huh ? Not enough. Better now. Even better.]
-    div.info
-      div.pull-left January 27, 2017
-      div.pull-right 48 views
-    div.preview
-      p
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh e...
+  each item in article
+    div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
+      a(href='article') #[div.header= item.title]
+      div.info
+        div.pull-left January 27, 2017
+        div.pull-right 48 views
+      div.preview
+      p test
       div.more
         a(href='article') Read more 
