@@ -2,25 +2,11 @@ extends ../layout.pug
 
 block content
   div#article.col-lg-12.col-md-12.col-sm-12.col-xs-12
-    div.header-read Article's Title ! :D
+    div.header-read= article.title 
     div.info
       div.pull-left January 27, 2017
       div.pull-right 450 views
     div.read
-      p
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh. 
-       br
-       br
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh. 
-       br
-       br
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh. 
-       br
-       br
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh. 
-       br
-       br
-       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non blandit metus, vitae pellentesque felis. Integer vel cursus tellus. Phasellus at neque et eros maximus lacinia. Mauris eget felis nec felis dignissim molestie ac eget justo. Aliquam erat volutpat. Nulla semper, massa in dignissim cursus, libero mauris interdum ligula, et consectetur lacus est quis orci. Nunc eu ullamcorper nunc, eget tempus arcu. Suspendisse elementum tempus libero, rhoncus commodo nisi convallis quis. Vestibulum pellentesque luctus tortor eu congue. Nulla vitae orci ipsum. Vivamus sollicitudin mi eget tellus commodo rhoncus. Etiam quis ipsum orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas iaculis faucibus ultrices. Sed lacinia augue eget mi malesuada, a mattis nibh. 
-
+      p!= marked(nl2br(escapeHtml(article.content)))
     div.comments
       | Comments are in W.I.P

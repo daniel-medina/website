@@ -33,11 +33,13 @@ block content
 
   each item in article
     div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
-      a(href='article') #[div.header= item.title]
+      a(href='article/' + item.url) #[div.header= item.title]
       div.info
         div.pull-left January 27, 2017
         div.pull-right 48 views
       div.preview
-      p test
-      div.more
-        a(href='article') Read more 
+        p!= nl2br(marked(escapeHtml(preview(item.content))))
+
+      if item.content.length >= previewStringLength
+        div.more
+          a(href='article/' + item.url) Read more 

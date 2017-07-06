@@ -1,5 +1,3 @@
-/** Copyright 2017 (c) Daniel Medina - All rights reserved */
-
 const gulp = require('gulp')
 const sass = require('gulp-sass')
 
