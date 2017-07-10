@@ -2,7 +2,7 @@
 
 /** Importing models */
 import Article from '../../models/article'
-import ArticleCategory from '../../models/articleCategory.js'
+import ArticleCategory from '../../models/refs/articleCategory.js'
 
 /** Importing modules */
 import slug from 'slug'

@@ -32,13 +32,16 @@ module.exports = {
   getArticle: (request, response) => {
     let url = request.params.url
 
-    Article.findOne({url: url}).exec((error, item) => {
-      assert.equal(null, error)
+    Article
+      .findOne({url: url})
+      .populate('category', 'title')
+      .exec((error, item) => {
+        assert.equal(null, error)
 
-      response.render('blog/article', {
-        title: 'Blog - ' + item.title,
-        article: item
+        response.render('blog/article', {
+          title: 'Blog - ' + item.title,
+          article: item
+        })
       })
-    })
   }
 }

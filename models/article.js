@@ -1,6 +1,9 @@
 /** Importing configurations */
 import {url} from '../config/database'
 
+/** Importing refs */
+import ArticleCategorySchema from './refs/articleCategory'
+
 /** Importing Mongoose */
 import mongoose from 'mongoose'
 
@@ -14,7 +17,7 @@ const Schema = mongoose.Schema
 const ArticleSchema = new Schema({
   created: Date,
   url: String,
-  category: { type: Schema.Types.ObjectId, ref: 'Category' },
+  category: { type: Schema.Types.ObjectId, ref: 'ArticleCategory' },
   title: String,
   content: String,
   views: {
@@ -23,6 +26,9 @@ const ArticleSchema = new Schema({
 }, {
   collection: 'article'
 })
+
+/** Registering ref's schemas */
+connection.model('ArticleCategory', ArticleCategorySchema)
 
 /** Exporting the schema, to make it usable */
 module.exports = connection.model('Article', ArticleSchema)

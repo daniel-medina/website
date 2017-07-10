@@ -5,10 +5,9 @@ import {previewStringLength} from '../config/blog'
 
 /** Importing models */
 // import Article from '../models/article'
-import ArticleCategory from '../models/articleCategory'
 
 /** Importing modules */
-import assert from 'assert'
+// import assert from 'assert'
 import marked from 'marked'
 import nl2br from 'nl2br'
 import escapeHtml from 'escape-html'
@@ -27,11 +26,6 @@ const parse = {
       let text = amount + ' ' + plural
 
       return text
-    },
-    category: id => {
-      ArticleCategory.findOne({ _id: id }).exec((error, category) => {
-        assert.equal(null, error)
-      })
     }
   }
 }
