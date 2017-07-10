@@ -7,6 +7,7 @@ const router = express.Router()
 /* >>>>>>>>>>>>>>>>>>>> GET <<<<<<<<<<<<<<<<<<<< */
 /** Middlewares */
 router.get('/article/:url', require('../middlewares/blog').articleExist)
+router.get('/article/:url', require('../middlewares/blog').views)
 
 /** Next requests */
 router.get('/', require('../controllers/blog').getIndex)

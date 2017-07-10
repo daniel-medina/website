@@ -4,8 +4,8 @@ block content
   div#article.col-lg-12.col-md-12.col-sm-12.col-xs-12
     div.header-read= article.title 
     div.info
-      div.pull-left January 27, 2017
-      div.pull-right 450 views
+      div.pull-left #{parse.article.created(article.created)} - #{parse.article.views(article.views.ip.length)}
+      div.pull-right= article.category.title
     div.read
       p!= marked(nl2br(escapeHtml(article.content)))
     div.comments

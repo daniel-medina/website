@@ -11,18 +11,11 @@ const connection = mongoose.createConnection(url)
 const Schema = mongoose.Schema
 
 /** Defining the collection's schema */
-const ArticleSchema = new Schema({
-  created: Date,
-  url: String,
-  category: { type: Schema.Types.ObjectId, ref: 'Category' },
-  title: String,
-  content: String,
-  views: {
-    ip: []
-  }
+const CategorySchema = new Schema({
+  title: String
 }, {
-  collection: 'article'
+  collection: 'articleCategory'
 })
 
 /** Exporting the schema, to make it usable */
-module.exports = connection.model('Article', ArticleSchema)
+module.exports = connection.model('ArticleCategory', CategorySchema)

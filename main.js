@@ -1,15 +1,11 @@
 /** Importing configurations */
 import {port} from './config/server.js'
-import {previewStringLength} from './config/blog'
 
 /** Importing used NodeJS modules */
 import path from 'path'
 import express from 'express'
 import http from 'http'
 import bodyParser from 'body-parser'
-import marked from 'marked'
-import nl2br from 'nl2br'
-import escapeHtml from 'escape-html'
 // import session from 'express-session'
 
 /** Importing routes */
@@ -28,26 +24,8 @@ const server = http.createServer(app)
   * >> Defining global variables/functions for views
   */
 
-/** Middleware to set response locals
-  * Its purpose is to define global variables/functions
-  */
-app.use((request, response, next) => {
-  response.locals = {
-    previewStringLength: previewStringLength,
-    marked: marked,
-    nl2br: nl2br,
-    escapeHtml: escapeHtml,
-    preview: content => {
-      if (content.length > previewStringLength) {
-        return content.substring(0, previewStringLength) + '...'
-      } else {
-        return content
-      }
-    }
-  }
-
-  next()
-})
+/** Middleware setting up response.locals */
+app.use(require('./middlewares/locals.js').set)
 
 /** Applying stuff to the website
   * Including setting up pug view engine */

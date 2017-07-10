@@ -1,0 +1,58 @@
+/** Middleware - locals */
+
+/** Importing configuration */
+import {previewStringLength} from '../config/blog'
+
+/** Importing models */
+// import Article from '../models/article'
+import ArticleCategory from '../models/articleCategory'
+
+/** Importing modules */
+import assert from 'assert'
+import marked from 'marked'
+import nl2br from 'nl2br'
+import escapeHtml from 'escape-html'
+import moment from 'moment'
+
+/** Parse Object
+  * Functions to parse various part of the website
+  */
+const parse = {
+  article: {
+    created: date => {
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+    },
+    views: amount => {
+      let plural = (amount > 1) ? 'views' : 'view'
+      let text = amount + ' ' + plural
+
+      return text
+    },
+    category: id => {
+      ArticleCategory.findOne({ _id: id }).exec((error, category) => {
+        assert.equal(null, error)
+      })
+    }
+  }
+}
+
+module.exports = {
+  set: (request, response, next) => {
+    response.locals = {
+      previewStringLength: previewStringLength,
+      marked: marked,
+      nl2br: nl2br,
+      escapeHtml: escapeHtml,
+      parse: parse,
+      preview: content => {
+        if (content.length > previewStringLength) {
+          return content.substring(0, previewStringLength) + '...'
+        } else {
+          return content
+        }
+      }
+    }
+
+    next()
+  }
+}

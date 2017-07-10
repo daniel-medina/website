@@ -31,15 +31,15 @@ block content
     div.archive
       a(href='archive') Archive
 
-  each item in article
+  each article in articles
     div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
-      a(href='article/' + item.url) #[div.header= item.title]
+      a(href='article/' + article.url) #[div.header= article.title]
       div.info
-        div.pull-left January 27, 2017
-        div.pull-right 48 views
+        div.pull-left #{article.created} - #{article.views.ip.length} #{article.views.ip.length > 1 ? 'views' : 'view'}
+        div.pull-right= article.category
       div.preview
-        p!= nl2br(marked(escapeHtml(preview(item.content))))
+        p!= marked(nl2br(escapeHtml(preview(article.content))))
 
-      if item.content.length >= previewStringLength
+      if article.content.length >= previewStringLength
         div.more
-          a(href='article/' + item.url) Read more 
+          a(href='article/' + article.url) Read more 

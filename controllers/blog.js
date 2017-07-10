@@ -13,7 +13,7 @@ module.exports = {
   /** ------------------ */
   getIndex: (request, response) => {
     let query = {
-      limit: 5,
+      limit: 4,
       sort: {
         _id: -1
       }
@@ -24,7 +24,7 @@ module.exports = {
 
       response.render('blog/index', {
         title: 'Blog',
-        article: item,
+        articles: item,
         marked: marked
       })
     })

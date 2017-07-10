@@ -25,6 +25,11 @@ a {
   }
 }
 
+img {
+  margin: 0 auto !important;
+  text-align: right;
+}
+
 .row {
   margin: 0;
 }
@@ -112,6 +117,24 @@ a {
 }
 
 #article {
+  h1 {
+    font-weight: bold;
+    font-size: $article-read-h1-font-size;
+    margin: 0;
+  }
+  h2 {
+    font-weight: bold;
+    font-size: $article-read-h2-font-size;
+    margin: 0;
+  }
+  h3 {
+    font-weight: bold;
+    font-size: $article-read-h3-font-size;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
   margin: $article-margin;
   .header {
     transition: $transition;

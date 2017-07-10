@@ -2,10 +2,12 @@
 
 /** Importing models */
 import Article from '../../models/article'
+import ArticleCategory from '../../models/articleCategory.js'
 
 /** Importing modules */
 import slug from 'slug'
 import assert from 'assert'
+// import moment from 'moment'
 
 /** Setting slug mode */
 slug.defaults.mode = 'rfc3986'
@@ -20,18 +22,29 @@ module.exports = {
     })
   },
   getBlog: (request, response) => {
-    response.render('admin/blog/index', {
-      title: 'Administration - Blog'
+    /** We load the categories to be selected at the creation of an article */
+    ArticleCategory.find({}).sort({}).exec((error, categories) => {
+      assert.equal(null, error)
+
+      response.render('admin/blog/index', {
+        title: 'Administration - Blog',
+        categories: categories
+      })
     })
   },
   /** HTTP REQUEST - POST */
   /** ------------------- */
   postBlog: (request, response) => {
     /** Getting request's sent post variables */
+    let created = new Date()
     let title = request.body.title
+    let url = slug(title)
+    let category = request.body.category
     let content = request.body.content
     let query = {
-      url: slug(title),
+      created: created,
+      url: url,
+      category: category,
       title: title,
       content: content
     }
