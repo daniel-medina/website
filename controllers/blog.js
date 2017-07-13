@@ -63,7 +63,7 @@ module.exports = {
         assert.equal(null, error)
 
         response.render('blog/article', {
-          title: 'Blog - ' + item.title,
+          title: item.title,
           article: item
         })
       })

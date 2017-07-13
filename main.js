@@ -47,25 +47,10 @@ app.use('/', router)
 app.use('/font-awesome', express.static('./node_modules/font-awesome/css'))
 app.use('/fonts', express.static('./node_modules/font-awesome/fonts'))
 
-/** HTTP ERROR 403 */
-app.use((request, response, next) => {
-  response.status(403)
-  response.render('error/403', { title: 'ERROR' })
-})
-
 /** HTTP ERROR 404 */
 app.use((request, response, next) => {
   response.status(404)
   response.render('error/404', { title: 'ERROR' })
-})
-
-/** SOURCE CODE ERROR */
-app.use((error, request, response, next) => {
-  response.status(500)
-
-  response.render('error/source', {
-    error: error }
-  )
 })
 
 server.listen(port)
