@@ -33,6 +33,26 @@ const parse = {
   }
 }
 
+const pagination = {
+  /** Handles the links of the pagination */
+  links: (page, maxPage) => {
+    let pagination = []
+    // let currentPage = 1
+
+    /** do {
+      pagination.push(currentPage)
+
+      currentPage++
+    } while (pagination.length < maxPage) */
+
+    for (var x = 1; x <= 100; x++) {
+      pagination.push(x)
+    }
+
+    return pagination
+  }
+}
+
 module.exports = {
   set: (request, response, next) => {
     response.locals = {
@@ -44,6 +64,7 @@ module.exports = {
       nl2br: nl2br,
       escapeHtml: escapeHtml,
       parse: parse,
+      pagination: pagination,
       preview: content => {
         if (content.length > previewStringLength) {
           return content.substring(0, previewStringLength) + '...'

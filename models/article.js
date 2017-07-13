@@ -10,6 +10,9 @@ import mongoose from 'mongoose'
 /** Connection to the MongoDB database */
 const connection = mongoose.createConnection(url)
 
+/** Setting up ES6's promise */
+mongoose.Promise = global.Promise
+
 /** Setting up the Schema variable */
 const Schema = mongoose.Schema
 

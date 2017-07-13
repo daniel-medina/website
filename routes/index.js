@@ -6,12 +6,13 @@ const router = express.Router()
 
 /* >>>>>>>>>>>>>>>>>>>> GET <<<<<<<<<<<<<<<<<<<< */
 /** Middlewares */
-// router.get('/article/:url([a-z])?', require('../middlewares/blog').articleExist)
-// router.get('/article/:url([a-z])?', require('../middlewares/blog').views)
+router.get('/article/:url([a-z0-9-])?', require('../middlewares/blog').articleExist)
+router.get('/article/:url([a-z0-9-])?', require('../middlewares/blog').views)
+router.get('/archive/:page([0-9])?', require('../middlewares/blog').archivePageCheck)
 
 /** Next requests */
 router.get('/', require('../controllers/blog').getIndex)
-router.get('/article/:url([a-z],{1,})?', require('../controllers/blog').getArticle)
+router.get('/article/:url([a-z0-9-]{1,})?', require('../controllers/blog').getArticle)
 router.get('/archive/:page([0-9])?', require('../controllers/blog').getArchive)
 router.get('/admin', require('../controllers/admin/blog').getIndex)
 router.get('/admin/blog', require('../controllers/admin/blog').getBlog)

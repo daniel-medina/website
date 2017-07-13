@@ -1,5 +1,8 @@
 /** Blog controller */
 
+/** Importing configuration */
+import {archiveItemPerPage} from '../config/blog'
+
 /** Importing models */
 import Article from '../models/article'
 
@@ -69,32 +72,56 @@ module.exports = {
       })
   },
   getArchive: (request, response) => {
-    let query = {
-      limit: 10,
-      sort: {
-        _id: -1
-      }
+    /** Getting the total amount of article in the database */
+    async function getAmount () {
+      /** Returning model's Promise execution */
+      return Article
+        .count({})
+        .exec()
     }
 
-    Article
-      .find({})
-      .populate('category', 'title')
-      .limit(query.limit)
-      .sort(query.sort)
-      .exec((error, articles) => {
-        assert.equal(null, error)
+    /** Getting the articles from the database */
+    async function getArticle (page) {
+      /** Getting all required variables for the query */
+      let rawSkip = Math.floor(page * archiveItemPerPage)
+      let skip = Math.floor(rawSkip - archiveItemPerPage)
+      let query = {
+        limit: archiveItemPerPage,
+        skip: skip,
+        sort: {
+          _id: -1
+        }
+      }
 
-        Article
-          .count({})
-          .exec((error, amount) => {
-            assert.equal(null, error)
+      /** Returning model's Promise execution */
+      return Article
+        .find({})
+        .populate('category', 'title')
+        .limit(query.limit)
+        .sort(query.sort)
+        .skip(query.skip)
+        .exec()
+    }
 
-            response.render('blog/archive', {
-              title: 'Archive',
-              articles: articles,
-              amount: amount
-            })
-          })
-      })
+    /** Executing the controller's content asynchronously */
+    (async function () {
+      try {
+        /* If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
+        let page = Number((request.params.page > 1) ? request.params.page : 1)
+        let amount = await getAmount()
+        let articles = await getArticle(page)
+        let maxPage = Math.floor(amount / archiveItemPerPage)
+
+        response.render('blog/archive', {
+          title: 'Archive',
+          articles: articles,
+          amount: amount,
+          page: page,
+          maxPage: maxPage
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   }
 }

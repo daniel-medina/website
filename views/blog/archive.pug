@@ -5,10 +5,13 @@ block content
     div.header
       div.amount.pull-left #{amount} #{(amount > 1) ? 'articles' : 'article'}
       div.pagination.pull-right
-        li.page.active #[a 1]
-        li.page #[a(href='#') 2]
-        li.page.disabled #[a ...]
-        li.page #[a(href='#') 5]
+        each link in pagination.links(page, maxPage)
+          if (link === page)
+            li.page.active #[a(href='/archive/' + link) #{link}]
+          else if (currentPage === '...')
+            li.page.disabled #[a ...]
+          else
+            li.page #[a(href='/archive/' + link) #{link}]
 
     div.list
       each article in articles

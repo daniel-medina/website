@@ -1,4 +1,6 @@
 /** Middleware - blog */
+/** Importing configuration */
+import {archiveItemPerPage} from '../config/blog'
 
 /** Importing models */
 import Article from '../models/article'
@@ -48,5 +50,29 @@ module.exports = {
     })
 
     next()
+  },
+  /** Check if we aren't in an inexisting page in the archive */
+  archivePageCheck: function (request, response, next) {
+    async function getAmount () {
+      return Article.count({}).exec()
+    }
+
+    /** Executing the controller's content asynchronously */
+    (async function () {
+      try {
+        let page = (request.params.page > 1) ? request.params.page : 1
+        let amount = await getAmount()
+        let maxPage = Math.floor(amount / archiveItemPerPage)
+
+        if (page <= maxPage) {
+          next()
+        } else {
+          response.status('404')
+            .render('error/404', { title: 'ERROR' })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   }
 }

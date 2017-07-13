@@ -12,6 +12,9 @@ const Schema = mongoose.Schema
 /** Connection to the MongoDB database */
 const connection = mongoose.createConnection(url)
 
+/** Setting up ES6's promise */
+mongoose.Promise = global.Promise
+
 /** Defining the collection's schema */
 const ArticleCategorySchema = new Schema({
   title: String
