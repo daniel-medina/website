@@ -1,10 +1,11 @@
 {
   "name": "Website",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Personnal website",
   "main": "main.js",
   "scripts": {
-    "start": "standard && babel-node main.js --presets es2015,stage-2"
+    "server:production": "./node_modules/standard/bin/cmd.js && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/babel-cli/bin/babel-node.js main.js --presets es2015,stage-2",
+    "server:development": "./node_modules/standard/bin/cmd.js && ./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/babel-cli/bin/babel-node.js main.js --presets es2015,stage-2"
   },
   "author": "Daniel Medina",
   "license": "",
@@ -25,20 +26,23 @@
     "mongoose": "^4.11.1",
     "nl2br": "0.0.3",
     "pug": "^2.0.0-rc.2",
-    "slug": "^0.9.1",
-    "source-sans-pro": "^2.0.10"
+    "slug": "^0.9.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "eslint": "^4.1.1",
+    "chai": "^4.1.0",
+    "cross-env": "^5.0.1",
+    "eslint": "^4.2.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-node": "^5.1.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "gulp": "^3.9.1",
-    "gulp-sass": "^3.1.0"
+    "gulp-sass": "^3.1.0",
+    "mocha": "^3.4.2",
+    "standard": "^10.0.2"
   }
 }

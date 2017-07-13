@@ -1,12 +1,13 @@
 extends ../layout.pug
 
 block content
-  div#article.col-lg-12.col-md-12.col-sm-12.col-xs-12
-    div.header-read= article.title 
-    div.info
-      div.pull-left #{parse.article.created(article.created)} - #{parse.article.views(article.views.ip.length)}
-      div.pull-right= article.category.title
-    div.read
+  #article.col-lg-12.col-md-12.col-sm-12.col-xs-12
+    .header-read= article.title 
+    .info.col-lg-12.col-md-12.col-sm-12.col-xs-12
+      .pull-left #{parse.article.created(article.created)} - #{parse.article.views(article.views.ip.length)}
+      .pull-right= article.category.title
+
+    .read
       p!= marked(nl2br(escapeHtml(article.content)))
-    div.comments
+    .comments
       | Comments are in W.I.P

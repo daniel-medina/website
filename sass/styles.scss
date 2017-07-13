@@ -14,8 +14,6 @@ html, body {
   margin: 0;
 }
 
-
-
 a {
   transition: $transition;
   color: $a-color;
@@ -37,6 +35,16 @@ img {
 }
 
 .container {
+  padding: 0;
+}
+
+.http-error {
+  font-size: $http-error-font-size;
+  font-weight: bold;
+  text-align: center;
+}
+
+.no-padding {
   padding: 0;
 }
 
@@ -136,9 +144,11 @@ img {
   p {
     margin: 0;
   }
+  padding: $article-padding;
   margin: $article-margin;
   width: 100%;
   .header {
+    text-transform: uppercase;
     transition: $transition;
     word-break: break-all;
     font-family: $font-title;
@@ -150,6 +160,7 @@ img {
     }
   }
   .header-read {
+    text-transform: uppercase;
     word-break: break-all;
     font-family: $font-title;
     font-size: $article-header-font-size;
@@ -157,6 +168,7 @@ img {
     color: $article-header-a-color;
   }
   .info {
+    padding: $article-info-padding;
     text-transform: uppercase;
     font-size: $article-info-font-size;
     color: $color7;
@@ -198,6 +210,7 @@ img {
   }
   .list {
     li {
+      text-transform: uppercase;
       transition: $transition;
       list-style: none;
       border-bottom: 1px solid $color4;

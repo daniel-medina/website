@@ -40,6 +40,7 @@ module.exports = {
       error: request.flash('error'),
       previewStringLength: previewStringLength,
       marked: marked,
+      env: process.env.NODE_ENV,
       nl2br: nl2br,
       escapeHtml: escapeHtml,
       parse: parse,

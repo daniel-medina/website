@@ -36,11 +36,17 @@ html
           if (error.length > 0)
             div.alert.alert-danger
               p= error
+          if (success.length > 0)
+            div.alert.alert-success
+              p= success
           div.content-wrap
             block content
         div#footer
           p.powered 
-            | Powered by Node.js
+            if (env === 'development')
+              | Development environment
+            else
+              | Powered by Node.js
           p.signature 
             a(href='https://github.com/daniel-medina/website' target='_blank') daniel-medina
 

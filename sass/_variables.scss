@@ -44,12 +44,17 @@ $content-background: white;
 $content-shadow: 0 0 5px grey;
 $content-border: 1px solid $color4;
 
+/** Http error */
+$http-error-font-size: 32px;
+
 /** Articles */
+$article-padding: 0 5px;
 $article-margin: 0 0 20px 0;
 $article-header-a-color: black;
 $article-header-a-hover-color: $color2;
 $article-header-font-size: 30px;
 $article-info-font-size: 10px;
+$article-info-padding: 0;
 $article-preview-margin: 20px;
 $article-read-margin: $article-preview-margin;
 $article-read-padding: 10px;
