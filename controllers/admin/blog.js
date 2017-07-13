@@ -2,7 +2,7 @@
 
 /** Importing models */
 import Article from '../../models/article'
-import ArticleCategory from '../../models/refs/articleCategory.js'
+import {ArticleCategory} from '../../models/refs/articleCategory'
 
 /** Importing modules */
 import slug from 'slug'
@@ -23,14 +23,17 @@ module.exports = {
   },
   getBlog: (request, response) => {
     /** We load the categories to be selected at the creation of an article */
-    ArticleCategory.find({}).sort({}).exec((error, categories) => {
-      assert.equal(null, error)
+    ArticleCategory
+      .find({})
+      .sort({})
+      .exec((error, categories) => {
+        assert.equal(null, error)
 
-      response.render('admin/blog/index', {
-        title: 'Administration - Blog',
-        categories: categories
+        response.render('admin/blog/index', {
+          title: 'Administration - Blog',
+          categories: categories
+        })
       })
-    })
   },
   /** HTTP REQUEST - POST */
   /** ------------------- */
@@ -52,7 +55,8 @@ module.exports = {
     Article.create(query, (error, result) => {
       assert.equal(null, error)
 
-      response.redirect('/admin/blog')
+      request.flash('success', 'The article was successfully created.')
+      response.redirect('back')
     })
   }
 }

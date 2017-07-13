@@ -11,18 +11,17 @@ router.get('/article/:url', require('../middlewares/blog').views)
 
 /** Next requests */
 router.get('/', require('../controllers/blog').getIndex)
+// to do
 router.get('/article/:url', require('../controllers/blog').getArticle)
-router.get('/archive', (request, resource) => {
-  resource.render('blog/archive', {
-    title: 'Archive'
-  })
-})
+router.get('/archive/:page([0-9])?', require('../controllers/blog').getArchive)
 router.get('/admin', require('../controllers/admin/blog').getIndex)
 router.get('/admin/blog', require('../controllers/admin/blog').getBlog)
 
 /* >>>>>>>>>>>>>>>>>>>> POST <<<<<<<<<<<<<<<<<<<< */
 /** Middlewares */
-router.post('/admin/blog', require('../middlewares/admin/blog').postBlog)
+router.post('/admin/blog', require('../middlewares/admin/blog').postArticle)
+router.post('/admin/blog', require('../middlewares/admin/blog').articleCategoryExist)
+router.post('/admin/blog', require('../middlewares/admin/blog').articleTitleExist)
 
 /** Next requests */
 router.post('/admin/blog', require('../controllers/admin/blog').postBlog)

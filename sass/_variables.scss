@@ -6,12 +6,17 @@ $color4: rgba(80, 80, 80, 0.1);
 $color5: rgba(200, 200, 200, 0.4);
 $color6: #FAFAFA;
 $color7: rgba(140, 140, 140, 0.8);
+$color8: #5A5A5A;
+
+/** Fonts */
+$font-all: 'Arial';
+$font-title: 'Aclonica', sans-serif;
+$font-read: 'Ubuntu Mono', monospace;
 
 /** App-wide variables */
 $transition: 0.2s;
 $a-color: #004999;
 $a-hover-color: $color2;
-
 
 /** Body */
 $body-background: url('../images/background.jpg');
@@ -43,13 +48,13 @@ $content-border: 1px solid $color4;
 $article-margin: 0 0 20px 0;
 $article-header-a-color: black;
 $article-header-a-hover-color: $color2;
-$article-header-font-size: 26px;
+$article-header-font-size: 30px;
 $article-info-font-size: 10px;
 $article-preview-margin: 20px;
 $article-read-margin: $article-preview-margin;
 $article-read-padding: 10px;
-$article-read-font-size: 18px;
-$article-read-h1-font-size: $article-header-font-size - 1px;
+$article-read-font-size: 20px;
+$article-read-h1-font-size: $article-header-font-size - 4px;
 $article-read-h2-font-size: $article-header-font-size - 6px;
 $article-read-h3-font-size: $article-read-font-size;
 $article-read-color: black;
@@ -60,7 +65,7 @@ $article-comments-font-size: 10px;
 /** Articles old */
 $article-old-header-font-size: 16px;
 $article-old-header-margin: 0 0 15px 0;
-$article-old-list-font-size: 12px;
+$article-old-list-font-size: 16px;
 $article-old-list-padding: 0 0 5px 0;
 $article-old-list-margin: 5px;
 $article-old-archive-font-size: 12px;
@@ -71,6 +76,7 @@ $archive-header-font-size: 18px;
 $archive-header-padding: 5px 0;
 $archive-pagination-font-size: 13px;
 $archive-pagination-padding: 6px 8px;
+$archive-list-font-size: 16px;
 $archive-list-margin: 5px 0;
 $archive-list-item-margin: 0;
 $archive-list-item-padding: 3px 5px;

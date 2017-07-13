@@ -1,45 +1,28 @@
 extends ../layout.pug
 
 block content
-  div#article-old.col-lg-4.col-md-4.col-sm-4.col-xs-12
-    div.header Other articles
-    div.list
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.article Some older article title]
-      a(href='#') #[li.last.article Some older article title]
-    div.archive
-      a(href='archive') Archive
+  .col-lg-8.col-md-8.col-sm-8.col-xs-12
+    each article in articles
+      div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
+        a(href='/article/' + article.url) #[div.header= article.title]
+        div.info
+          div.pull-left #{parse.article.created(article.created)} - #{parse.article.views(article.views.ip.length)}
+          div.pull-right= article.category.title
+        div.preview
+          p!= marked(nl2br(escapeHtml(preview(article.content))))
 
-  each article in articles
-    div#article.col-lg-8.col-md-8.col-sm-8.col-xs-12
-      a(href='article/' + article.url) #[div.header= article.title]
-      div.info
-        div.pull-left #{article.created} - #{article.views.ip.length} #{article.views.ip.length > 1 ? 'views' : 'view'}
-        div.pull-right= article.category
-      div.preview
-        p!= marked(nl2br(escapeHtml(preview(article.content))))
+        if article.content.length >= previewStringLength
+          div.more
+            a(href='/article/' + article.url) Read more 
 
-      if article.content.length >= previewStringLength
-        div.more
-          a(href='article/' + article.url) Read more 
+  .col-lg-4.col-md-4.col-sm-4.col-xs-12
+    div#article-old
+      div.header Other articles
+      div.list
+        if (old.length > 0)
+          each article in old
+            a(href='/article/' + article.url) #[li.article #{article.title}]
+          div.archive
+            a(href='archive') Archive
+        else
+          b There isn't enough articles to display old ones.

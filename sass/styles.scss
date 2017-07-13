@@ -6,13 +6,15 @@ $icon-font-path: "node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 
 body {
   background: $body-background;
-  font-family: 'source-sans-pro';
+  font-family: $font-all; 
 }
 
 html, body {
   height: 100%;
   margin: 0;
 }
+
+
 
 a {
   transition: $transition;
@@ -94,7 +96,6 @@ img {
     }
     &:hover {
       cursor: pointer;
-      color: $a-hover-color;
     }
   }
   .collapsed {
@@ -118,17 +119,17 @@ img {
 
 #article {
   h1 {
-    font-weight: bold;
+    font-family: $font-title;
     font-size: $article-read-h1-font-size;
     margin: 0;
   }
   h2 {
-    font-weight: bold;
+    font-family: $font-title;
     font-size: $article-read-h2-font-size;
     margin: 0;
   }
   h3 {
-    font-weight: bold;
+    font-family: $font-title;
     font-size: $article-read-h3-font-size;
     margin: 0;
   }
@@ -136,10 +137,11 @@ img {
     margin: 0;
   }
   margin: $article-margin;
+  width: 100%;
   .header {
     transition: $transition;
     word-break: break-all;
-    font-weight: bold;
+    font-family: $font-title;
     font-size: $article-header-font-size;
     border: 0;
     color: $article-header-a-color;
@@ -149,7 +151,7 @@ img {
   }
   .header-read {
     word-break: break-all;
-    font-weight: bold;
+    font-family: $font-title;
     font-size: $article-header-font-size;
     border: 0;
     color: $article-header-a-color;
@@ -164,12 +166,14 @@ img {
     margin-top: $article-read-margin;
     padding-bottom: $article-read-padding;
     font-size: $article-read-font-size;
+    font-family: $font-read;
     border-bottom: $content-border;
   }
   .preview {
     color: $article-read-color;
     margin-top: $article-preview-margin;
     font-size: $article-read-font-size;
+    font-family: $font-read;
   }
   .more {
     font-weight: bold;
@@ -185,7 +189,6 @@ img {
 }
 
 #article-old {
-  float: right;
   .header {
     text-transform: uppercase;
     text-align: right;
@@ -194,9 +197,6 @@ img {
     margin: $article-old-header-margin;
   }
   .list {
-    .last {
-      border-bottom: 1px solid rgba(0, 0, 0, 0);
-    }
     li {
       transition: $transition;
       list-style: none;
@@ -273,14 +273,15 @@ img {
   }
   .list {
     margin: $archive-list-margin;
+    font-size: $archive-list-font-size;
     li {
       list-style: none;
       padding: 0;
+
     }
     a {
       word-break: break-all;
       font-weight: bold;
-      font-size: $article-header-font-size - 10px;
       margin: $archive-list-item-margin;
       padding: $archive-list-item-padding;
       background: $archive-list-item-background;
@@ -298,9 +299,26 @@ img {
         border-bottom-left-radius: $archive-list-item-border-radius;
       }
       &:hover {
-        color: white;
+        // We transition the color of the link and the associated classes to white
+        .category {
+          color: white;
+        }
+        .date {
+          color: white;
+        }
         background: $a-hover-color;
+        color: white;
       }
+    }
+    .category {
+      transition: $transition;
+      display: inline;
+      color: $color8; 
+    }
+    .date {
+      transition: $transition;
+      display: inline;
+      color: $color8;
     }
   }
 }

@@ -6,7 +6,9 @@ import path from 'path'
 import express from 'express'
 import http from 'http'
 import bodyParser from 'body-parser'
-// import session from 'express-session'
+import cookieParser from 'cookie-parser'
+import flash from 'connect-flash'
+import session from 'express-session'
 
 /** Importing routes */
 import router from './routes/index'
@@ -24,13 +26,22 @@ const server = http.createServer(app)
   * >> Defining global variables/functions for views
   */
 
-/** Middleware setting up response.locals */
-app.use(require('./middlewares/locals.js').set)
-
 /** Applying stuff to the website
   * Including setting up pug view engine */
 app.set('view engine', 'pug')
 app.use(bodyParser())
+app.use(cookieParser())
+app.use(session({
+  secret: '(...) ? ... : ...',
+  cookie: { maxAge: 60000 },
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(flash())
+
+/** Middleware setting up response.locals */
+app.use(require('./middlewares/locals.js').set)
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', router)
 app.use('/font-awesome', express.static('./node_modules/font-awesome/css'))

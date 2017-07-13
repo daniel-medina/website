@@ -21,8 +21,11 @@ const parse = {
     created: date => {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a')
     },
+    created2: date => {
+      return moment(date).format('MM/DD/YYYY')
+    },
     views: amount => {
-      let plural = (amount > 1) ? 'views' : 'view'
+      let plural = (amount > 1) ? 'clicks' : 'click'
       let text = amount + ' ' + plural
 
       return text
@@ -33,6 +36,8 @@ const parse = {
 module.exports = {
   set: (request, response, next) => {
     response.locals = {
+      success: request.flash('success'),
+      error: request.flash('error'),
       previewStringLength: previewStringLength,
       marked: marked,
       nl2br: nl2br,

@@ -3,8 +3,7 @@ extends ../layout.pug
 block content
   div#archive
     div.header
-      div.amount.pull-left
-        | 248 total articles
+      div.amount.pull-left #{amount} #{(amount > 1) ? 'articles' : 'article'}
       div.pagination.pull-right
         li.page.active #[a 1]
         li.page #[a(href='#') 2]
@@ -12,34 +11,5 @@ block content
         li.page #[a(href='#') 5]
 
     div.list
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
-      a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='#') #[li.article] 04/29/2017 - Article's title - quite long huh ? Not enough. Better now. Even better.
+      each article in articles
+        a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='/article/' + article.url) #[li.article] #[div.category.pull-right= article.category.title] #[div.date= parse.article.created2(article.created)] #{article.title}

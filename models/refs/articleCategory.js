@@ -1,10 +1,16 @@
 /** articleCategory belongs to article */
 
+/** Importing configurations */
+import {url} from '../../config/database'
+
 /** Importing Mongoose */
 import mongoose from 'mongoose'
 
 /** Setting up the Schema variable */
 const Schema = mongoose.Schema
+
+/** Connection to the MongoDB database */
+const connection = mongoose.createConnection(url)
 
 /** Defining the collection's schema */
 const ArticleCategorySchema = new Schema({
@@ -13,5 +19,10 @@ const ArticleCategorySchema = new Schema({
   collection: 'articleCategory'
 })
 
-/** Exporting the schema, to make it usable */
-module.exports = ArticleCategorySchema
+const ArticleCategory = connection.model('ArticleCategory', ArticleCategorySchema)
+
+/** Exporting the schema and the model
+  * This differs from normal models, since both the schema and data must be accessible independently
+  * This is to ensure relationship is set up properly inside the parent model
+  */
+export { ArticleCategorySchema, ArticleCategory }

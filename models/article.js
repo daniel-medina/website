@@ -1,8 +1,8 @@
 /** Importing configurations */
 import {url} from '../config/database'
 
-/** Importing refs */
-import ArticleCategorySchema from './refs/articleCategory'
+/** Importing model's children */
+import {ArticleCategorySchema} from './refs/articleCategory'
 
 /** Importing Mongoose */
 import mongoose from 'mongoose'
