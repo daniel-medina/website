@@ -41,51 +41,64 @@ const pagination = {
     let part1 = []
     let part2 = []
     let part3 = []
-    let displayAmount = 3
+    let displayAmount = 5
 
     for (var currentPage = 1; currentPage <= maxPage; currentPage++) {
       pagination.push(currentPage)
     }
 
     /** After the array is filled, we slice it */
-    let slice1 = page + displayAmount
+    let slice1 = page + 1
     let slice2 = pagination.length - displayAmount
 
-    /** TO DO */
-    if (page + displayAmount < displayAmount && page + displayAmount < (pagination.length - 1)) {
-      part1 = pagination.slice(0, displayAmount)
-    }
+    /** If the current page is superior to displayAmount, we show only one page
+      * Else, if the current page is outside the first slice */
+    part1 = pagination.slice(0, displayAmount)
 
     /** if the current page minus displayAmount is superior to 0,
       * we slice it normally; else we only grab from the beginning of the array
       */
-    if (page - displayAmount > 0) {
-      part2 = pagination.slice(page - 1, slice1)
+    if (page > 1) {
+      /** page - 2 is equal to the index converted page minus 1 */
+      part2 = pagination.slice(page - 2, slice1)
     } else {
-      part2 = pagination.slice(0, slice1)
+      /** If the size of part1 is not long enough, we increase it
+        * It can happen if the chosen displayAmount value is too small */
+      let length = (part1.length < 2) ? part1.length + 1 : part1.length
+
+      part2 = pagination.slice(0, length)
     }
 
     /** The last part needs no modification */
     part3 = pagination.slice(slice2, pagination.length)
 
+    // merge.push(part1)
+    // merge.push(part2)
+    // merge.push(part3)
+
     for (var x in part1) {
-      if (part1.length > 0) {
+      if (part1[x] < part2[0]) {
         merge.push(part1[x])
       }
+    }
+
+    /** We insert the separation if it has to */
+    if (part1[part1.length - 1] + 1 < part2[0]) {
+      merge.push('...')
     }
 
     /** We now inject the sliced parts to the merge array */
     for (var y in part2) {
       /** If the current item plus 1 is inferior to the first item of the second part
         * And if there is less item than the chosen displayAmount value, we push */
-      if (part2[y] + 1 < part3[0] && y < displayAmount) {
+      if (part2[y] < part3[0]) {
         merge.push(part2[y])
       }
     }
 
     /** If the actual page plus displayAmount is inferior to the first index of part2 minus one (to avoid unnecessary repetitions), we can insert a separation
-      * The minus 1 is necessary to avoid unnecessary links */
-    if (page + 1 < part3[0]) {
+      * The minus 1 is necessary to `convert` the length of the array to an index */
+    if (part2[part2.length - 1] + 1 < part3[0]) {
       merge.push('...')
     }
 
