@@ -11,20 +11,28 @@ import assert from 'assert'
 module.exports = {
   /** Checking for the existence of the article in the database */
   articleExist: (request, response, next) => {
-    let url = request.params.url
+    /** Getting the amount of article relative to the provided url */
+    async function getCount () {
+      return Article.count({ url: request.params.url })
+    }
 
-    Article.count({url: url}, (error, count) => {
-      assert.equal(null, error)
+    /** Executing the code asynchronously */
+    (async function () {
+      try {
+        let count = await getCount()
 
-      if (count === 0) {
+        if (count === 0) {
         /** If the given url doesn't match one existing article, show a 404 error */
-        response.status('404')
-          .render('error/404', { title: 'ERROR' })
-      } else {
+          response.status('404')
+            .render('error/404', { title: 'ERROR' })
+        } else {
         /** If it exist, we go to the next route */
-        next()
+          next()
+        }
+      } catch (error) {
+        console.log(error)
       }
-    })
+    }())
   },
   /** Adds views to an article */
   views: (request, response, next) => {
