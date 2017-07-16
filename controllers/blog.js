@@ -111,13 +111,15 @@ module.exports = {
         let amount = await getAmount()
         let articles = await getArticle(page)
         let maxPage = Math.ceil(amount / archiveItemPerPage)
+        let pagination = await response.locals.pagination.links(amount, page, maxPage, archiveItemPerPage)
 
         response.render('blog/archive', {
           title: 'Archive',
           articles: articles,
           amount: amount,
           page: page,
-          maxPage: maxPage
+          maxPage: maxPage,
+          pagination: pagination
         })
       } catch (error) {
         console.log(error)

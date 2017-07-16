@@ -6,7 +6,7 @@ block content
       div.amount.pull-left #{amount} #{(amount > 1) ? 'articles' : 'article'}
       div.pagination.pull-right
         if (maxPage > 1)
-          each link in pagination.links(page, maxPage)
+          each link in pagination
             //- This variable ensure that the url of the first page uses no '?page=1' get value
             - var url = (link > 1) ? '/' + link : ''
 
