@@ -110,7 +110,7 @@ module.exports = {
         let page = Number((request.params.page > 1) ? request.params.page : 1)
         let amount = await getAmount()
         let articles = await getArticle(page)
-        let maxPage = Math.floor(amount / archiveItemPerPage)
+        let maxPage = Math.ceil(amount / archiveItemPerPage)
 
         response.render('blog/archive', {
           title: 'Archive',

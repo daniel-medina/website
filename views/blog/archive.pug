@@ -5,14 +5,21 @@ block content
     div.header
       div.amount.pull-left #{amount} #{(amount > 1) ? 'articles' : 'article'}
       div.pagination.pull-right
-        each link in pagination.links(page, maxPage)
-          if (link === '...')
-            li.page.disabled #[a ...]
-          else if (link === page)
-            li.page.active #[a #{link}]
-          else
-            li.page #[a(href='/archive/' + link) #{link}]
+        if (maxPage > 1)
+          each link in pagination.links(page, maxPage)
+            //- This variable ensure that the url of the first page uses no '?page=1' get value
+            - var url = (link > 1) ? '/' + link : ''
+
+            if (link === '...')
+              li.page.disabled #[a ...]
+            else if (link === page)
+              li.page.active #[a #{link}]
+            else
+              li.page #[a(href='/archive' + url) #{link}]
 
     div.list
-      each article in articles
-        a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='/article/' + article.url) #[li.article] #[div.category.pull-right= article.category.title] #[div.date= parse.article.created2(article.created)] #{article.title}
+      if (amount > 0)
+        each article in articles
+          a.col-lg-12.col-md-12.col-sm-12.col-xs-12(href='/article/' + article.url) #[li.article] #[div.category.pull-right= article.category.title] #[div.date= parse.article.created2(article.created)] #{article.title}
+      else
+        b #[.text-center There is no data to display.]

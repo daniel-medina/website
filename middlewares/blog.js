@@ -70,13 +70,12 @@ module.exports = {
       try {
         let page = (request.params.page > 1) ? request.params.page : 1
         let amount = await getAmount()
-        let maxPage = Math.floor(amount / archiveItemPerPage)
+        let maxPage = Math.ceil(amount / archiveItemPerPage)
 
         if (page <= maxPage) {
           next()
         } else {
-          response.status('404')
-            .render('error/404', { title: 'ERROR' })
+          response.redirect('/archive')
         }
       } catch (error) {
         console.log(error)
