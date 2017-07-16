@@ -12,6 +12,7 @@
   "author": "Daniel Medina",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "bootstrap-sass": "^3.3.7",
     "connect-flash": "^0.1.1",

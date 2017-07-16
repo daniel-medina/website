@@ -122,7 +122,7 @@ const pagination = {
       return merge
     }
 
-    /** We now return the asynchronous function; to be awaited */
+    /** We now return the asynchronous function; to be used as a Promise or whatnot. */
     return mergeParts()
   }
 }

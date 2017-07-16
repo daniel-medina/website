@@ -1,4 +1,4 @@
-/** Blog controller */
+/** Admin's blog controller */
 
 /** Importing models */
 import Article from '../../models/article'
@@ -17,11 +17,6 @@ module.exports = {
   /** HTTP REQUEST - GET */
   /** ------------------ */
   getIndex: (request, response) => {
-    response.render('admin/index', {
-      title: 'Administration'
-    })
-  },
-  getBlog: (request, response) => {
     /** We load the categories to be selected at the creation of an article */
     ArticleCategory
       .find({})
@@ -30,7 +25,7 @@ module.exports = {
         assert.equal(null, error)
 
         response.render('admin/blog/index', {
-          title: 'Administration - Blog',
+          title: 'Blog management',
           categories: categories
         })
       })

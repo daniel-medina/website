@@ -13,7 +13,7 @@ module.exports = {
   articleExist: (request, response, next) => {
     /** Getting the amount of article relative to the provided url */
     async function getCount () {
-      return Article.count({ url: request.params.url })
+      return Article.count({ url: request.params.url }).exec()
     }
 
     /** Executing the code asynchronously */

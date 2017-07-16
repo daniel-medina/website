@@ -1,4 +1,4 @@
-/** Middleware - admin - blog */
+/** Middleware - admin */
 
 /** Importing models */
 import Article from '../../models/article'
