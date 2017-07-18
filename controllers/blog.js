@@ -1,76 +1,89 @@
 /** Blog controller */
 
-/** Importing configuration */
+/** Imports goes here */
 import {archiveItemPerPage} from '../config/blog'
-
-/** Importing models */
 import Article from '../models/article'
-
-/** Importing modules */
-import assert from 'assert'
 import marked from 'marked'
 
-/** Exporting the controller */
 module.exports = {
-  /** HTTP REQUEST - GET */
-  /** ------------------ */
+  // getIndex {{{
   getIndex: (request, response) => {
-    let recent = {
-      limit: 2,
-      sort: {
-        _id: -1
+    let limit = 2
+    let sort = {
+      _id: -1
+    }
+
+    async function getArticles () {
+      let query = {
+        limit: limit,
+        sort: sort
       }
+
+      return Article
+        .find({})
+        .limit(query.limit)
+        .sort(query.sort)
+        .exec()
     }
-    let old = {
-      limit: 10,
-      sort: recent.sort,
-      skip: recent.limit
+
+    async function getOldArticles () {
+      let query = {
+        limit: 10,
+        sort: sort,
+        skip: limit
+      }
+
+      return Article
+        .find({})
+        .populate('category', 'title')
+        .sort(query.sort)
+        .skip(query.skip)
+        .exec()
     }
 
-    /** Fetching recent article's list
-      * To be displayed in the main part of the index
-      */
-    Article
-      .find()
-      .populate('category', 'title')
-      .limit(recent.limit)
-      .sort(recent.sort)
-      .exec((error, articles) => {
-        assert.equal(null, error)
+    (async function () {
+      try {
+        let articles = await getArticles()
+        let oldArticles = await getOldArticles()
 
-        /** Fetching old article's list */
-        Article
-          .find()
-          .populate('category', 'title')
-          .sort(old.sort)
-          .skip(old.skip)
-          .exec((error, old) => {
-            assert.equal(null, error)
-
-            response.render('blog/index', {
-              title: 'Blog',
-              articles: articles,
-              old: old,
-              marked: marked
-            })
-          })
-      })
+        response.render('blog/index', {
+          title: 'Blog',
+          articles: articles,
+          old: oldArticles,
+          marked: marked
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   },
+  // }}}
+  // getArticle {{{
   getArticle: (request, response) => {
-    let url = request.params.url
+    async function getArticle () {
+      let url = request.params.url
 
-    Article
-      .findOne({url: url})
-      .populate('category', 'title')
-      .exec((error, item) => {
-        assert.equal(null, error)
+      return Article
+        .findOne({ url: url })
+        .populate('category', 'title')
+        .exec()
+    }
+
+    (async function () {
+      try {
+        let article = await getArticle()
 
         response.render('blog/article', {
-          title: item.title,
-          article: item
+          title: article.title,
+          article: article
         })
-      })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   },
+  // }}}
+  // getArchive {{{
   getArchive: (request, response) => {
     /** Getting the total amount of article in the database */
     async function getAmount () {
@@ -126,4 +139,5 @@ module.exports = {
       }
     }())
   }
+  // }}}
 }
