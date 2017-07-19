@@ -6,7 +6,6 @@ import {ArticleCategory} from '../../models/refs/articleCategory'
 
 /** Importing modules */
 import slug from 'slug'
-import assert from 'assert'
 // import moment from 'moment'
 
 /** Setting slug mode */
@@ -14,44 +13,57 @@ slug.defaults.mode = 'rfc3986'
 
 /** Exporting the controller */
 module.exports = {
-  /** HTTP REQUEST - GET */
-  /** ------------------ */
+  // getIndex {{{
   getIndex: (request, response) => {
-    /** We load the categories to be selected at the creation of an article */
-    ArticleCategory
-      .find({})
-      .sort({})
-      .exec((error, categories) => {
-        assert.equal(null, error)
+    async function getCategories () {
+      return ArticleCategory
+        .find({})
+        .exec()
+    }
+
+    (async function () {
+      try {
+        let categories = await getCategories()
 
         response.render('admin/blog/index', {
           title: 'Blog management',
           categories: categories
         })
-      })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   },
-  /** HTTP REQUEST - POST */
-  /** ------------------- */
+  // }}}
+  // postBlog {{{
   postBlog: (request, response) => {
-    /** Getting request's sent post variables */
-    let created = new Date()
-    let title = request.body.title
-    let url = slug(title)
-    let category = request.body.category
-    let content = request.body.content
-    let query = {
-      created: created,
-      url: url,
-      category: category,
-      title: title,
-      content: content
+    async function createArticle () {
+      let created = new Date()
+      let title = request.body.title
+      let url = slug(title)
+      let category = request.body.category
+      let content = request.body.content
+      let query = {
+        created: created,
+        url: url,
+        category: category,
+        title: title,
+        content: content
+      }
+
+      return Article.create(query)
     }
 
-    Article.create(query, (error, result) => {
-      assert.equal(null, error)
+    (async function () {
+      try {
+        let create = await createArticle() // eslint-disable-line
 
-      request.flash('success', 'The article was successfully created.')
-      response.redirect('back')
-    })
+        request.flash('success', 'The article was successfully created.')
+        response.redirect('back')
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   }
+  // }}}
 }

@@ -1,24 +1,17 @@
 /** Middleware - admin */
 
-/** Importing models */
 import Article from '../../models/article'
-
-/** Importing model's children */
 import {ArticleCategory} from '../../models/refs/articleCategory'
 
-/** Importing modules */
-import assert from 'assert'
 import slug from 'slug'
 
 /** Setting slug mode */
 slug.defaults.mode = 'rfc3986'
 
 module.exports = {
-  /** Verify the form sent by the user for creating an article */
+  // postArticle {{{
   postArticle: (request, response, next) => {
-    // let url = request.body.url
     let title = request.body.title
-    // let content = request.body.content
 
     if (title.length > 5) {
       next()
@@ -27,37 +20,51 @@ module.exports = {
       response.redirect('back')
     }
   },
-  /** Checking for the existence of the selected article's category */
+  // }}}
+  // articleCategoryExist {{{
   articleCategoryExist: (request, response, next) => {
-    let category = request.body.category
+    async function countCategory (category) {
+      return ArticleCategory.count({ _id: category }).exec()
+    }
 
-    ArticleCategory.count({ _id: category }).exec((error, amount) => {
-      assert.equal(null, error)
+    (async function () {
+      try {
+        let category = request.body.category
+        let count = await countCategory(category)
 
-      if (amount !== 0) {
-        next()
-      } else {
-        request.flash('error', 'The selected category doesn\'t exist.')
-        response.redirect('back')
+        if (count !== 0) {
+          next()
+        } else {
+          request.flash('error', 'The selected category doesn\'t exist.')
+          response.redirect('back')
+        }
+      } catch (error) {
+        console.log(error)
       }
-    })
+    }())
   },
-  /** Checking for the existence of the article's title in the database
-    * Since article's title are also the url, it has to be unique
-    */
+  // }}}
+  // articleTitleExist {{{
   articleTitleExist: (request, response, next) => {
-    /** We used the url which is the article's title converted to slug */
-    let url = slug(request.body.title)
+    async function countArticle (url) {
+      return Article.count({ url: url }).exec()
+    }
 
-    Article.count({ url: url }).exec((error, amount) => {
-      assert.equal(null, error)
+    (async function () {
+      try {
+        let url = slug(request.body.title)
+        let count = await countArticle(url)
 
-      if (amount === 0) {
-        next()
-      } else {
-        request.flash('error', 'The article\'s title already exist in the database.')
-        response.redirect('back')
+        if (count === 0) {
+          next()
+        } else {
+          request.flash('error', 'The article\'s title already exist in the database.')
+          response.redirect('back')
+        }
+      } catch (error) {
+        console.log(error)
       }
-    })
+    }())
   }
+  // }}}
 }

@@ -6,6 +6,7 @@ import Admin from '../../models/admin'
 /** Importing modules */
 
 module.exports = {
+  // isAuthenticated {{{
   isAuthenticated: (request, response, next) => {
     async function adminCount () {
       return Admin.count({}).exec()
@@ -28,4 +29,5 @@ module.exports = {
       }
     }())
   }
+  // }}}
 }

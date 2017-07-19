@@ -85,17 +85,13 @@ module.exports = {
   // }}}
   // getArchive {{{
   getArchive: (request, response) => {
-    /** Getting the total amount of article in the database */
     async function getAmount () {
-      /** Returning model's Promise execution */
       return Article
         .count({})
         .exec()
     }
 
-    /** Getting the articles from the database */
     async function getArticle (page) {
-      /** Getting all required variables for the query */
       let rawSkip = Math.floor(page * archiveItemPerPage)
       let skip = Math.floor(rawSkip - archiveItemPerPage)
       let query = {
@@ -106,7 +102,6 @@ module.exports = {
         }
       }
 
-      /** Returning model's Promise execution */
       return Article
         .find({})
         .populate('category', 'title')
@@ -116,10 +111,9 @@ module.exports = {
         .exec()
     }
 
-    /** Executing the controller's content asynchronously */
     (async function () {
       try {
-        /* If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
+        /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
         let page = Number((request.params.page > 1) ? request.params.page : 1)
         let amount = await getAmount()
         let articles = await getArticle(page)

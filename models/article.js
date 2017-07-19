@@ -1,22 +1,12 @@
-/** Importing configurations */
 import {url} from '../config/database'
 
-/** Importing model's children */
 import {ArticleCategorySchema} from './refs/articleCategory'
 
-/** Importing Mongoose */
 import mongoose from 'mongoose'
 
-/** Connection to the MongoDB database */
 const connection = mongoose.createConnection(url)
-
-/** Setting up ES6's promise */
 mongoose.Promise = global.Promise
-
-/** Setting up the Schema variable */
 const Schema = mongoose.Schema
-
-/** Defining the collection's schema */
 const ArticleSchema = new Schema({
   created: Date,
   url: String,
@@ -30,8 +20,6 @@ const ArticleSchema = new Schema({
   collection: 'article'
 })
 
-/** Registering ref's schemas */
 connection.model('ArticleCategory', ArticleCategorySchema)
 
-/** Exporting the schema, to make it usable */
 module.exports = connection.model('Article', ArticleSchema)
