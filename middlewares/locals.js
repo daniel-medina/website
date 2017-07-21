@@ -1,28 +1,58 @@
-/** Middleware - locals */
+/**
+ * Locals Middleware
+ * Defines locals that can be used anywhere on the website
+ *
+ * @author Daniel Medina
+ * Date:
+ */
 
+/** Configs imports */
 import {
   previewStringLength,
   archivePageDisplayAmount
 } from '../config/blog'
 
+/** Modules imports */
 import marked from 'marked'
 import nl2br from 'nl2br'
 import escapeHtml from 'escape-html'
 import moment from 'moment'
 
+/** Models imports */
+
+/** Libs imports */
+
 const parse = {
   article: {
     // created {{{
+    /**
+     * Parse the 'created' date of an article
+     *
+     * @param {Date} date - The raw date of the article
+     * @returns {Date} Formated date with moment.js
+     */
     created: date => {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a')
     },
     // }}}
     // created2 {{{
+    /**
+     * Parse the 'created' date of an article - alternative format
+     *
+     * @param {Date} date - The raw date of the article
+     * @returns {Date} Formated date with moment.js
+     */
     created2: date => {
       return moment(date).format('MM/DD/YYYY')
     },
     // }}}
     // views {{{
+    /**
+     * Parse the 'view' element of an article
+     *
+     * @param {Number} amount - Amount of views
+     * @returns {String} String containing the amount of views to display, plural or not
+     */
     views: amount => {
       let plural = (amount > 1) ? 'views' : 'view'
       let text = amount + ' ' + plural
@@ -35,7 +65,21 @@ const parse = {
 
 const pagination = {
   // links {{{
+  /**
+   * Generate a shorten pagination's links as an array
+   *
+   * @param {Number} amount Amount of items
+   * @param {Number} page Current page
+   * @param {Number} maxPage Latest page
+   * @param {Number} itemPerPage Amount of wanted item per page
+   * @returns {Promise} So it can be used in an asynchronous code
+   */
   links: (amount, page, maxPage, itemPerPage) => {
+    /**
+     * Generate an array filled with pages from 1 to maxPage
+     *
+     * @returns {Array} Pagination to be used to slice in three parts
+     */
     async function getPagination () {
       let pagination = []
 
@@ -46,18 +90,30 @@ const pagination = {
       return pagination
     }
 
+    /**
+     * Get the first part of the links
+     *
+     * @param {Array} pagination - Need to manipulate the original pagination array
+     * @returns {Array} Sliced pagination's array
+     */
     async function getPart1 (pagination) {
       return pagination.slice(0, archivePageDisplayAmount)
     }
 
+    /**
+     * Get the second part of the links
+     *
+     * @param {Array} pagination - Need to manipulate the original pagination array
+     * @returns {Array} Sliced pagination's array
+     */
     async function getPart2 (pagination) {
       let part1 = await getPart1(pagination)
 
       if (page > 1) {
         /**
-          * If there is no need for a second part
-          * The second part will be equal to the first part
-          */
+         * If there is no need for a second part
+         * The second part will be equal to the first part
+         */
         if (page + 1 <= part1[part1.length - 1]) {
           return part1
         } else {
@@ -74,10 +130,21 @@ const pagination = {
       }
     }
 
+    /**
+     * Get the third part of the links
+     *
+     * @param {Array} pagination - Need to manipulate the original pagination array
+     * @returns {Array} Sliced pagination's array
+     */
     async function getPart3 (pagination) {
       return pagination.slice(pagination.length - archivePageDisplayAmount, pagination.length)
     }
 
+    /**
+     * Merge all parts of the pagination links
+     *
+     * @returns {Array} Array containing the three merged parts
+     */
     async function mergeParts () {
       let pagination = await getPagination()
       let part1 = await getPart1(pagination)
@@ -116,7 +183,7 @@ const pagination = {
       return merge
     }
 
-    /** Returns a Promise */
+    /** Returns the final merged array as a Promise */
     return mergeParts()
   }
   // }}}
@@ -127,6 +194,7 @@ module.exports = {
     response.locals = {
       success: request.flash('success'),
       error: request.flash('error'),
+      session: request.session,
       previewStringLength: previewStringLength,
       marked: marked,
       env: process.env.NODE_ENV,

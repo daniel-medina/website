@@ -29,7 +29,8 @@
     "mongoose": "*",
     "nl2br": "*",
     "pug": "*",
-    "slug": "*"
+    "slug": "*",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-cli": "*",

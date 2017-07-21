@@ -11,11 +11,11 @@ html
 
     link(rel='shortcut icon' type='image/png' href='/images/favicon.png')
     link(rel='stylesheet' href='/css/styles.css')
-    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica")
-    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono")
+    // link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica")
+    // link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono")
 
     // This is only for development
-    script(src='https://unpkg.com/vue')
+    script(src='js/vue.js')
 
   body
     div#website.row.wrap
@@ -28,6 +28,8 @@ html
             div.pull-right
               li #[a(href='about-me') #[i.fa.fa-address-card-o] About me]
               li #[a(href='contact') #[i.fa.fa-envelope-o] Contact]
+              if (session.admin)
+                li #[a(href='admin/disconnect') #[i.fa.fa-power-off] Disconnect]
           menuxs.visible-xs
             div.text-center
               br

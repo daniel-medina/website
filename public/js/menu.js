@@ -13,9 +13,9 @@ let menuxs = Vue.component('menuxs', { // eslint-disable-line
     </div>
     <div class="collapsed">
       <a href='/'><li>Blog</li></a>
-      <a href='/'><li>Portfolio</li></a>
-      <a href='/'><li>About me</li></a>
-      <a href='/'><li>Contact</li></a>
+      <a href='/portfolio'><li>Portfolio</li></a>
+      <a href='/about-me'><li>About me</li></a>
+      <a href='/contact'><li>Contact</li></a>
     </div>
   </div>`,
   methods: {

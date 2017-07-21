@@ -2,7 +2,9 @@
 
 /** Imports goes here */
 import {archiveItemPerPage} from '../config/blog'
+
 import Article from '../models/article'
+
 import marked from 'marked'
 
 module.exports = {

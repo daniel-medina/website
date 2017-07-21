@@ -1,5 +1,5 @@
 /** Importing configurations */
-import {port} from './config/server.js'
+import {port} from './config/server'
 
 /** Importing used NodeJS modules */
 import path from 'path'
@@ -17,25 +17,35 @@ import router from './routes/index'
 const app = express()
 const server = http.createServer(app)
 
-/** Setting up the app :
-  * >> Defining the public path
-  * >> Using the routes defined in another file
-  * >> Defining the view engine as Pug
-  * >> Setting fonts public folders
-  * >> Handling HTTP errors
-  * >> Defining global variables/functions for views
-  */
+/**
+ * Setting up the app :
+ * >> Defining the public path
+ * >> Using the routes defined in another file
+ * >> Defining the view engine as Pug
+ * >> Setting fonts public folders
+ * >> Handling HTTP errors
+ * >> Defining global variables/functions for views
+ */
 
-/** Applying stuff to the website
-  * Including setting up pug view engine */
+/**
+ * Applying stuff to the website
+ * Including setting up pug view engine
+ */
 app.set('view engine', 'pug')
 app.use(bodyParser())
 app.use(cookieParser())
+/** Session store method MUST be changed for production use */
 app.use(session({
-  secret: '(...) ? ... : ...',
-  cookie: { maxAge: 60000 },
-  resave: false,
-  saveUninitialized: false
+  secret: 'e6YoQ9RiQ9WzrNBoPVniT653FG7fHvMK8gyHXmJ4kxUegEz3DyjCK5BHog8KNKce',
+  cookie: {
+    /** 1000 ms * 60 seconds * 60 minutes * 24 hours * 7 days */
+    maxAge: 1000 * 60 * 60 * 24 * 7, // one week
+    httpOnly: true,
+    /** Only set to true when HTTPS is enabled */
+    secure: false
+  },
+  resave: true,
+  saveUninitialized: true
 }))
 app.use(flash())
 

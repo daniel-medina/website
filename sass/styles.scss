@@ -36,6 +36,19 @@ img {
 
 .container {
   padding: 0;
+  .content {
+    background: $content-background;
+    box-shadow: $content-shadow;
+    margin: 0;
+    padding-bottom: $footer-bottom-pos - 1px;
+    border-top: none;
+    border-bottom: $content-border;
+    min-height: 100%;
+    .content-wrap {
+      overflow: auto;
+      padding: $content-wrap-padding;
+    }
+  }
 }
 
 .http-error {
@@ -201,6 +214,7 @@ img {
 }
 
 #article-old {
+  width: 100%;
   .header {
     text-transform: uppercase;
     text-align: right;
@@ -210,6 +224,7 @@ img {
   }
   .list {
     li {
+      word-break: break-all;
       text-transform: uppercase;
       transition: $transition;
       list-style: none;
@@ -373,6 +388,22 @@ img {
   }
 }
 
+#authentication {
+  .wrapper {
+    display: flex;
+  }
+}
+
+.block {
+  margin: 0 auto;
+  .header {
+  }
+  .content {
+  }
+  .footer {
+  }
+}
+
 #footer {
   background: $menu-background;
   position: relative;
@@ -396,18 +427,4 @@ img {
 
 .wrap {
   height: 100%;
-}
-
-.content {
-  background: $content-background;
-  box-shadow: $content-shadow;
-  margin: 0;
-  padding-bottom: $footer-bottom-pos - 1px;
-  border-top: none;
-  border-bottom: $content-border;
-  min-height: 100%;
-  .content-wrap {
-    overflow: auto;
-    padding: $content-wrap-padding;
-  }
 }
