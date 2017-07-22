@@ -1,2 +1,2 @@
 /** Exporting database configuration */
-export const url = 'mongodb://192.168.1.31/website'
+export const url = 'mongodb://localhost:27017/website'
