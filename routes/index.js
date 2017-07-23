@@ -11,10 +11,10 @@ router.get('/article/:url([a-z0-9_-]{1,})?', require('../middlewares/blog').view
 router.get('/archive/:page([0-9]{1,})?', require('../middlewares/blog').archivePageCheck)
 // }}}
 // Admin {{{
-router.get('/admin', require('../middlewares/admin/authentication').isAuth)
-router.get('/admin/authentication', require('../middlewares/admin/authentication').isAuth)
-router.get('/admin/disconnect', require('../middlewares/admin/authentication').isAuth)
-router.get('/admin/blog', require('../middlewares/admin/authentication').isAuth)
+router.get('/admin', require('../middlewares/admin').isAuth)
+router.get('/admin/authentication', require('../middlewares/admin').isAuth)
+router.get('/admin/disconnect', require('../middlewares/admin').isAuth)
+router.get('/admin/blog', require('../middlewares/admin').isAuth)
 // }}}
 // }}}
 
@@ -36,11 +36,11 @@ router.get('/admin/blog', require('../controllers/admin').getBlog)
 // POST REQUESTS {{{
 // --->>> MIDDLEWARES <<<--- {{{
 // Admin {{{
-router.post('/admin/blog', require('../middlewares/admin/authentication').isAuth)
-router.post('/admin/authentication', require('../middlewares/admin/authentication').isAuth)
-router.post('/admin/blog', require('../middlewares/admin/blog').postArticle)
-router.post('/admin/blog', require('../middlewares/admin/blog').articleCategoryExist)
-router.post('/admin/blog', require('../middlewares/admin/blog').articleTitleExist)
+router.post('/admin/blog', require('../middlewares/admin').isAuth)
+router.post('/admin/authentication', require('../middlewares/admin').isAuth)
+router.post('/admin/blog', require('../middlewares/admin').postArticle)
+router.post('/admin/blog', require('../middlewares/admin').articleCategoryExist)
+router.post('/admin/blog', require('../middlewares/admin').articleTitleExist)
 // }}}
 // }}}
 

@@ -1,20 +1,45 @@
-/** Blog controller */
+/**
+ * Blog Controller
+ * Handles the whole blog
+ *
+ * @author Daniel Medina
+ * Date: 07/08/2017
+ */
 
-/** Imports goes here */
+/** Configs imports */
 import {archiveItemPerPage} from '../config/blog'
 
-import Article from '../models/article'
-
+/** Modules imports */
 import marked from 'marked'
 
-module.exports = {
+/** Models imports */
+import Article from '../models/article'
+
+/** Libs imports */
+
+/** Exporting the controller */
+export default {
   // getIndex {{{
-  getIndex: (request, response) => {
+  /**
+   * Handles the index of the blog
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  getIndex: function (request, response) {
+    /** Defines query variables to use with recent and old articles */
     let limit = 2
     let sort = {
       _id: -1
     }
 
+    /**
+     * Get the recent articles
+     *
+     * @async
+     * @returns {Promise} Promise containing the recent articles
+     * @see Mongoose
+     */
     async function getArticles () {
       let query = {
         limit: limit,
@@ -28,6 +53,12 @@ module.exports = {
         .exec()
     }
 
+    /**
+     * The the old articles
+     *
+     * @async
+     * @returns {Promise} Promise containing the old articles
+     */
     async function getOldArticles () {
       let query = {
         limit: 10,
@@ -43,6 +74,12 @@ module.exports = {
         .exec()
     }
 
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
     (async function () {
       try {
         let articles = await getArticles()
@@ -61,7 +98,19 @@ module.exports = {
   },
   // }}}
   // getArticle {{{
-  getArticle: (request, response) => {
+  /**
+   * Handles the view of an article
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  getArticle: function (request, response) {
+    /**
+     * Get the article matching the given URL
+     *
+     * @async
+     * @returns {Promise} Promise containing the article
+     */
     async function getArticle () {
       let url = request.params.url
 
@@ -71,6 +120,12 @@ module.exports = {
         .exec()
     }
 
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
     (async function () {
       try {
         let article = await getArticle()
@@ -86,13 +141,35 @@ module.exports = {
   },
   // }}}
   // getArchive {{{
-  getArchive: (request, response) => {
+  /**
+   * Handles the archive index view
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  getArchive: function (request, response) {
+    /**
+     * Get the amount of existing article
+     *
+     * @async
+     * @returns {Promise} Promise containing the amount of existing article
+     * @see Mongoose
+     */
     async function getAmount () {
       return Article
         .count({})
         .exec()
     }
 
+    /**
+     * Get all existing article, relative to the current page
+     *
+     * @async
+     * @param {Number} page Current page
+     * @returns {Promise} Promise containing all the article, relative to the current page
+     * @see Mongoose
+     * @see Pagination
+     */
     async function getArticle (page) {
       let rawSkip = Math.floor(page * archiveItemPerPage)
       let skip = Math.floor(rawSkip - archiveItemPerPage)
@@ -113,6 +190,12 @@ module.exports = {
         .exec()
     }
 
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
     (async function () {
       try {
         /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
