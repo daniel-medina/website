@@ -17,7 +17,7 @@ import Article from '../models/article'
 /** Libs imports */
 
 /** Exporting the middleware */
-export default {
+module.exports = {
   // articleExist {{{
   /**
    * Checks if the article do exist

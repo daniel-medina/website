@@ -6,7 +6,7 @@ $icon-font-path: "node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 
 body {
   background: $body-background;
-  font-family: $font-all; 
+  font-family: $font-all;
 }
 
 html, body {
@@ -28,6 +28,16 @@ a {
 img {
   margin: 0 auto !important;
   text-align: right;
+}
+
+.btn {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: $btn-font-size;
+  border: 0;
+  border-radius: $btn-border-radius;
+  box-shadow: $btn-shadow;
+  transition: $transition;
 }
 
 .row {
@@ -305,7 +315,6 @@ img {
     li {
       list-style: none;
       padding: 0;
-
     }
     a {
       word-break: break-all;
@@ -341,7 +350,7 @@ img {
     .category {
       transition: $transition;
       display: inline;
-      color: $color8; 
+      color: $color8;
     }
     .date {
       transition: $transition;
@@ -389,18 +398,89 @@ img {
 }
 
 #authentication {
+  padding: 0;
   .wrapper {
+    padding: 0;
     display: flex;
+  }
+  table {
+    margin: $authentication-table-margin;
+    tr {
+      box-shadow: $btn-shadow;
+    }
+    td.username {
+      background: $authentication-username-background;
+    }
+    td.password {
+      background: $authentication-password-background;
+    }
+    td.icon {
+      min-width: $authentication-icon-width;
+      border-top-left-radius: $btn-border-radius;
+      border-bottom-left-radius: $btn-border-radius;
+      vertical-align: middle;
+      text-align: center;
+      font-size: $authentication-icon-size;
+    }
+    td.input {
+      width: $authentication-input-width;
+      .form-control {
+        border-radius: 0;
+        border-top-right-radius: $btn-border-radius;
+        border-bottom-right-radius: $btn-border-radius;
+        border: 0;
+        font-size: $authentication-input-font-size;
+        font-weight: bold;
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  .submit {
+    .btn {
+      width: 100%;
+    }
   }
 }
 
 .block {
+  box-shadow: $block-shadow;
+  color: $block-font-color;
+  border-radius: $block-border-radius;
   margin: 0 auto;
-  .header {
+  padding: 0;
+  .top {
+    background: $block-top-background;
+    padding-top: $block-top-padding;
+    border-top-left-radius: $block-border-radius;
+    border-top-right-radius: $block-border-radius;
+    .title {
+      padding: $block-top-title-padding;
+      font-weight: bold;
+      font-family: $block-top-title-font-family;
+      font-size: $block-top-title-font-size;
+      text-transform: uppercase;
+      text-align: center;
+    }
   }
-  .content {
+  .middle {
+    background: $block-middle-background;
+    padding: $block-middle-padding;
   }
-  .footer {
+  .bottom {
+    .submit {
+      .btn {
+        background: $color2;
+        box-shadow: none;
+        border-radius: 0;
+        border-bottom-left-radius: $block-border-radius;
+        border-bottom-right-radius: $block-border-radius;
+        &:hover {
+          background: $color3;
+        }
+      }
+    }
   }
 }
 

@@ -5,15 +5,25 @@ block content
     .wrapper
       .block.col-lg-6.col-md-6.col-sm-8.col-xs-12
         form(method='POST')
-          .header
-            | Administration login
-          .content
-            .form-group
-              input.form-control(type='text' name='username' placeholder='Username')
-            .form-group
-              input.form-control(type='password' name='password' placeholder='Password')
-            label
-              input(type='checkbox' autocomplete='off')
-              |  Remember me
-          .footer
-            input.btn.btn-sm.btn-success(type='submit' value='Login')
+          .top 
+            .title authentication
+          .middle
+            table
+              tbody
+                tr
+                  // Username input
+                  td.icon.username
+                    i.fa.fa-user
+                  td.input 
+                    input.form-control(type='text' name='username' placeholder='Username' autofocus)
+            table
+              tbody
+                tr
+                  // Password input
+                  td.icon.password 
+                    i.fa.fa-lock
+                  td.input 
+                    input.form-control(type='password' name='password' placeholder='Password')
+          .bottom
+            .submit
+              input.btn.btn-sm.btn-danger(type='submit' value='login')

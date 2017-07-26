@@ -15,6 +15,7 @@ router.get('/admin', require('../middlewares/admin').isAuth)
 router.get('/admin/authentication', require('../middlewares/admin').isAuth)
 router.get('/admin/disconnect', require('../middlewares/admin').isAuth)
 router.get('/admin/blog', require('../middlewares/admin').isAuth)
+router.get('/admin/article/create', require('../middlewares/admin').isAuth)
 // }}}
 // }}}
 
@@ -28,7 +29,8 @@ router.get('/archive/:page([0-9]{1,})?', require('../controllers/blog').getArchi
 router.get('/admin', require('../controllers/admin').getIndex)
 router.get('/admin/authentication', require('../controllers/admin').getAuthentication)
 router.get('/admin/disconnect', require('../controllers/admin').disconnect)
-router.get('/admin/blog', require('../controllers/admin').getBlog)
+// router.get('/admin/blog', require('../controllers/admin').getBlog)
+router.get('/admin/article/create', require('../controllers/admin').getNewArticle)
 // }}}
 // }}}
 // }}}
@@ -37,16 +39,17 @@ router.get('/admin/blog', require('../controllers/admin').getBlog)
 // --->>> MIDDLEWARES <<<--- {{{
 // Admin {{{
 router.post('/admin/blog', require('../middlewares/admin').isAuth)
+router.post('/admin/article/create', require('../middlewares/admin').isAuth)
 router.post('/admin/authentication', require('../middlewares/admin').isAuth)
-router.post('/admin/blog', require('../middlewares/admin').postArticle)
-router.post('/admin/blog', require('../middlewares/admin').articleCategoryExist)
-router.post('/admin/blog', require('../middlewares/admin').articleTitleExist)
+router.post('/admin/article/create', require('../middlewares/admin').postArticle)
+router.post('/admin/article/create', require('../middlewares/admin').articleCategoryExist)
+router.post('/admin/article/create', require('../middlewares/admin').articleTitleExist)
 // }}}
 // }}}
 
 // --->>> CONTROLLERS <<<--- {{{
 // Admin {{{
-router.post('/admin/blog', require('../controllers/admin').postBlog)
+router.post('/admin/article/create', require('../controllers/admin').postNewArticle)
 router.post('/admin/authentication', require('../controllers/admin').postAuthentication)
 // }}}
 // }}}

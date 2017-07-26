@@ -7,6 +7,7 @@ $color5: rgba(200, 200, 200, 0.4);
 $color6: #FAFAFA;
 $color7: rgba(140, 140, 140, 0.8);
 $color8: #5A5A5A;
+$color9: rgba(10, 30, 60, 0.75);
 
 /** Fonts */
 $font-all: 'Arial';
@@ -20,6 +21,11 @@ $a-hover-color: $color2;
 
 /** Body */
 $body-background: url('../images/background.jpg');
+
+/** Buttons */
+$btn-border-radius: 1px;
+$btn-shadow: 1px 1px 2px $color9;
+$btn-font-size: 20px;
 
 /** Menu */
 $menu-margin: 0;
@@ -37,6 +43,21 @@ $menuxs-button-size: 28px;
 $menuxs-button-i-width: 26px;
 $menuxs-show-font-size: 16px;
 $menuxs-text-pos-bottom: 3px;
+
+/** Block */
+$block-padding: 10px 15px;
+$block-border: 1px solid $color5;
+$block-shadow: 1px 1px 6px $color8;
+$block-border-radius: 2px;
+$block-middle-background: $color9;
+$block-middle-padding: 5px 10px;
+$block-top-background: $block-middle-background;
+$block-top-margin: 15px;
+$block-top-title-font-family: $font-all;
+$block-top-title-font-size: 20px;
+$block-top-title-padding: 0;
+$block-top-padding: 5px;
+$block-font-color: white;
 
 /** Content */
 $content-wrap-padding: 10px 5px;
@@ -100,7 +121,13 @@ $admin-index-list-background: $color4;
 $admin-index-list-border: 2px solid $color7;
 
 /** Authentication */
-$authentication-header-background: $color2;
+$authentication-table-margin: 7px 0;
+$authentication-input-width: 100%;
+$authentication-input-font-size: 18px;
+$authentication-icon-width: 40px;
+$authentication-icon-size: 18px;
+$authentication-username-background: #00A2AD;
+$authentication-password-background: #F93200;
 
 /** Footer */
 $footer-bottom-pos: 64px;

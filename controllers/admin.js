@@ -21,7 +21,7 @@ import {ArticleCategory} from '../models/refs/articleCategory'
 import Password from '../lib/password'
 
 /** Exporting the controller */
-export default {
+module.exports = {
   // getIndex {{{
   /**
    * Returns the index view of the admin panel
@@ -153,14 +153,14 @@ export default {
     response.redirect('/')
   },
   // }}}
-  // getBlog {{{
+  // getNewArticle {{{
   /**
-   * Gives the admin the control of the blog part of the website
+   * Page form to create a new article
    *
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getBlog: function (request, response) {
+  getNewArticle: function (request, response) {
     /**
      * Get all article categories
      *
@@ -184,8 +184,8 @@ export default {
       try {
         let categories = await getCategories()
 
-        response.render('admin/blog/index', {
-          title: 'Blog management',
+        response.render('admin/article/create', {
+          title: 'Create an article',
           categories: categories
         })
       } catch (error) {
@@ -194,14 +194,14 @@ export default {
     }())
   },
   // }}}
-  // postBlog {{{
+  // postNewArticle {{{
   /**
    * Handles the user sent article via the form
    *
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  postBlog: (request, response) => {
+  postNewArticle: (request, response) => {
     /**
      * Create a new article
      *

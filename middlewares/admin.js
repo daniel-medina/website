@@ -24,7 +24,7 @@ import Password from '../lib/password'
 slug.defaults.mode = 'rfc3986'
 
 /** Exporting the middleware */
-export default {
+module.exports = {
   // postArticle {{{
   /**
    * Verify user sent information for the creation of an article
@@ -216,7 +216,6 @@ export default {
            * The authentication page, redirect him to the proper route
            */
           if (path !== '/admin/authentication') {
-            request.flash('error', 'You need to login in order to access the admin panel.')
             response.redirect('/admin/authentication')
           } else {
             next()

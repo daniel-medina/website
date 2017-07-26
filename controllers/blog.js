@@ -18,7 +18,7 @@ import Article from '../models/article'
 /** Libs imports */
 
 /** Exporting the controller */
-export default {
+module.exports = {
   // getIndex {{{
   /**
    * Handles the index of the blog
