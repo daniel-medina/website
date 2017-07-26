@@ -242,6 +242,183 @@ module.exports = {
         console.log(error)
       }
     }())
+  },
+  // }}}
+  // getEditArticle {{{
+  /**
+   * Send to the user the form to edit an article
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  getEditArticle: function (request, response) {
+    /**
+     * Get the information of the article
+     *
+     * @async
+     * @param {ObjectID} id ID of the article to edit
+     * @returns {Promise} Promise containing the article's information
+     * @see Mongoose
+     */
+    async function getArticle (id) {
+      let query = {
+        _id: id
+      }
+
+      return Article
+        .findOne(query)
+        .exec()
+    }
+
+    /**
+     * Get all article categories
+     *
+     * @async
+     * @returns {Promise} Promise containing all article categories
+     * @see Mongoose
+     */
+    async function getCategories () {
+      return ArticleCategory
+        .find({})
+        .exec()
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        /**
+         * We get the id given by the user on the route, then get the article from it
+         * We also get all categories of article
+         * The middleware will handle the verifications
+         */
+        let id = request.params.id
+        let article = await getArticle(id)
+        let categories = await getCategories()
+
+        /** Now we can return the view to the user, that will comes with the current article's information */
+        response.render('/admin/article/edit', {
+          title: 'Edit an article',
+          article: article,
+          categories: categories
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // postEditArticle {{{
+  /**
+   * Handle the information sent by the user in order to
+   * Update an article
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  postEditArticle: function (request, response) {
+    /**
+     * Edit the article
+     *
+     * @async
+     * @param {ObjectID} id ID of the article to edit
+     * @returns {Promise} Promise containing the update query
+     * @see Mongoose
+     */
+    async function updateArticle (id) {
+      let title = request.body.title
+      let url = slug(title)
+      let category = request.body.category
+      let content = request.body.content
+      let update = {
+        url: url,
+        category: category,
+        title: title,
+        content: content
+      }
+      let query = {
+        _id: id
+      }
+
+      /** Apparently, update queries does not need an exec() method */
+      return Article
+        .findOneAndUpdate(query, update)
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        let id = request.params.id
+        /** We execute the asynchronous update query */
+        let update = await updateArticle(id) // eslint-disable-line
+
+        /** Then we redirect the user back with a message; middlewares will handle the error and checks */
+        request.flash('success', 'The article ' + request.body.title + ' has been updated successfully.')
+        response.redirect('back')
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // deleteArticle {{{
+  /**
+   * Deletes an article
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteArticle: function (request, response) {
+    /**
+     * Deletes the article
+     *
+     * @async
+     * @param {ObjectID} id ID of the article to delete
+     * @returns {Promise} Promise containing the removal query of the article
+     * @see Mongoose
+     */
+    async function deleteArticle (id) {
+      let query = {
+        _id: id
+      }
+
+      return Article
+        .remove(query)
+        .exec()
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        /**
+         * We get the given ID by the user
+         * Then we execute the function to delete the article
+         * Verifications are done by a middleware
+         */
+        let id = request.params.id
+        let destroy = await deleteArticle(id) // eslint-disable-line
+
+        /** Now that it is done, redirect the user back and show him a confirmation message */
+        response.redirect('back')
+        request.flash('success', 'The article #' + id + ' has been deleted successfully.')
+      } catch (error) {
+        console.log(error)
+      }
+    }())
   }
   // }}}
 }
