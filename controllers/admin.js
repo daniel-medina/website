@@ -7,6 +7,7 @@
  */
 
 /** Configs imports */
+import {adminBlogItemPerPage} from '../config/blog'
 
 /** Modules imports */
 import slug from 'slug'
@@ -153,6 +154,85 @@ module.exports = {
     response.redirect('/')
   },
   // }}}
+  // getBlog {{{
+  /**
+   * Blog's administration index
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  getBlog: function (request, response) {
+    /**
+     * Get the amount of existing article
+     *
+     * @async
+     * @returns {Promise} Promise containing the amount of existing article
+     * @see Mongoose
+     */
+    async function getAmount () {
+      return Article
+        .count({})
+        .exec()
+    }
+
+    /**
+     * Gets all existing articles
+     *
+     * @async
+     * @returns {Promise} Promise containing all the articles
+     * @see Mongoose
+     */
+    async function getArticles (page) {
+      let rawSkip = Math.floor(page * adminBlogItemPerPage)
+      let skip = Math.floor(rawSkip - adminBlogItemPerPage)
+      let query = {
+        limit: adminBlogItemPerPage,
+        skip: skip,
+        sort: {
+          _id: -1
+        }
+      }
+
+      return Article
+        .find({})
+        .limit(query.limit)
+        .skip(query.skip)
+        .sort(query.sort)
+        .populate('category', 'title')
+        .exec()
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        /** We get all the article to display them */
+        /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
+        let page = Number((request.params.page > 1) ? request.params.page : 1)
+        let amount = await getAmount()
+        let articles = await getArticles(page)
+        let maxPage = Math.ceil(amount / adminBlogItemPerPage)
+        let pagination = await response.locals.pagination.links(amount, page, maxPage, adminBlogItemPerPage)
+
+        /** Rendering the view ... */
+        response.render('admin/blog/index', {
+          title: 'Blog administration',
+          amount: amount,
+          page: page,
+          maxPage: maxPage,
+          pagination: pagination,
+          articles: articles
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
   // getNewArticle {{{
   /**
    * Page form to create a new article
@@ -267,6 +347,7 @@ module.exports = {
 
       return Article
         .findOne(query)
+        .populate('category', 'title')
         .exec()
     }
 
@@ -301,7 +382,7 @@ module.exports = {
         let categories = await getCategories()
 
         /** Now we can return the view to the user, that will comes with the current article's information */
-        response.render('/admin/article/edit', {
+        response.render('admin/article/edit', {
           title: 'Edit an article',
           article: article,
           categories: categories
@@ -413,8 +494,8 @@ module.exports = {
         let destroy = await deleteArticle(id) // eslint-disable-line
 
         /** Now that it is done, redirect the user back and show him a confirmation message */
+        request.flash('success', 'The article \'' + id + '\' has been deleted successfully.')
         response.redirect('back')
-        request.flash('success', 'The article #' + id + ' has been deleted successfully.')
       } catch (error) {
         console.log(error)
       }

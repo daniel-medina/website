@@ -48,6 +48,7 @@ module.exports = {
 
       return Article
         .find({})
+        .populate('category', 'title')
         .limit(query.limit)
         .sort(query.sort)
         .exec()

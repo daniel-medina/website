@@ -1,16 +1,58 @@
 extends ../../layout.pug
 
 block content
-  div#admin-blog
-    form(method='POST')
-      div.form-group
-        input(type='text' class='form-control' name='title' placeholder='Article\'s title') 
-      div.form-group
-        select.form-control(name='category')
-          option(selected disabled) Category
-          each category in categories
-            option(value=category._id)= category.title
-      div.form-group
-        textarea(class='form-control' name='content' placeholder='Article\'s content')
-      div.form-group.pull-right
-        input(type='submit' class='btn btn-md btn-success' value='Submit')
+  #block.col-lg-7.col-md-8.col-sm-12
+    .block-content
+      .top
+        .pagination.pull-right
+          if (maxPage > 1)
+            each link in pagination
+              //- This variable ensure that the url of the first page uses no '?page=1' get value
+              - var url = (link > 1) ? '/' + link : ''
+
+              if (link === '...')
+                li.page.disabled #[a ...]
+              else if (link === page)
+                li.page.active #[a #{link}]
+              else
+                li.page #[a(href='/admin/blog' + url) #{link}]
+        a.btn.btn-xs.btn-success(href='/admin/article/create') #[i.fa.fa-plus-circle] new article
+      .middle
+        #article-list
+          if (amount > 0)
+            table
+              thead
+                tr
+                  th.url url
+                  th.date date
+                  th.category category
+                  th.action action
+              tbody
+                each article in articles
+                  tr
+                    td.url= article.url
+                    td.date= parse.article.created2(article.created)
+                    td.category= article.category.title
+                    td.action #[a.btn.btn-xs.btn-info(target='_blank' href='/article/' + article.url) #[i.fa.fa-eye]] #[a.btn.btn-xs.btn-warning(href='./article/edit/' + article._id) #[i.fa.fa-pencil]] #[a.btn.btn-xs.btn-danger(href='./article/delete/' + article._id) #[i.fa.fa-times]]
+          else
+            b #[.text-center There is no data to display.]
+            
+  .no-padding.col-lg-5.col-md-4.col-sm-12.col-xs-12
+    #block
+      .block-content
+        .top.dark 
+          .title Categories
+        .middle 
+          p 
+            | W.I.P.
+
+    #block
+      .block-content
+        .top.dark 
+          .title Configuration
+        .middle 
+          p 
+            | W.I.P.
+            br
+            br
+            | For now, configurations are available inside config/blog.js.

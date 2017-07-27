@@ -4,6 +4,16 @@ $icon-font-path: "node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 @import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 @import "./_variables.scss";
 
+// @media {{{
+@media (min-width: 1200px) {
+  .container {
+    width: auto;
+    max-width: $container-max-width;
+  }
+}
+
+// }}}
+// html & body {{{
 body {
   background: $body-background;
   font-family: $font-all;
@@ -14,63 +24,123 @@ html, body {
   margin: 0;
 }
 
-a {
-  transition: $transition;
-  color: $a-color;
-  border-bottom: 1px solid rgba(0, 0, 0, 0);
-  &:hover {
-    color: $a-hover-color;
-    text-decoration: none;
-    border-color: $a-hover-color;
-  }
-}
-
-img {
-  margin: 0 auto !important;
-  text-align: right;
-}
-
+// }}}
+// buttons {{{
 .btn {
   text-transform: uppercase;
   font-weight: bold;
-  font-size: $btn-font-size;
   border: 0;
   border-radius: $btn-border-radius;
   box-shadow: $btn-shadow;
   transition: $transition;
+  padding: $btn-padding;
 }
 
-.row {
-  margin: 0;
+.btn-sm {
+  font-size: $btn-sm-font-size;
 }
 
+.btn-xs {
+  font-size: $btn-xs-font-size;
+}
+
+.btn-danger {
+  background: $color2;
+  &:hover {
+    background: $color3;
+  }
+}
+
+// }}}
+// container {{{
 .container {
   padding: 0;
   .content {
     background: $content-background;
     box-shadow: $content-shadow;
-    margin: 0;
+    margin: 0 auto;
     padding-bottom: $footer-bottom-pos - 1px;
     border-top: none;
     border-bottom: $content-border;
     min-height: 100%;
     .content-wrap {
+      margin: 0 auto;
       overflow: auto;
       padding: $content-wrap-padding;
     }
   }
 }
 
+// }}}
+// http {{{
 .http-error {
   font-size: $http-error-font-size;
   font-weight: bold;
   text-align: center;
 }
 
-.no-padding {
-  padding: 0;
+// }}}
+// block {{{
+#block {
+  padding: $block-padding;
+  .block-content {
+    background: $block-background;
+    // box-shadow: $block-shadow;
+    border-radius: $block-border-radius;
+    overflow: hidden;
+    border: $block-border;
+    margin: 0 auto;
+    // for darker top part
+    .dark {
+      background: $block-top-background-dark;
+      color: $block-top-background-dark-font-color;
+    }
+    .top {
+      border-bottom: $block-top-border;
+      border-top-left-radius: $block-border-radius;
+      border-top-right-radius: $block-border-radius;
+      .title {
+        padding: $block-top-title-padding;
+        font-weight: bold;
+        font-family: $block-top-title-font-family;
+        font-size: $block-top-title-font-size;
+        &:first-child {
+          .btn {
+            border-top-left-radius: $block-border-radius;
+          }
+        }
+      }
+      .btn {
+        box-shadow: none;
+        border-radius: 0;
+        margin-right: $block-top-button-margin;
+      }
+    }
+    .middle {
+      p {
+        padding: $block-p-padding;
+        margin: 0;
+      }
+    }
+    .bottom {
+      .submit {
+        .btn {
+          background: $color2;
+          box-shadow: none;
+          border-radius: 0;
+          border-bottom-left-radius: $block-border-radius;
+          border-bottom-right-radius: $block-border-radius;
+          &:hover {
+            background: $color3;
+          }
+        }
+      }
+    }
+  }
 }
 
+// }}}
+// menu {{{
 #menu {
   background: $menu-background;
   margin: $menu-margin;
@@ -102,6 +172,8 @@ img {
   }
 }
 
+// }}}
+// menuxs {{{
 #menuxs {
   background: $menu-background;
   transition: $transition ease;
@@ -148,6 +220,52 @@ img {
   }
 }
 
+// }}}
+// pagination {{{
+.pagination {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+  font-size: $pagination-font-size;
+  li.page {
+    a {
+      font-weight: bold;
+      color: $article-read-color;
+      border: 0;
+      border-left: 1px solid $border;
+      border-radius: 0;
+      padding: $pagination-padding;
+      &:hover {
+        border-color: $a-hover-color;
+        color: white;
+        background: $a-hover-color;
+      }
+    }
+  }
+  li.page.active {
+    a {
+      border-color: $a-hover-color;
+      color: white;
+      background: $a-hover-color;
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+  }
+  li.page.disabled {
+    a {
+      &:hover {
+        z-index: inherit;
+        color: inherit;
+        background: none;
+        border-color: $border;
+      }
+    }
+  }
+}
+
+// }}}
+// article {{{
 #article {
   h1 {
     font-family: $font-title;
@@ -167,11 +285,11 @@ img {
   p {
     margin: 0;
   }
-  padding: $article-padding;
+  padding: 0;
   margin: $article-margin;
   width: 100%;
   .header {
-    text-transform: uppercase;
+    padding: $article-header-padding;
     transition: $transition;
     word-break: break-all;
     font-family: $font-title;
@@ -183,7 +301,7 @@ img {
     }
   }
   .header-read {
-    text-transform: uppercase;
+    padding: $article-header-padding;
     word-break: break-all;
     font-family: $font-title;
     font-size: $article-header-font-size;
@@ -191,38 +309,45 @@ img {
     color: $article-header-a-color;
   }
   .info {
+    background: $color9;
     padding: $article-info-padding;
+    margin-bottom: $article-info-margin;
     text-transform: uppercase;
     font-size: $article-info-font-size;
-    color: $color7;
+    font-weight: bold;
+    color: white;
   }
   .read {
     color: $article-read-color;
     margin-top: $article-read-margin;
-    padding-bottom: $article-read-padding;
+    padding: $article-read-padding;
     font-size: $article-read-font-size;
     font-family: $font-read;
-    border-bottom: $content-border;
   }
   .preview {
+    padding: $article-read-padding;
     color: $article-read-color;
     margin-top: $article-preview-margin;
     font-size: $article-read-font-size;
     font-family: $font-read;
   }
   .more {
+    margin-top: $article-readmore-margin;
+    padding: $article-readmore-padding;
     font-weight: bold;
     font-size: $article-readmore-font-size;
     text-align: right;
   }
   .comments {
     font-style: italic;
-    padding: $article-comments-padding;
+    margin: $article-comments-padding;
     font-size: $article-comments-font-size;
-    text-align: right;
+    text-align: center;
   }
 }
 
+// }}}
+// article-old {{{
 #article-old {
   width: 100%;
   .header {
@@ -235,7 +360,6 @@ img {
   .list {
     li {
       word-break: break-all;
-      text-transform: uppercase;
       transition: $transition;
       list-style: none;
       border-bottom: 1px solid $color4;
@@ -252,7 +376,7 @@ img {
   }
   .archive {
     font-size: $article-old-archive-font-size;
-    margin-top: $article-old-archive-margin;
+    margin: $article-old-archive-margin;
     text-align: center;
     a {
       font-weight: bold;
@@ -260,6 +384,61 @@ img {
   }
 }
 
+// }}}
+// article-list {{{
+#article-list {
+  table {
+    margin: $article-list-margin;
+    width: $article-list-width;
+    thead {
+      tr {
+        th {
+          text-transform: uppercase;
+          padding: $article-list-th-padding;
+          vertical-align: middle;
+          border-bottom: $article-list-border;
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          border-bottom: $article-list-border;
+          font-size: $article-list-item-font-size;
+          vertical-align: middle;
+          padding: $article-list-td-padding;
+        }
+        td.date {
+          word-break: break-all;
+          width: $article-list-date-width;
+        }
+        td.category {
+          word-break: break-all;
+          width: $article-list-category-width;
+        }
+        td.id {
+          word-break: break-all;
+          width: $article-list-id-width;
+        }
+        td.action {
+          width: $article-list-action-width;
+          transition: $transition;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        &:last-child {
+          td {
+            border-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// }}}
+// archive {{{
 #archive {
   .header {
     border-bottom: $content-border;
@@ -270,96 +449,11 @@ img {
       font-weight: bold;
       text-transform: uppercase;
     }
-    .pagination {
-      padding: 0;
-      margin: 0;
-      user-select: none;
-      font-size: $archive-pagination-font-size;
-      li.page {
-        a {
-          font-weight: bold;
-          color: $article-read-color;
-          border: $content-border;
-          padding: $archive-pagination-padding;
-          &:hover {
-            border-color: $a-hover-color;
-            color: white;
-            background: $a-hover-color;
-          }
-        }
-      }
-      li.page.active {
-        a {
-          border-color: $a-hover-color;
-          color: white;
-          background: $a-hover-color;
-          &:hover {
-            cursor: not-allowed;
-          }
-        }
-      }
-      li.page.disabled {
-        a {
-          &:hover {
-            color: inherit;
-            background: none;
-            border: $content-border;
-          }
-        }
-      }
-    }
-  }
-  .list {
-    margin: $archive-list-margin;
-    font-size: $archive-list-font-size;
-    li {
-      list-style: none;
-      padding: 0;
-    }
-    a {
-      word-break: break-all;
-      font-weight: bold;
-      margin: $archive-list-item-margin;
-      padding: $archive-list-item-padding;
-      background: $archive-list-item-background;
-      color: $article-read-color;
-      border-bottom: $content-border;
-      border-left: $content-border;
-      border-right: $content-border;
-      &:first-child {
-        border-top: $content-border;
-        border-top-right-radius: $archive-list-item-border-radius;
-        border-top-left-radius: $archive-list-item-border-radius;
-      }
-      &:last-child {
-        border-bottom-right-radius: $archive-list-item-border-radius;
-        border-bottom-left-radius: $archive-list-item-border-radius;
-      }
-      &:hover {
-        // We transition the color of the link and the associated classes to white
-        .category {
-          color: white;
-        }
-        .date {
-          color: white;
-        }
-        background: $a-hover-color;
-        color: white;
-      }
-    }
-    .category {
-      transition: $transition;
-      display: inline;
-      color: $color8;
-    }
-    .date {
-      transition: $transition;
-      display: inline;
-      color: $color8;
-    }
   }
 }
 
+// }}}
+// admin {{{
 #admin {
   .category {
     border: 0;
@@ -397,22 +491,37 @@ img {
   }
 }
 
+// }}}
+// admin-blog {{{
+#admin-blog {
+  .header {
+    border-bottom: $content-border;
+    padding: $archive-header-padding;
+    overflow: auto;
+    .create {}
+  }
+}
+
+// }}}
+// authentication {{{
 #authentication {
-  padding: 0;
-  .wrapper {
-    padding: 0;
-    display: flex;
+  .middle {
+    // padding: $authentication-padding;
+ 
   }
   table {
-    margin: $authentication-table-margin;
+    // margin: $authentication-margin;
     tr {
-      box-shadow: $btn-shadow;
+      &:first-child {
+        td {
+          border-bottom: 1px solid $border;
+        }
+      }
     }
-    td.username {
-      background: $authentication-username-background;
-    }
-    td.password {
-      background: $authentication-password-background;
+    td {
+      text-align: center;
+      vertical-align: middle;
+      background: none;
     }
     td.icon {
       min-width: $authentication-icon-width;
@@ -424,11 +533,22 @@ img {
     }
     td.input {
       width: $authentication-input-width;
+      label {
+        float: left;
+        position: relative;
+        top: 5px;
+        font-size: $authentication-input-label-font-size;
+        color: $authentication-input-label-color;
+        margin: 0;
+        line-height: 1;
+      }
       .form-control {
+        padding: $authentication-input-padding;
         border-radius: 0;
         border-top-right-radius: $btn-border-radius;
         border-bottom-right-radius: $btn-border-radius;
         border: 0;
+        box-shadow: none;
         font-size: $authentication-input-font-size;
         font-weight: bold;
         &:focus {
@@ -440,50 +560,14 @@ img {
   .submit {
     .btn {
       width: 100%;
+      border-radius: 0;
+      padding: $authentication-input-submit-padding;
     }
   }
 }
 
-.block {
-  box-shadow: $block-shadow;
-  color: $block-font-color;
-  border-radius: $block-border-radius;
-  margin: 0 auto;
-  padding: 0;
-  .top {
-    background: $block-top-background;
-    padding-top: $block-top-padding;
-    border-top-left-radius: $block-border-radius;
-    border-top-right-radius: $block-border-radius;
-    .title {
-      padding: $block-top-title-padding;
-      font-weight: bold;
-      font-family: $block-top-title-font-family;
-      font-size: $block-top-title-font-size;
-      text-transform: uppercase;
-      text-align: center;
-    }
-  }
-  .middle {
-    background: $block-middle-background;
-    padding: $block-middle-padding;
-  }
-  .bottom {
-    .submit {
-      .btn {
-        background: $color2;
-        box-shadow: none;
-        border-radius: 0;
-        border-bottom-left-radius: $block-border-radius;
-        border-bottom-right-radius: $block-border-radius;
-        &:hover {
-          background: $color3;
-        }
-      }
-    }
-  }
-}
-
+// }}}
+// footer {{{
 #footer {
   background: $menu-background;
   position: relative;
@@ -505,6 +589,36 @@ img {
   }
 }
 
+// }}}
+// wrap {{{
 .wrap {
   height: 100%;
 }
+
+// }}}
+// misc {{{
+a {
+  transition: $transition;
+  color: $a-color;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  &:hover {
+    color: $a-hover-color;
+    text-decoration: none;
+    border-color: $a-hover-color;
+  }
+}
+
+img {
+  margin: 0 auto !important;
+  text-align: right;
+}
+
+.row {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+// }}}

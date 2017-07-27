@@ -105,10 +105,33 @@ module.exports = {
       /** If the views object inside the article doesn't have the user's remote address */
       if (!article.views.ip.includes(remoteAddress)) {
         /** We push the new remote address, while updating the views object */
-        return {
-          ip: article.views.ip.push(remoteAddress)
-        }
+        article.views.ip.push(remoteAddress)
       }
+
+      /** We return the views array, whether an ip has been pushed inside or not */
+      return {
+        ip: article.views.ip
+      }
+    }
+
+    /**
+     * Update the current article with the new view array
+     *
+     * @async
+     * @param {ObjectID} id ObjectID of the article to update
+     * @param {Array} view Updated view array
+     * @returns {Promise} Promise containing the update query
+     * @see Mongoose
+     */
+    async function updateArticle (id, view) {
+      let query = {
+        _id: id
+      }
+      let update = {
+        views: view
+      }
+
+      return Article.findOneAndUpdate(query, update)
     }
 
     /**
@@ -130,7 +153,9 @@ module.exports = {
 
         /** This is to be tested; might cause issues */
         /** If the views object has been updated, we update the article */
-        if (updatedViews.length > 0) Article.update({ _id: article._id }, { $set: { views: updatedViews } })
+        if (updatedViews.ip.length > 0) {
+          let update = await updateArticle(article.id, updatedViews) // eslint-disable-line
+        }
 
         next()
       } catch (error) {

@@ -140,6 +140,62 @@ module.exports = {
     }())
   },
   // }}}
+  // articleIdExist {{{
+  /**
+   * Checks if the given article's id exist
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  articleIdExist: function (request, response, next) {
+    /**
+     * Count the number of article matching the given ID
+     * It's either 1 or 0 since IDs cannot be duplicated
+     *
+     * @async
+     * @param {ObjectID} id ObjectID of the article
+     * @returns {Promise} Promise containing the count
+     * @see Mongoose
+     */
+    async function countArticle (id) {
+      let query = {
+        _id: id
+      }
+
+      return Article
+        .count(query)
+        .exec()
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        let id = request.params.id
+        let count = await countArticle(id)
+
+        /**
+         * If the article exist (isn't equal to 0)
+         * Else, we block the request and return an error
+         */
+        if (count !== 0) {
+          next()
+        } else {
+          /** If it doesn't exist, redirect the user back and flash him an error message */
+          request.flash('error', 'The provided article\'s id doesn\'t exist in the database.')
+          response.redirect('back')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
   // isAuth {{{
   /**
    * Checks if the user is authenticated as an admin
@@ -185,7 +241,7 @@ module.exports = {
      */
     async function checkAuth () {
       let check = request.session.admin
-      let path = request.route.path
+      let path = request.url
 
       /** If he's authenticated */
       if (check) {

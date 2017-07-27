@@ -32,7 +32,7 @@ const parse = {
      * @returns {Date} Formated date with moment.js
      */
     created: date => {
-      return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+      return moment(date).format('MMMM Do YYYY, h:mm a')
     },
     // }}}
     // created2 {{{
