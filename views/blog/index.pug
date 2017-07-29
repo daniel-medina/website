@@ -20,13 +20,11 @@ block content
   #block.col-lg-4.col-md-4.col-sm-12.col-xs-12
     .block-content
       #article-old
-        .top.dark 
-          .title Other articles
-        .middle.list
+        .middle
           if (old.length > 0)
             each article in old
               a(href='/article/' + article.url) #[li.article #{article.title}]
-            .archive
-              a(href='archive') Archive
           else
             p There isn't enough articles to display old ones.
+        .bottom
+              a.btn.btn-xs.btn-default.col-md-12.col-xs-12(href='archive') Archive

@@ -35,6 +35,8 @@ $btn-padding: 3px 8px;
 $btn-sm-font-size: 16px;
 $btn-xs-font-size: 14px;
 // }}}
+// Forms {{{
+// }}}
 // Menu {{{
 $menu-margin: 0;
 $menu-border-color: $color4;
@@ -56,8 +58,7 @@ $menuxs-text-pos-bottom: 3px;
 $block-background: $color1;
 $block-padding: 2px 2px 10px 2px;
 $block-border: 1px solid $border;
-$block-shadow: 0 0 2px $color9;
-$block-border-radius: 4px;
+$block-border-radius: 3px;
 $block-middle-padding: 5px 10px;
 $block-top-background-dark: $color9;
 $block-top-background-dark-font-color: #FFFFFF;
@@ -69,6 +70,9 @@ $block-top-title-font-size: 16px;
 $block-top-title-padding: 10px 15px;
 $block-top-padding: 5px;
 $block-p-padding: 5px 10px;
+$block-list-padding: 3px 10px;
+$block-list-margin: 5px;
+$block-list-font-size: 14px;
 $block-font-color: white;
 // }}}
 // Content {{{
@@ -112,10 +116,6 @@ $article-comments-font-size: 12px;
 $article-old-header-font-size: 16px;
 $article-old-header-margin: 0 0 15px 0;
 $article-old-list-font-size: 16px;
-$article-old-list-padding: 5px 10px;
-$article-old-list-margin: 5px;
-$article-old-archive-font-size: 12px;
-$article-old-archive-margin: 10px 0;
 // }}}
 // Articles list {{{
 $article-list-border: 1px solid $border;

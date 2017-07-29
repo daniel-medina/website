@@ -8,6 +8,10 @@
 
 /** Configs imports */
 import {defaultUsername, defaultPassword} from '../config/admin'
+import {
+  minArticleTitleLength, minArticleCategoryLength,
+  maxArticleTitleLength, maxArticleCategoryLength
+} from '../config/blog'
 
 /** Modules imports */
 import slug from 'slug'
@@ -36,10 +40,33 @@ module.exports = {
   postArticle: function (request, response, next) {
     let title = request.body.title
 
-    if (title.length > 5) {
+    /** If the title's length matches the given configuration */
+    if (title.length > minArticleTitleLength && title.length < maxArticleTitleLength) {
       next()
     } else {
-      request.flash('error', 'The title\'s length isn\'t long enough.')
+      /** Must flash POST data back in order to avoid pissing off the user */
+      request.flash('error', 'The title\'s length must be between ' + minArticleTitleLength + ' and ' + maxArticleTitleLength + ' character long.')
+      response.redirect('back')
+    }
+  },
+  // }}}
+  // postArticleCategory {{{
+  /**
+   * Secure the creation of article category
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  postArticleCategory: function (request, response, next) {
+    let title = request.body.title
+
+    /** If the title matches the configuration's settings */
+    if (title.length > minArticleCategoryLength && title.length < maxArticleCategoryLength) {
+      next()
+    } else {
+      /** TODO : flashing POST data back */
+      request.flash('error', 'The title\'s length must be between ' + minArticleCategoryLength + ' and ' + maxArticleCategoryLength + ' character long.')
       response.redirect('back')
     }
   },
@@ -132,6 +159,55 @@ module.exports = {
         } else {
           /** Else, we redirect the user back and show him an error message */
           request.flash('error', 'The article\'s title already exist in the database.')
+          response.redirect('back')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // articleCategoryTitleExist {{{
+  /**
+   * Checks if the written article's category title doesn't already exist
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  articleCategoryTitleExist: (request, response, next) => {
+    /**
+     * Returns the amount of article matching the written title
+     * Converted to url
+     *
+     * @async
+     * @returns {Promise} Promise containing the article count
+     * @see Mongoose
+     * @see slug
+     */
+    async function countArticleCategory (title) {
+      return ArticleCategory.count({ title: title }).exec()
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        const title = request.body.title
+
+        /** We then use it to see if it exists */
+        const count = await countArticleCategory(title)
+
+        /** If it does not already exist, we can pass */
+        if (count === 0) {
+          next()
+        } else {
+          /** Else, we redirect the user back and show him an error message */
+          request.flash('error', 'The article\'s category title already exist in the database.')
           response.redirect('back')
         }
       } catch (error) {

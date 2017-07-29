@@ -5,3 +5,7 @@ export const previewStringLength = 1000
 export const archiveItemPerPage = 10
 export const adminBlogItemPerPage = 5
 export const archivePageDisplayAmount = 2
+export const minArticleTitleLength = 5
+export const maxArticleTitleLength = 50
+export const minArticleCategoryLength = 2
+export const maxArticleCategoryLength = 15

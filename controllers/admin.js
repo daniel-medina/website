@@ -203,6 +203,19 @@ module.exports = {
     }
 
     /**
+     * Gets article's categories
+     *
+     * @async
+     * @param {Type} tag Description
+     * @returns {Type} tag
+     */
+    async function getArticleCategories () {
+      return ArticleCategory
+        .find({})
+        .exec()
+    }
+
+    /**
      * Asynchronous code execution
      *
      * @async
@@ -212,11 +225,12 @@ module.exports = {
       try {
         /** We get all the article to display them */
         /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
-        let page = Number((request.params.page > 1) ? request.params.page : 1)
-        let amount = await getAmount()
-        let articles = await getArticles(page)
-        let maxPage = Math.ceil(amount / adminBlogItemPerPage)
-        let pagination = await response.locals.pagination.links(amount, page, maxPage, adminBlogItemPerPage)
+        const page = Number((request.params.page > 1) ? request.params.page : 1)
+        const amount = await getAmount()
+        const articles = await getArticles(page)
+        const categories = await getArticleCategories()
+        const maxPage = Math.ceil(amount / adminBlogItemPerPage)
+        const pagination = await response.locals.pagination.links(amount, page, maxPage, adminBlogItemPerPage)
 
         /** Rendering the view ... */
         response.render('admin/blog/index', {
@@ -225,7 +239,8 @@ module.exports = {
           page: page,
           maxPage: maxPage,
           pagination: pagination,
-          articles: articles
+          articles: articles,
+          categories: categories
         })
       } catch (error) {
         console.log(error)
@@ -495,6 +510,55 @@ module.exports = {
 
         /** Now that it is done, redirect the user back and show him a confirmation message */
         request.flash('success', 'The article \'' + id + '\' has been deleted successfully.')
+        response.redirect('back')
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // postCategory {{{
+  /**
+   * Handles the creation of a new article category
+   * Further verifications are done in the affected middleware
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  postArticleCategory: function (request, response) {
+    /**
+     * Creates the new category
+     * Using the user's sent data
+     *
+     * @async
+     * @param {String} title Title sent by the user
+     * @returns {Promise} Promise containing the creation request
+     */
+    async function createCategory (title) {
+      const query = {
+        title: title
+      }
+
+      return ArticleCategory
+        .create(query)
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        /** We get the title sent by the user as a POST method */
+        const title = request.body.title
+
+        /** Now we execute the creation request */
+        const create = await createCategory(title) // eslint-disable-line
+
+        /** Then we send to the user a confirmation message, after redirecting him back */
+        request.flash('success', 'The category \'' + title + '\' has been created successfully.')
         response.redirect('back')
       } catch (error) {
         console.log(error)

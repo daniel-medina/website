@@ -1,7 +1,7 @@
 extends ../../layout.pug
 
 block content
-  #block.col-lg-7.col-md-8.col-sm-12
+  #block.col-lg-8.col-md-8.col-sm-12
     .block-content
       .top
         .pagination.pull-right
@@ -37,14 +37,22 @@ block content
           else
             b #[.text-center There is no data to display.]
             
-  .no-padding.col-lg-5.col-md-4.col-sm-12.col-xs-12
+  .no-padding.col-lg-4.col-md-4.col-sm-12.col-xs-12
     #block
       .block-content
-        .top.dark 
+        .top
           .title Categories
-        .middle 
-          p 
-            | W.I.P.
+
+        form(method='POST' action='./article-category/create')
+          .middle 
+            each category in categories
+              li= category.title
+            // Now comes the category's creation form
+            br
+            .form-group
+              input.form-control(type='text' name='title' placeholder='New category title')
+          .bottom
+            input.btn.btn-xs.btn-primary.col-md-12.col-xs-12(type='submit' value='Create')
 
     #block
       .block-content

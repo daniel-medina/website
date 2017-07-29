@@ -44,6 +44,8 @@ router.post('/admin/*', require('../middlewares/admin').isAuth)
 router.post('/admin/article/create', require('../middlewares/admin').postArticle)
 router.post('/admin/article/create', require('../middlewares/admin').articleCategoryExist)
 router.post('/admin/article/create', require('../middlewares/admin').articleTitleExist)
+router.post('/admin/article-category/create', require('../middlewares/admin').postArticleCategory)
+router.post('/admin/article-category/create', require('../middlewares/admin').articleCategoryTitleExist)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/admin').postArticle)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/admin').articleCategoryExist)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/admin').articleTitleExist)
@@ -53,6 +55,7 @@ router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/adm
 // --->>> CONTROLLERS <<<--- {{{
 // Admin {{{
 router.post('/admin/article/create', require('../controllers/admin').postNewArticle)
+router.post('/admin/article-category/create', require('../controllers/admin').postArticleCategory)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../controllers/admin').postEditArticle)
 router.post('/admin/authentication', require('../controllers/admin').postAuthentication)
 // }}}

@@ -24,12 +24,12 @@ html
           div#menu.hidden-xs
             div.pull-left
               li #[a(class='active' href='/') #[i.fa.fa-newspaper-o] Blog]
-              li #[a(href='portfolio') #[i.fa.fa-picture-o] Portfolio]
+              li #[a(href='/portfolio') #[i.fa.fa-picture-o] Portfolio]
             div.pull-right
-              li #[a(href='about-me') #[i.fa.fa-address-card-o] About me]
-              li #[a(href='contact') #[i.fa.fa-envelope-o] Contact]
+              li #[a(href='/about-me') #[i.fa.fa-address-card-o] About me]
+              li #[a(href='/contact') #[i.fa.fa-envelope-o] Contact]
               if (session.admin)
-                li #[a(href='admin/disconnect') #[i.fa.fa-power-off] Disconnect]
+                li #[a(href='/admin/disconnect') #[i.fa.fa-power-off] Disconnect]
           menuxs.visible-xs
             div.text-center
               br

@@ -72,6 +72,24 @@ html, body {
 }
 
 // }}}
+// forms {{{
+.form-control {
+  border-radius: 0;
+  border: 1px solid $border;
+  border-left: 0;
+  border-right: 0;
+  box-shadow: none;
+  &:focus {
+    box-shadow: none;
+    border-color: $border;
+  }
+}
+
+.form-group {
+  margin: 0;
+}
+
+// }}}
 // http {{{
 .http-error {
   font-size: $http-error-font-size;
@@ -85,11 +103,10 @@ html, body {
   padding: $block-padding;
   .block-content {
     background: $block-background;
-    // box-shadow: $block-shadow;
     border-radius: $block-border-radius;
     overflow: hidden;
+    // this helps to force border-radius on all childs
     border: $block-border;
-    margin: 0 auto;
     // for darker top part
     .dark {
       background: $block-top-background-dark;
@@ -97,18 +114,11 @@ html, body {
     }
     .top {
       border-bottom: $block-top-border;
-      border-top-left-radius: $block-border-radius;
-      border-top-right-radius: $block-border-radius;
       .title {
         padding: $block-top-title-padding;
         font-weight: bold;
         font-family: $block-top-title-font-family;
         font-size: $block-top-title-font-size;
-        &:first-child {
-          .btn {
-            border-top-left-radius: $block-border-radius;
-          }
-        }
       }
       .btn {
         box-shadow: none;
@@ -121,19 +131,36 @@ html, body {
         padding: $block-p-padding;
         margin: 0;
       }
-    }
-    .bottom {
-      .submit {
-        .btn {
-          background: $color2;
-          box-shadow: none;
-          border-radius: 0;
-          border-bottom-left-radius: $block-border-radius;
-          border-bottom-right-radius: $block-border-radius;
+      // For lists
+      a {
+        li {
           &:hover {
-            background: $color3;
+            color: $a-hover-color;
+            border-color: $a-hover-color;
           }
         }
+      }
+      li {
+        word-break: break-all;
+        transition: $transition;
+        list-style: none;
+        border-bottom: 1px solid $border;
+        padding: $block-list-padding;
+        margin-bottom: $block-list-margin;
+        font-size: $block-list-font-size;
+        font-weight: bold;
+        color: $text-black;
+      }
+      &:last-child {
+        li {
+          border: 0;
+        }
+      }
+    }
+    .bottom {
+      .btn {
+        box-shadow: none;
+        border-radius: 0;
       }
     }
   }
@@ -356,31 +383,6 @@ html, body {
     font-size: $article-old-header-font-size;
     font-weight: bold;
     margin: $article-old-header-margin;
-  }
-  .list {
-    li {
-      word-break: break-all;
-      transition: $transition;
-      list-style: none;
-      border-bottom: 1px solid $color4;
-      padding: $article-old-list-padding;
-      margin-bottom: $article-old-list-margin;
-      font-size: $article-old-list-font-size;
-      font-weight: bold;
-      color: $article-header-a-color;
-      &:hover {
-        color: $article-header-a-hover-color;
-        border-color: $article-header-a-hover-color;
-      }
-    }
-  }
-  .archive {
-    font-size: $article-old-archive-font-size;
-    margin: $article-old-archive-margin;
-    text-align: center;
-    a {
-      font-weight: bold;
-    }
   }
 }
 
