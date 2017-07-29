@@ -1,15 +1,19 @@
 /**
-  * Backend testing
-  * Powered by Mocha
-  */
+ * Backend testing
+ * Powered by Mocha
+ */
 
-// const request = require('request')
-const expect = require('chai').expect
+/** Nothing needs to be asynchronous here */
+const request = require('request')
+// const expect = require('chai').expect
 
 describe('Core parts', function () {
   it('test ?! onche onche', function () {
-    let onche = 1
-    expect(onche).to.equal(1)
+    request('http://localhost:3000', function (error, response, body) {
+      console.log(error)
+      console.log(response)
+      console.log(body)
+    })
   })
 })
 
