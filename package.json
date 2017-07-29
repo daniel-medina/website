@@ -38,6 +38,7 @@
     "babel-preset-stage-2": "*",
     "babel-register": "*",
     "chai": "*",
+    "chai-http": "^3.0.0",
     "cross-env": "*",
     "eslint": "*",
     "eslint-config-standard": "^10.2.1",
@@ -49,7 +50,6 @@
     "gulp-sass": "^3.1.0",
     "mocha": "^3.4.2",
     "nightwatch": "^0.9.16",
-    "request": "^2.81.0",
     "standard": "*"
   }
 }
