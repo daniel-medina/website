@@ -582,6 +582,7 @@ html, body {
   overflow: auto;
   text-align: $footer-align;
   padding: $footer-padding;
+  margin-bottom: -$footer-bottom-pos;
   border-top: $content-border;
   font-size: $footer-font-size;
   font-weight: bold;
