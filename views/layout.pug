@@ -14,9 +14,6 @@ html
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono")
 
-    // This is only for development
-    script(src='/js/vue.js')
-
   body
     div#website.row.wrap
       div.container.wrap
@@ -52,5 +49,11 @@ html
           p.signature 
             a(href='https://github.com/daniel-medina/website' target='_blank') daniel-medina
 
-    // Menu component
-    script(src='/js/menu.js')
+    // Loading Vue for reactive content - and because it is awesome
+    script(src='/js/vue.js')
+
+    // Loading Axios for ajax requests
+    script(src='/js/axios.min.js')
+
+    // Website frontend javascript using VueJS 2
+    script(src='/js/website.js')
