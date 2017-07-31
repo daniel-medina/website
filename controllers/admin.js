@@ -107,6 +107,7 @@ module.exports = {
           /** We update its session */
           request.session.admin = {
             uuid: uuid(),
+            id: admin.id,
             username: admin.username,
             password: admin.password
           }
@@ -564,6 +565,206 @@ module.exports = {
         console.log(error)
       }
     }())
+  },
+  // }}}
+  // deleteCategory {{{
+  /**
+   * Handles the deletion of a category
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteCategory: function (request, response) {
+    /**
+     * Delete the category
+     *
+     * @async
+     * @param {ObjectID} id Id of the category to delete
+     * @returns {Promise} Promise containing the category's deletion query
+     * @see Mongoose
+     */
+    async function deleteCategory (id) {
+      const query = {
+        _id: id
+      }
+
+      return ArticleCategory
+        .remove(query)
+    }
+
+    /**
+     * Delete every article related to the deleted category
+     *
+     * @async
+     * @param {ObjectID} id Id of the category
+     * @returns {Promise} Promise containing the article's deletion query
+     * @see Mongoose
+     */
+    async function deleteArticles (id) {
+      const query = {
+        category: {
+          _id: id
+        }
+      }
+
+      return Article
+        .remove(query)
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        const id = request.params.id
+        const remove = await deleteCategory(id) // eslint-disable-line
+        const removeArticles = await deleteArticles(id) // eslint-disable-line
+
+        /** After the category has been deleted successfully, redirect the user and flash him a confirmation message */
+        request.flash('success', 'The category \'' + id + '\' has been deleted successfully. So are all article bound to that category.')
+        response.redirect('back')
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // getAccount {{{
+  /**
+   * Page to manage administrators
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  getAccount: function (request, response) {
+    /**
+     * Get all the admins
+     *
+     * @async
+     * @returns {Promise} Promise containing all the admins
+     * @see Mongoose
+     */
+    async function getAdmins () {
+      return Admin
+        .find({})
+        .exec()
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        let admins = await getAdmins()
+
+        response.render('admin/account/index', {
+          title: 'Account management',
+          admins: admins
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // postAccount {{{
+  /**
+   * Handles the creation of a new administrator account
+   *
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  postAccount: function (request, response) {
+    /**
+     * Creates the new account
+     *
+     * @async
+     * @returns {Promise} Promise containing the account creation request
+     * @see Mongoose
+     */
+    async function createAccount () {
+      /**
+       * We get the username provided by the user with the form
+       * And we hash the password using bcrypt module
+       * Then we setup the query to be used for the account's creation
+       */
+      const username = request.body.username
+      const password = await Password.hash(request.body.password)
+      const query = {
+        created: new Date(),
+        username: username,
+        password: password
+      }
+
+      return Admin
+        .create(query)
+    }
+
+    /**
+     * Asynchronous code execution
+     *
+     * @async
+     * @throws Will throw an error to the console if it catches one
+     */
+    (async function () {
+      try {
+        const creation = await createAccount() // eslint-disable-line
+
+        /**
+         * When the account is created, flash a success message
+         * After redirecting him back
+         */
+        request.flash('success', 'The administrator account has been created successfully.')
+        response.redirect('back')
+      } catch (error) {
+        console.log(error)
+      }
+    }())
+  },
+  // }}}
+  // deleteAccount {{{
+  /**
+   * Handles the deletion of an account
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteAccount: async function (request, response) {
+    /**
+     * Deletes the account matching the given id
+     *
+     * @param {ObjectID} id ID of the account to delete
+     * @returns {Promise} Promise containing the removal request
+     */
+    function deleteAccount (id) {
+      const query = {
+        _id: id
+      }
+
+      return Admin
+        .remove(query)
+    }
+
+    try {
+      /**
+       * We get the id provided by the user and then execute the removal request
+       * Then redirect the user while flashing him a success message
+       */
+      const id = request.params.id
+      const removal = await deleteAccount(id) // eslint-disable-line
+
+      request.flash('success', 'The account \'' + id + '\' has been deleted successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
   }
   // }}}
 }

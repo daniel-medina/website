@@ -50,6 +50,7 @@ describe('Core parts', function () {
     // }}}
   })
   // }}}
+  // Administration security checks {{{
   describe('Administration security checks', function () {
   // testing authentication with default credentials {{{
     it('testing authentication with default credentials', function (done) {
@@ -61,7 +62,7 @@ describe('Core parts', function () {
           password: 'admin'
         })
         .then(function (response) {
-          expect(response).to.have.cookie('admin')
+          expect(response).to.have.cookie('session')
 
           done()
         })
@@ -76,6 +77,7 @@ describe('Core parts', function () {
     })
   // }}}
   })
+  // }}}
 })
 
 /* eslint-env node, mocha */

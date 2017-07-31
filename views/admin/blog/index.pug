@@ -41,12 +41,12 @@ block content
     #block
       .block-content
         .top
-          .title Categories
+          .title Categories (placeholder, this is ugly)
 
         form(method='POST' action='./article-category/create')
           .middle 
             each category in categories
-              li= category.title
+              li #[a.btn.btn-xs.btn-danger(href='./article-category/delete/' + category.id) #[i.fa.fa-times]] #{category.title}
             // Now comes the category's creation form
             br
             .form-group
