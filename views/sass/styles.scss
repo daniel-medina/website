@@ -46,6 +46,7 @@ html, body {
 
 .btn-danger {
   background: $color2;
+
   &:hover {
     background: $color3;
   }
@@ -55,6 +56,7 @@ html, body {
 // container {{{
 .container {
   padding: 0;
+
   .content {
     background: $content-background;
     box-shadow: $content-shadow;
@@ -63,6 +65,7 @@ html, body {
     border-top: none;
     border-bottom: $content-border;
     min-height: 100%;
+
     .content-wrap {
       margin: 0 auto;
       overflow: auto;
@@ -79,6 +82,7 @@ html, body {
   border-left: 0;
   border-right: 0;
   box-shadow: none;
+
   &:focus {
     box-shadow: none;
     border-color: $border;
@@ -101,36 +105,44 @@ html, body {
 // block {{{
 #block {
   padding: $block-padding;
+
   .block-content {
     background: $block-background;
     border-radius: $block-border-radius;
     overflow: hidden;
+
     // this helps to force border-radius on all childs
     border: $block-border;
+
     // for darker top part
     .dark {
       background: $block-top-background-dark;
       color: $block-top-background-dark-font-color;
     }
+
     .top {
       border-bottom: $block-top-border;
+
       .title {
         padding: $block-top-title-padding;
         font-weight: bold;
         font-family: $block-top-title-font-family;
         font-size: $block-top-title-font-size;
       }
+
       .btn {
         box-shadow: none;
         border-radius: 0;
         margin-right: $block-top-button-margin;
       }
     }
+
     .middle {
       p {
         padding: $block-p-padding;
         margin: 0;
       }
+
       // For lists
       a {
         li {
@@ -140,6 +152,7 @@ html, body {
           }
         }
       }
+
       li {
         word-break: break-all;
         transition: $transition;
@@ -151,12 +164,14 @@ html, body {
         font-weight: bold;
         color: $text-black;
       }
+
       &:last-child {
         li {
           border: 0;
         }
       }
     }
+
     .bottom {
       .btn {
         box-shadow: none;
@@ -174,6 +189,7 @@ html, body {
   padding: ($menu-a-padding + 8px) 0 ($menu-a-padding + 20px) 0;
   border-bottom: 1px solid $menu-border-color;
   line-height: 0;
+
   a {
     text-transform: uppercase;
     font-weight: bold;
@@ -182,16 +198,19 @@ html, body {
     border: 0;
     padding: $menu-a-padding;
     transition: $transition;
+
     &:hover {
       text-decoration: none;
       color: $menu-a-hover-color;
     }
   }
+
   /** same values as when hovered */
   .active {
     text-decoration: none;
     color: $menu-a-hover-color;
   }
+
   li {
     display: inline;
     list-style: none;
@@ -207,32 +226,39 @@ html, body {
   border-bottom: $content-border;
   font-weight: bold;
   overflow: hidden;
+
   .deploy {
     transition: $transition;
     user-select: none;
     padding: $menuxs-show-padding;
+
     .text {
       display: inline;
       position: relative;
       bottom: $menuxs-text-pos-bottom;
       font-size: $menuxs-show-font-size;
     }
+
     .button {
       display: inline;
       font-size: $menuxs-button-size;
+
       i {
         width: $menuxs-button-i-width;
       }
     }
+
     &:hover {
       cursor: pointer;
     }
   }
+
   .collapsed {
     height: 0;
     transition: height $transition ease-out;
     transform-origin: top;
   }
+
   li {
     transition: $transition;
     padding: 10px 5px;
@@ -240,6 +266,7 @@ html, body {
     color: $menu-a-color;
     border-top: $menuxs-list-border;
     background: $menuxs-list-background;
+
     &:hover {
       color: white !important;
       background: $menuxs-list-hover-background;
@@ -254,6 +281,7 @@ html, body {
   margin: 0;
   user-select: none;
   font-size: $pagination-font-size;
+
   li.page {
     a {
       font-weight: bold;
@@ -262,6 +290,7 @@ html, body {
       border-left: 1px solid $border;
       border-radius: 0;
       padding: $pagination-padding;
+
       &:hover {
         border-color: $a-hover-color;
         color: white;
@@ -269,16 +298,19 @@ html, body {
       }
     }
   }
+
   li.page.active {
     a {
       border-color: $a-hover-color;
       color: white;
       background: $a-hover-color;
+
       &:hover {
         cursor: not-allowed;
       }
     }
   }
+
   li.page.disabled {
     a {
       &:hover {
@@ -299,22 +331,27 @@ html, body {
     font-size: $article-read-h1-font-size;
     margin: 0;
   }
+
   h2 {
     font-family: $font-title;
     font-size: $article-read-h2-font-size;
     margin: 0;
   }
+
   h3 {
     font-family: $font-title;
     font-size: $article-read-h3-font-size;
     margin: 0;
   }
+
   p {
     margin: 0;
   }
+
   padding: 0;
   margin: $article-margin;
   width: 100%;
+
   .header {
     padding: $article-header-padding;
     transition: $transition;
@@ -323,10 +360,12 @@ html, body {
     font-size: $article-header-font-size;
     border: 0;
     color: $article-header-a-color;
+
     &:hover {
       color: $article-header-a-hover-color;
     }
   }
+
   .header-read {
     padding: $article-header-padding;
     word-break: break-all;
@@ -335,6 +374,7 @@ html, body {
     border: 0;
     color: $article-header-a-color;
   }
+
   .info {
     background: $color9;
     padding: $article-info-padding;
@@ -344,6 +384,7 @@ html, body {
     font-weight: bold;
     color: white;
   }
+
   .read {
     color: $article-read-color;
     margin-top: $article-read-margin;
@@ -351,6 +392,7 @@ html, body {
     font-size: $article-read-font-size;
     font-family: $font-read;
   }
+
   .preview {
     padding: $article-read-padding;
     color: $article-read-color;
@@ -358,6 +400,7 @@ html, body {
     font-size: $article-read-font-size;
     font-family: $font-read;
   }
+
   .more {
     margin-top: $article-readmore-margin;
     padding: $article-readmore-padding;
@@ -365,6 +408,7 @@ html, body {
     font-size: $article-readmore-font-size;
     text-align: right;
   }
+
   .comments {
     font-style: italic;
     margin: $article-comments-padding;
@@ -377,6 +421,7 @@ html, body {
 // article-old {{{
 #article-old {
   width: 100%;
+
   .header {
     text-transform: uppercase;
     text-align: right;
@@ -392,6 +437,7 @@ html, body {
   table {
     margin: $article-list-margin;
     width: $article-list-width;
+
     thead {
       tr {
         th {
@@ -402,6 +448,7 @@ html, body {
         }
       }
     }
+
     tbody {
       tr {
         td {
@@ -410,25 +457,31 @@ html, body {
           vertical-align: middle;
           padding: $article-list-td-padding;
         }
+
         td.date {
           word-break: break-all;
           width: $article-list-date-width;
         }
+
         td.category {
           word-break: break-all;
           width: $article-list-category-width;
         }
+
         td.id {
           word-break: break-all;
           width: $article-list-id-width;
         }
+
         td.action {
           width: $article-list-action-width;
           transition: $transition;
+
           &:hover {
             cursor: pointer;
           }
         }
+
         &:last-child {
           td {
             border-bottom: 0;
@@ -446,6 +499,7 @@ html, body {
     border-bottom: $content-border;
     padding: $archive-header-padding;
     overflow: auto;
+
     .amount {
       font-size: $archive-header-font-size;
       font-weight: bold;
@@ -457,37 +511,137 @@ html, body {
 // }}}
 // admin {{{
 #admin {
-  .category {
-    border: 0;
+  padding: $admin-link-padding;
+
+  a {
+    color: inherit;
+    border: 1px solid $border;
+    border-radius: $block-border-radius;
+    padding: 0;
+    overflow: hidden;
+
     &:hover {
-      .wrapper {
-        border-color: $color3;
-        box-shadow: $admin-index-list-hover-shadow;
-      }
-      border: 0;
+      color: inherit;
+      border: $admin-link-hover-border;
+      box-shadow: $admin-link-hover-shadow;
     }
+
     &:focus {
       text-decoration: none;
     }
-    .wrapper {
-      background: $admin-index-list-background;
-      border: $admin-index-list-border;
-      border-radius: 10px;
-      transition: $transition;
-      text-align: center;
-      color: $admin-index-list-color;
-      margin: $admin-index-list-margin;
-      text-shadow: $admin-index-list-shadow;
-      .icon {
-        font-size: $admin-index-list-icon-font-size;
+
+    // Colors for each admin links {{{
+    .account {
+      td.icon {
+        background: $admin-link-account-background;
       }
-      .name {
-        position: relative;
-        bottom: $admin-index-list-name-pos;
-        word-break: break-all;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-size: $admin-index-list-name-font-size;
+
+      td.description {
+        .title {
+          background: $admin-link-account-background;
+        }
+      }
+    }
+
+    .blog {
+      td.icon {
+        background: $admin-link-blog-background;
+      }
+
+      td.description {
+        .title {
+          background: $admin-link-blog-background;
+        }
+      }
+    }
+
+    .portfolio {
+      td.icon {
+        background: $admin-link-portfolio-background;
+      }
+
+      td.description {
+        .title {
+          background: $admin-link-portfolio-background;
+        }
+      }
+    }
+
+    .about-me {
+      td.icon {
+        background: $admin-link-about-me-background;
+      }
+
+      td.description {
+        .title {
+          background: $admin-link-about-me-background;
+        }
+      }
+    }
+
+    .statistics {
+      td.icon {
+        background: $admin-link-statistics-background;
+      }
+
+      td.description {
+        .title {
+          background: $admin-link-statistics-background;
+        }
+      }
+    }
+
+    .settings {
+      td.icon {
+        background: $admin-link-settings-background;
+      }
+
+      td.description {
+        .title {
+          background: $admin-link-settings-background;
+        }
+      }
+    }
+
+
+    // }}}
+
+    table {
+      width: 100%;
+      padding: $admin-table-padding;
+      overflow: hidden;
+
+      tr {
+        border: 0;
+
+        td.icon {
+          color: white;
+          width: $admin-icon-width;
+          font-size: $admin-icon-size;
+          vertical-align: middle;
+          text-align: center;
+        }
+
+        td.description {
+          .title {
+            color: white;
+            text-transform: uppercase;
+            font-size: $admin-description-title-font-size;
+            font-weight: bold;
+            padding: $admin-description-title-padding;
+            margin: 0;
+          }
+
+          .text {
+            overflow: hidden;
+            height: $admin-description-text-height;
+            border-top: 1px solid $border;
+            border-left: 1px solid $border;
+            background: white;
+            padding: $admin-description-text-padding;
+            margin: 0;
+          }
+        }
       }
     }
   }
@@ -500,6 +654,7 @@ html, body {
     border-bottom: $content-border;
     padding: $archive-header-padding;
     overflow: auto;
+
     .create {}
   }
 }
@@ -509,6 +664,7 @@ html, body {
 #portfolio {
   background: red;
 }
+
 // }}}
 // authentication {{{
 #authentication {
@@ -516,6 +672,7 @@ html, body {
     // padding: $authentication-padding;
  
   }
+
   table {
     // margin: $authentication-margin;
     tr {
@@ -525,11 +682,13 @@ html, body {
         }
       }
     }
+
     td {
       text-align: center;
       vertical-align: middle;
       background: none;
     }
+
     td.icon {
       min-width: $authentication-icon-width;
       border-top-left-radius: $btn-border-radius;
@@ -538,8 +697,10 @@ html, body {
       text-align: center;
       font-size: $authentication-icon-size;
     }
+
     td.input {
       width: $authentication-input-width;
+
       label {
         float: left;
         position: relative;
@@ -549,6 +710,7 @@ html, body {
         margin: 0;
         line-height: 1;
       }
+
       .form-control {
         padding: $authentication-input-padding;
         border-radius: 0;
@@ -558,12 +720,14 @@ html, body {
         box-shadow: none;
         font-size: $authentication-input-font-size;
         font-weight: bold;
+
         &:focus {
           box-shadow: none;
         }
       }
     }
   }
+
   .submit {
     .btn {
       width: 100%;
@@ -586,12 +750,15 @@ html, body {
   border-top: $content-border;
   font-size: $footer-font-size;
   font-weight: bold;
+
   a {
     color: inherit;
+
     &:hover {
       color: $a-hover-color;
     }
   }
+
   p {
     margin: $footer-p-margin;
   }
@@ -609,6 +776,7 @@ a {
   transition: $transition;
   color: $a-color;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
+
   &:hover {
     color: $a-hover-color;
     text-decoration: none;

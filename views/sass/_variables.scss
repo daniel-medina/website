@@ -157,15 +157,22 @@ $archive-list-item-background: $color6;
 $archive-list-item-border-radius: 3px;
 // }}}
 // Admin {{{
-$admin-index-list-icon-font-size: 64px;
-$admin-index-list-name-font-size: 18px;
-$admin-index-list-name-pos: 5px;
-$admin-index-list-margin: 5px 0;
-$admin-index-list-color: black;
-$admin-index-list-shadow: 1px 1px 2px $color5;
-$admin-index-list-hover-shadow: 0 0 12px $color3;
-$admin-index-list-background: $color4;
-$admin-index-list-border: 2px solid $color7;
+$admin-table-padding: 0;
+$admin-icon-width: 80px;
+$admin-icon-size: 58px;
+$admin-description-title-font-size: 16px;
+$admin-description-title-padding: 5px;
+$admin-description-text-padding: 5px;
+$admin-description-text-height: 65px;
+$admin-link-hover-border: 1px solid $color3;
+$admin-link-hover-shadow: 0 0 3px $color3;
+$admin-link-padding: 5px;
+$admin-link-account-background: #007EA0;
+$admin-link-blog-background: #C73600;
+$admin-link-portfolio-background: #00813D;
+$admin-link-about-me-background: #004AB2;
+$admin-link-statistics-background: #855E00;
+$admin-link-settings-background: #7A7A7A;
 // }}}
 // Authentication {{{
 $authentication-padding: 5px;
