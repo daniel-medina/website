@@ -42,20 +42,25 @@ module.exports = {
   /**
    * Verify user sent information for the creation of an article
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  postArticle: function (request, response, next) {
-    let title = request.body.title
+  postArticle: async (request, response, next) => {
+    try {
+      const title = request.body.title
 
-    /** If the title's length matches the given configuration */
-    if (title.length > minArticleTitleLength && title.length < maxArticleTitleLength) {
-      next()
-    } else {
-      /** Must flash POST data back in order to avoid pissing off the user */
-      request.flash('error', 'The title\'s length must be between ' + minArticleTitleLength + ' and ' + maxArticleTitleLength + ' character long.')
-      response.redirect('back')
+      /** If the title's length matches the given configuration */
+      if (title.length > minArticleTitleLength && title.length < maxArticleTitleLength) {
+        next()
+      } else {
+        /** Must flash POST data back in order to avoid pissing off the user */
+        request.flash('error', 'The title\'s length must be between ' + minArticleTitleLength + ' and ' + maxArticleTitleLength + ' character long.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
     }
   },
   // }}}
@@ -63,20 +68,25 @@ module.exports = {
   /**
    * Secure the creation of article category
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  postArticleCategory: function (request, response, next) {
-    let title = request.body.title
+  postArticleCategory: async (request, response, next) => {
+    try {
+      const title = request.body.title
 
-    /** If the title matches the configuration's settings */
-    if (title.length > minArticleCategoryLength && title.length < maxArticleCategoryLength) {
-      next()
-    } else {
-      /** TODO : flashing POST data back */
-      request.flash('error', 'The title\'s length must be between ' + minArticleCategoryLength + ' and ' + maxArticleCategoryLength + ' character long.')
-      response.redirect('back')
+      /** If the title matches the configuration's settings */
+      if (title.length > minArticleCategoryLength && title.length < maxArticleCategoryLength) {
+        next()
+      } else {
+        /** TODO : flashing POST data back */
+        request.flash('error', 'The title\'s length must be between ' + minArticleCategoryLength + ' and ' + maxArticleCategoryLength + ' character long.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
     }
   },
   // }}}
@@ -84,167 +94,157 @@ module.exports = {
   /**
    * Checks the variables used to create an administrator account
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  postAccount: function (request, response, next) {
-    /**
-     * Checks if the username is valid
-     *
-     * @async
-     * @param {String} username Username provided by the user
-     * @returns {Promise} Promise giving a true or false response, depending on if the username matches the controls
-     */
-    async function checkUsername (username) {
-      return new Promise(function (resolve, reject) {
-        const length = username.length
+  postAccount: async (request, response, next) => {
+    try {
+      /**
+       * Checks if the username is valid
+       *
+       * @async
+       * @param {String} username Username provided by the user
+       * @returns {Promise} Promise giving a true or false response, depending on if the username matches the controls
+       */
+      const checkUsername = username => {
+        return new Promise(function (resolve, reject) {
+          const length = username.length
 
-        if (length >= usernameMinLength && length <= usernameMaxLength) {
-          resolve(true)
-        } else {
-          resolve(false)
-        }
-      })
-    }
-
-    /**
-     * Checks if the password is valid
-     *
-     * @async
-     * @param {String} password Password provided by the user
-     * @returns {Promise} Promise giving a true or false response, depending on if the password matches the controls
-     */
-    async function checkPassword (password) {
-      return new Promise(function (resolve, reject) {
-        const length = password.length
-
-        if (length >= passwordMinLength && length <= passwordMaxLength) {
-          resolve(true)
-        } else {
-          resolve(false)
-        }
-      })
-    }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        const username = request.body.username
-        const password = request.body.password
-        const controlUsername = await checkUsername(username)
-        const controlPassword = await checkPassword(password)
-
-        /**
-         * If the username and password controls returns a true statement
-         * Then the verification may pass
-         * Else, we return an error to explain the reason of the rejection to the user
-         */
-        if (controlUsername) {
-          if (controlPassword) {
-            next()
+          if (length >= usernameMinLength && length <= usernameMaxLength) {
+            resolve(true)
           } else {
-            request.flash('error', 'The password must be between ' + passwordMinLength + ' and ' + passwordMaxLength + ' characters long.')
-            response.redirect('back')
+            resolve(false)
           }
+        })
+      }
+
+      /**
+       * Checks if the password is valid
+       *
+       * @async
+       * @param {String} password Password provided by the user
+       * @returns {Promise} Promise giving a true or false response, depending on if the password matches the controls
+       */
+      const checkPassword = password => {
+        return new Promise(function (resolve, reject) {
+          const length = password.length
+
+          if (length >= passwordMinLength && length <= passwordMaxLength) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        })
+      }
+
+      /** Getting form input */
+      const username = request.body.username
+      const password = request.body.password
+
+      /** Verifications - both returns boolean */
+      const controlUsername = await checkUsername(username)
+      const controlPassword = await checkPassword(password)
+
+      /**
+       * If the username and password controls returns a true statement
+       * Then the verification may pass
+       * Else, we return an error to explain the reason of the rejection to the user
+       */
+      if (controlUsername) {
+        if (controlPassword) {
+          next()
         } else {
-          request.flash('error', 'The username must be between ' + usernameMinLength + ' and ' + usernameMaxLength + ' characters long.')
+          request.flash('error', 'The password must be between ' + passwordMinLength + ' and ' + passwordMaxLength + ' characters long.')
           response.redirect('back')
         }
-      } catch (error) {
-        console.log(error)
+      } else {
+        request.flash('error', 'The username must be between ' + usernameMinLength + ' and ' + usernameMaxLength + ' characters long.')
+        response.redirect('back')
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // accountUsernameExist {{{
   /**
    * Checks if the account created already exist in the database
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  accountUsernameExist: function (request, response, next) {
-    /**
-     * Returns the amount of username that matches the provided username
-     *
-     * @async
-     * @param {String} username Username provided by the user with a form
-     * @returns {Promise} Promise containing the amount of account matching the username
-     * @see Mongoose
-     */
-    async function countUsername (username) {
-      const query = {
-        username: username
-      }
-
-      return Admin
-        .count(query)
-    }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        /**
-         * We get the username provided by the user
-         * Then we get the amount of username that equals it
-         * With that amount, we know if it can be created or not
-         */
-        const username = request.body.username
-        const amount = await countUsername(username)
-
-        if (amount === 0) {
-          /** If the username doesn't already exist, the user may pass the form */
-          next()
-        } else {
-          /** Else, return him a message */
-          request.flash('error', 'The username already exist.')
-          response.redirect('back')
+  accountUsernameExist: async (request, response, next) => {
+    try {
+      /**
+       * Returns the amount of username that matches the provided username
+       *
+       * @async
+       * @param {String} username Username provided by the user with a form
+       * @returns {Promise} Promise containing the amount of account matching the username
+       * @see Mongoose
+       */
+      const countUsername = username => {
+        const query = {
+          username: username
         }
-      } catch (error) {
-        console.log(error)
+
+        return Admin
+          .count(query)
       }
-    }())
+
+      /**
+       * We get the username provided by the user
+       * Then we get the amount of username that equals it
+       * With that amount, we know if it can be created or not
+       */
+      const username = request.body.username
+      const amount = await countUsername(username)
+
+      if (amount === 0) {
+        /** If the username doesn't already exist, the user may pass the form */
+        next()
+      } else {
+        /** Else, return him a message */
+        request.flash('error', 'The username already exist.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // accountIdExist {{{
   /**
    * Verifies that the provided account ID exist
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  accountIdExist: async function (request, response, next) {
-    /**
-     * Counts the amount of account matching the given id
-     *
-     * @param {ObjectID} id Id of the account to check
-     * @returns {Promise} Promise containing the amount of account matching the id
-     * @see Mongoose
-     */
-    function countAccount (id) {
-      const query = {
-        _id: id
+  accountIdExist: async (request, response, next) => {
+    try {
+      /**
+       * Counts the amount of account matching the given id
+       *
+       * @param {ObjectID} id Id of the account to check
+       * @returns {Promise} Promise containing the amount of account matching the id
+       * @see Mongoose
+       */
+      const countAccount = id => {
+        const query = {
+          _id: id
+        }
+
+        return Admin
+          .count(query)
+          .exec()
       }
 
-      return Admin
-        .count(query)
-        .exec()
-    }
-
-    try {
       /**
        * We get the amount of account matching the id
        * Then we see if the control may pass or not
@@ -277,26 +277,26 @@ module.exports = {
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  accountDeleteSelf: async function (request, response, next) {
-    /**
-     * Checks if the given account id to delete is equal to the session id
-     *
-     * @param {ObjectID} id Account id given by the user to delete
-     * @param {Object} session Session of the user
-     * @returns {Promise} Promise returning a true or false value
-     * @see express-session
-     */
-    function checkSession (id, session) {
-      return new Promise(function (resolve, reject) {
-        if (id === session.admin.id) {
-          resolve(true)
-        } else {
-          resolve(false)
-        }
-      })
-    }
-
+  accountDeleteSelf: async (request, response, next) => {
     try {
+      /**
+       * Checks if the given account id to delete is equal to the session id
+       *
+       * @param {ObjectID} id Account id given by the user to delete
+       * @param {Object} session Session of the user
+       * @returns {Promise} Promise returning a true or false value
+       * @see express-session
+       */
+      const checkSession = (id, session) => {
+        return new Promise(function (resolve, reject) {
+          if (id === session.admin.id) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        })
+      }
+
       const session = request.session
       const id = request.params.id
       const check = await checkSession(id, session)
@@ -320,45 +320,38 @@ module.exports = {
   /**
    * Checks if the chosen article's category exist
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  articleCategoryExist: function (request, response, next) {
-    /**
-     * Returns the amount of category matching the selected category id by the user
-     *
-     * @async
-     * @param {Number} category Chosen category id, sent by the user as POST method
-     * @returns {Promise} Promise containing the category count
-     * @see Mongoose
-     */
-    async function countCategory (category) {
+  articleCategoryExist: async (request, response, next) => {
+    try {
+      /**
+       * Returns the amount of category matching the selected category id by the user
+       *
+       * @async
+       * @param {Number} category Chosen category id, sent by the user as POST method
+       * @returns {Promise} Promise containing the category count
+       * @see Mongoose
+       */
+      const countCategory = category => {
       /** Returns either 1 or 0, there can't be duplicate ids */
-      return ArticleCategory.count({ _id: category }).exec()
-    }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        let category = request.body.category
-        let count = await countCategory(category)
-
-        if (count !== 0) {
-          next()
-        } else {
-          request.flash('error', 'The selected category doesn\'t exist.')
-          response.redirect('back')
-        }
-      } catch (error) {
-        console.log(error)
+        return ArticleCategory.count({ _id: category }).exec()
       }
-    }())
+
+      const category = request.body.category
+      const count = await countCategory(category)
+
+      if (count !== 0) {
+        next()
+      } else {
+        request.flash('error', 'The selected category doesn\'t exist.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // articleTitleExist {{{
@@ -366,325 +359,280 @@ module.exports = {
    * Checks if the written article's title doesn't already exist
    * Because article's title are used as url, so there must not be any duplicate
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  articleTitleExist: (request, response, next) => {
-    /**
-     * Returns the amount of article matching the written title
-     * Converted to url
-     *
-     * @async
-     * @returns {Promise} Promise containing the article count
-     * @see Mongoose
-     * @see slug
-     */
-    async function countArticle (url) {
-      return Article.count({ url: url }).exec()
-    }
+  articleTitleExist: async (request, response, next) => {
+    try {
+      /**
+       * Returns the amount of article matching the written title
+       * Converted to url
+       *
+       * @async
+       * @returns {Promise} Promise containing the article count
+       * @see Mongoose
+       * @see slug
+       */
+      const countArticle = url => Article.count({ url: url }).exec()
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        /** Convertion of the title to its url form, using slug */
-        let url = slug(request.body.title)
+      /** Convertion of the title to its url form, using slug */
+      const url = slug(request.body.title)
 
-        /** We then use it to see if it exists */
-        let count = await countArticle(url)
+      /** We then use it to see if it exists */
+      let count = await countArticle(url)
 
-        /** If it does not already exist, we can pass */
-        if (count === 0) {
-          next()
-        } else {
-          /** Else, we redirect the user back and show him an error message */
-          request.flash('error', 'The article\'s title already exist in the database.')
-          response.redirect('back')
-        }
-      } catch (error) {
-        console.log(error)
+      /** If it does not already exist, we can pass */
+      if (count === 0) {
+        next()
+      } else {
+        /** Else, we redirect the user back and show him an error message */
+        request.flash('error', 'The article\'s title already exist in the database.')
+        response.redirect('back')
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // articleCategoryTitleExist {{{
   /**
    * Checks if the written article's category title doesn't already exist
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  articleCategoryTitleExist: (request, response, next) => {
-    /**
-     * Returns the amount of article matching the written title
-     * Converted to url
-     *
-     * @async
-     * @returns {Promise} Promise containing the article count
-     * @see Mongoose
-     * @see slug
-     */
-    async function countArticleCategory (title) {
-      return ArticleCategory.count({ title: title }).exec()
-    }
+  articleCategoryTitleExist: async (request, response, next) => {
+    try {
+      /**
+       * Returns the amount of article matching the written title
+       * Converted to url
+       *
+       * @async
+       * @returns {Promise} Promise containing the article count
+       * @see Mongoose
+       * @see slug
+       */
+      const countArticleCategory = title => ArticleCategory.count({ title: title }).exec()
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        const title = request.body.title
+      const title = request.body.title
 
-        /** We then use it to see if it exists */
-        const count = await countArticleCategory(title)
+      /** We then use it to see if it exists */
+      const count = await countArticleCategory(title)
 
-        /** If it does not already exist, we can pass */
-        if (count === 0) {
-          next()
-        } else {
-          /** Else, we redirect the user back and show him an error message */
-          request.flash('error', 'The article\'s category title already exist in the database.')
-          response.redirect('back')
-        }
-      } catch (error) {
-        console.log(error)
+      /** If it does not already exist, we can pass */
+      if (count === 0) {
+        next()
+      } else {
+        /** Else, we redirect the user back and show him an error message */
+        request.flash('error', 'The article\'s category title already exist in the database.')
+        response.redirect('back')
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // articleIdExist {{{
   /**
    * Checks if the given article's id exist
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  articleIdExist: function (request, response, next) {
-    /**
-     * Count the number of article matching the given ID
-     * It's either 1 or 0 since IDs cannot be duplicated
-     *
-     * @async
-     * @param {ObjectID} id ObjectID of the article
-     * @returns {Promise} Promise containing the count
-     * @see Mongoose
-     */
-    async function countArticle (id) {
-      let query = {
-        _id: id
-      }
-
-      return Article
-        .count(query)
-        .exec()
-    }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        let id = request.params.id
-        let count = await countArticle(id)
-
-        /**
-         * If the article exist (isn't equal to 0)
-         * Else, we block the request and return an error
-         */
-        if (count !== 0) {
-          next()
-        } else {
-          /** If it doesn't exist, redirect the user back and flash him an error message */
-          request.flash('error', 'The provided article\'s id doesn\'t exist in the database.')
-          response.redirect('back')
+  articleIdExist: async (request, response, next) => {
+    try {
+      /**
+       * Count the number of article matching the given ID
+       * It's either 1 or 0 since IDs cannot be duplicated
+       *
+       * @async
+       * @param {ObjectID} id ObjectID of the article
+       * @returns {Promise} Promise containing the count
+       * @see Mongoose
+       */
+      const countArticle = id => {
+        const query = {
+          _id: id
         }
-      } catch (error) {
-        console.log(error)
+
+        return Article
+          .count(query)
+          .exec()
       }
-    }())
+
+      const id = request.params.id
+      const count = await countArticle(id)
+
+      /**
+       * If the article exist (isn't equal to 0)
+       * Else, we block the request and return an error
+       */
+      if (count !== 0) {
+        next()
+      } else {
+        /** If it doesn't exist, redirect the user back and flash him an error message */
+        request.flash('error', 'The provided article\'s id doesn\'t exist in the database.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // articleCategoryIdExist {{{
   /**
    * Checks if the given article's id exist
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  articleCategoryIdExist: function (request, response, next) {
-    /**
-     * Count the number of category matching the given ID
-     * It's either 1 or 0 since IDs cannot be duplicated
-     *
-     * @async
-     * @param {ObjectID} id ObjectID of the article
-     * @returns {Promise} Promise containing the count
-     * @see Mongoose
-     */
-    async function countArticleCategory (id) {
-      let query = {
-        _id: id
+  articleCategoryIdExist: async (request, response, next) => {
+    try {
+      /**
+       * Count the number of category matching the given ID
+       * It's either 1 or 0 since IDs cannot be duplicated
+       *
+       * @async
+       * @param {ObjectID} id ObjectID of the article
+       * @returns {Promise} Promise containing the count
+       * @see Mongoose
+       */
+      const countArticleCategory = id => {
+        const query = {
+          _id: id
+        }
+
+        return ArticleCategory
+          .count(query)
+          .exec()
       }
 
-      return ArticleCategory
-        .count(query)
-        .exec()
-    }
+      const id = request.params.id
+      const count = await countArticleCategory(id)
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        let id = request.params.id
-        let count = await countArticleCategory(id)
-
-        /**
+      /**
          * If the article exist (isn't equal to 0)
          * Else, we block the request and return an error
          */
-        if (count !== 0) {
-          next()
-        } else {
-          /** If it doesn't exist, redirect the user back and flash him an error message */
-          request.flash('error', 'The provided category\'s id doesn\'t exist in the database.')
-          response.redirect('back')
-        }
-      } catch (error) {
-        console.log(error)
+      if (count !== 0) {
+        next()
+      } else {
+        /** If it doesn't exist, redirect the user back and flash him an error message */
+        request.flash('error', 'The provided category\'s id doesn\'t exist in the database.')
+        response.redirect('back')
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // isAuth {{{
   /**
    * Checks if the user is authenticated as an admin
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  isAuth: function (request, response, next) {
-    /**
-     * Count the number of admin account
-     *
-     * @returns {Promise} The count is returned as a promise
-     * @see Mongoose
-     */
-    async function adminCount () {
-      return Admin.count({}).exec()
-    }
+  isAuth: async (request, response, next) => {
+    try {
+      /**
+       * Count the number of admin account
+       *
+       * @returns {Promise} The count is returned as a promise
+       * @see Mongoose
+       */
+      const adminCount = () => Admin.count({}).exec()
 
-    /**
-     * Create a default admin account
-     *
-     * @returns {Promise} Admin's model creation returned as a promise
-     * @see Mongoose
-     */
-    async function createDefaultAdmin () {
-      let created = new Date()
-      let username = defaultUsername
-      let password = await Password.hash(defaultPassword)
+      /**
+       * Create a default admin account
+       *
+       * @returns {Promise} Admin's model creation returned as a promise
+       * @see Mongoose
+       */
+      const createDefaultAdmin = (username, password) => Admin.create({
+        created: new Date(),
+        username: username,
+        password: password
+      })
 
-      return Admin
-        .create({
-          created: created,
-          username: username,
-          password: password
-        })
-    }
+      /**
+       * Check if the user is logged in as an admin
+       *
+       * @returns {Response} Redirect the user or pass to the next control
+       */
+      const checkAuth = () => {
+        const check = request.session.admin
+        const path = request.url
 
-    /**
-     * Check if the user is logged in as an admin
-     *
-     * @returns {Response} Redirect the user or pass to the next control
-     */
-    async function checkAuth () {
-      let check = request.session.admin
-      let path = request.url
-
-      /** If he's authenticated */
-      if (check) {
+        /** If he's authenticated */
+        if (check) {
         /**
          * If the user is on the authentication page
          * We redirect him to the index of the admin panel
          * Because there is no need for him to login again
          */
-        if (path === '/admin/authentication') {
-          request.flash('error', 'You are already logged in.')
-          response.redirect('/admin')
-        } else {
+          if (path === '/admin/authentication') {
+            request.flash('error', 'You are already logged in.')
+            response.redirect('/admin')
+          } else {
           /** If not, let him go */
-          next()
-        }
-      } else {
+            next()
+          }
+        } else {
         /**
          * If the user is on the disconnect page
          * While not being logged in
          * We redirect him to the index of the website
          */
-        if (path === '/admin/disconnect') {
-          request.flash('error', 'You can\'t disconnect if you\'re not logged in.')
-          response.redirect('/')
-        } else {
+          if (path === '/admin/disconnect') {
+            request.flash('error', 'You can\'t disconnect if you\'re not logged in.')
+            response.redirect('/')
+          } else {
           /**
            * If the user is not logged in, and trying to access a page that is not
            * The authentication page, redirect him to the proper route
            */
-          if (path !== '/admin/authentication') {
-            response.redirect('/admin/authentication')
-          } else {
-            next()
+            if (path !== '/admin/authentication') {
+              response.redirect('/admin/authentication')
+            } else {
+              next()
+            }
           }
         }
       }
-    }
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        let adminAmount = await adminCount()
+      const adminAmount = await adminCount()
 
-        if (adminAmount === 0) {
-          /** If there is no admin in the database, we create a default one */
-          let create = await createDefaultAdmin() // eslint-disable-line
+      if (adminAmount === 0) {
+        /** If there is no admin in the database, we create a default one */
+        const username = defaultUsername
+        const password = await Password.hash(defaultPassword)
 
-          /**
-           * If the first admin has just been created,
-           * the user can't possibly be authenticated,
-           * so we redirect him to the authentication page
-           */
-          response.redirect('/admin/authentication')
-        } else {
-          /** We check if he's authenticated */
-          let check = await checkAuth() // eslint-disable-line
-        }
-      } catch (error) {
-        console.log(error)
+        await createDefaultAdmin(username, password)
+
+        /**
+         * If the first admin has just been created,
+         * the user can't possibly be authenticated,
+         * so we redirect him to the authentication page
+         */
+        response.redirect('/admin/authentication')
+      } else {
+        /** We check if he's authenticated */
+        await checkAuth()
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   }
   // }}}
 }
