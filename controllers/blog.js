@@ -23,201 +23,176 @@ module.exports = {
   /**
    * Handles the index of the blog
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getIndex: function (request, response) {
+  getIndex: async (request, response) => {
+    try {
     /** Defines query variables to use with recent and old articles */
-    let limit = 2
-    let sort = {
-      _id: -1
-    }
-
-    /**
-     * Get the recent articles
-     *
-     * @async
-     * @returns {Promise} Promise containing the recent articles
-     * @see Mongoose
-     */
-    async function getArticles () {
-      let query = {
-        limit: limit,
-        sort: sort
+      const limit = 2
+      const sort = {
+        _id: -1
       }
 
-      return Article
-        .find({})
-        .populate('category', 'title')
-        .limit(query.limit)
-        .sort(query.sort)
-        .exec()
-    }
+      /**
+       * Get the recent articles
+       *
+       * @returns {Promise} Promise containing the recent articles
+       * @see Mongoose
+       */
+      const getArticles = () => {
+        const query = {
+          limit: limit,
+          sort: sort
+        }
 
-    /**
-     * The the old articles
-     *
-     * @async
-     * @returns {Promise} Promise containing the old articles
-     */
-    async function getOldArticles () {
-      let query = {
-        limit: 10,
-        sort: sort,
-        skip: limit
+        return Article
+          .find({})
+          .populate('category', 'title')
+          .limit(query.limit)
+          .sort(query.sort)
+          .exec()
       }
 
-      return Article
-        .find({})
-        .populate('category', 'title')
-        .sort(query.sort)
-        .skip(query.skip)
-        .exec()
-    }
+      /**
+       * The the old articles
+       *
+       * @returns {Promise} Promise containing the old articles
+       */
+      const getOldArticles = () => {
+        const query = {
+          limit: 10,
+          sort: sort,
+          skip: limit
+        }
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        let articles = await getArticles()
-        let oldArticles = await getOldArticles()
-
-        response.render('blog/index', {
-          title: 'Blog',
-          articles: articles,
-          old: oldArticles,
-          marked: marked
-        })
-      } catch (error) {
-        console.log(error)
+        return Article
+          .find({})
+          .populate('category', 'title')
+          .sort(query.sort)
+          .skip(query.skip)
+          .exec()
       }
-    }())
+
+      const articles = await getArticles()
+      const oldArticles = await getOldArticles()
+
+      response.render('blog/index', {
+        title: 'Blog',
+        articles: articles,
+        old: oldArticles,
+        marked: marked
+      })
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // getArticle {{{
   /**
    * Handles the view of an article
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getArticle: function (request, response) {
-    /**
-     * Get the article matching the given URL
-     *
-     * @async
-     * @returns {Promise} Promise containing the article
-     */
-    async function getArticle () {
-      let url = request.params.url
+  getArticle: async (request, response) => {
+    try {
+      /**
+       * Get the article matching the given URL
+       *
+       * @returns {Promise} Promise containing the article
+       */
+      const getArticle = () => {
+        const url = request.params.url
 
-      return Article
-        .findOne({ url: url })
-        .populate('category', 'title')
-        .exec()
-    }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        let article = await getArticle()
-
-        response.render('blog/article', {
-          title: article.title,
-          article: article
-        })
-      } catch (error) {
-        console.log(error)
+        return Article
+          .findOne({ url: url })
+          .populate('category', 'title')
+          .exec()
       }
-    }())
+
+      const article = await getArticle()
+
+      response.render('blog/article', {
+        title: article.title,
+        article: article
+      })
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // getArchive {{{
   /**
    * Handles the archive index view
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getArchive: function (request, response) {
+  getArchive: async (request, response) => {
+    try {
     /**
      * Get the amount of existing article
      *
-     * @async
      * @returns {Promise} Promise containing the amount of existing article
      * @see Mongoose
      */
-    async function getAmount () {
-      return Article
-        .count({})
-        .exec()
-    }
+      const getAmount = () => {
+        return Article
+          .count({})
+          .exec()
+      }
 
-    /**
+      /**
      * Get all existing article, relative to the current page
      *
-     * @async
      * @param {Number} page Current page
      * @returns {Promise} Promise containing all the article, relative to the current page
      * @see Mongoose
      * @see Pagination
      */
-    async function getArticle (page) {
-      let rawSkip = Math.floor(page * archiveItemPerPage)
-      let skip = Math.floor(rawSkip - archiveItemPerPage)
-      let query = {
-        limit: archiveItemPerPage,
-        skip: skip,
-        sort: {
-          _id: -1
+      const getArticle = page => {
+        const rawSkip = Math.floor(page * archiveItemPerPage)
+        const skip = Math.floor(rawSkip - archiveItemPerPage)
+        const query = {
+          limit: archiveItemPerPage,
+          skip: skip,
+          sort: {
+            _id: -1
+          }
         }
+
+        return Article
+          .find({})
+          .populate('category', 'title')
+          .limit(query.limit)
+          .sort(query.sort)
+          .skip(query.skip)
+          .exec()
       }
 
-      return Article
-        .find({})
-        .populate('category', 'title')
-        .limit(query.limit)
-        .sort(query.sort)
-        .skip(query.skip)
-        .exec()
+      /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
+      const page = Number((request.params.page > 1) ? request.params.page : 1)
+      const amount = await getAmount()
+      const articles = await getArticle(page)
+      const maxPage = Math.ceil(amount / archiveItemPerPage)
+      const pagination = await response.locals.pagination.links(amount, page, maxPage, archiveItemPerPage)
+
+      /** We now render the page */
+      response.render('blog/archive', {
+        title: 'Archive',
+        articles: articles,
+        amount: amount,
+        page: page,
+        maxPage: maxPage,
+        pagination: pagination
+      })
+    } catch (error) {
+      console.log(error)
     }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
-        let page = Number((request.params.page > 1) ? request.params.page : 1)
-        let amount = await getAmount()
-        let articles = await getArticle(page)
-        let maxPage = Math.ceil(amount / archiveItemPerPage)
-        let pagination = await response.locals.pagination.links(amount, page, maxPage, archiveItemPerPage)
-
-        response.render('blog/archive', {
-          title: 'Archive',
-          articles: articles,
-          amount: amount,
-          page: page,
-          maxPage: maxPage,
-          pagination: pagination
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }())
   }
   // }}}
 }

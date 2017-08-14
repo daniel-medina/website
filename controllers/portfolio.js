@@ -50,7 +50,7 @@ module.exports = {
      * @returns {Promise} Promise containing all projects
      * @see Mongoose
      */
-    function getProjects () {
+    const getProjects = () => {
       return Portfolio
         .find({})
         .exec()
