@@ -15,9 +15,9 @@ import Portfolio from '../models/portfolio'
 
 /** Libs imports */
 
-/** Exporting the controller */
-module.exports = {
-  // getIndex {{{
+/** GET */
+export const get = {
+  // index {{{
   /**
    * Returns the index of the portfolio
    *
@@ -25,7 +25,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getIndex: async function (request, response) {
+  index: async function (request, response) {
     try {
       response.render('portfolio/index', {
         title: 'Portfolio'
@@ -35,7 +35,7 @@ module.exports = {
     }
   },
   // }}}
-  // getProjects{{{
+  // projects{{{
   /**
    * Returns all projects of the portfolio
    *
@@ -43,7 +43,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getProjects: async function (request, response) {
+  projects: async function (request, response) {
     try {
       // Function: getProjects {{{
       /**

@@ -14,8 +14,8 @@
 
 /** Libs imports */
 
-/** Exporting the middleware */
-module.exports = {
+/** ALL */
+export const all = {
   // ajaxProtection {{{
   /**
    * Allow only xhr request to pass

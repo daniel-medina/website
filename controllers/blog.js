@@ -17,9 +17,9 @@ import Article from '../models/article'
 
 /** Libs imports */
 
-/** Exporting the controller */
-module.exports = {
-  // getIndex {{{
+/** GET */
+export const get = {
+  // index {{{
   /**
    * Handles the index of the blog
    *
@@ -27,7 +27,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getIndex: async (request, response) => {
+  index: async (request, response) => {
     try {
     /** Defines query variables to use with recent and old articles */
       const limit = 2
@@ -92,7 +92,7 @@ module.exports = {
     }
   },
   // }}}
-  // getArticle {{{
+  // article {{{
   /**
    * Handles the view of an article
    *
@@ -100,7 +100,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getArticle: async (request, response) => {
+  article: async (request, response) => {
     try {
       // Function: getArticle {{{
       /**
@@ -129,7 +129,7 @@ module.exports = {
     }
   },
   // }}}
-  // getArchive {{{
+  // archive {{{
   /**
    * Handles the archive index view
    *
@@ -137,7 +137,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getArchive: async (request, response) => {
+  archive: async (request, response) => {
     try {
       // Function: getAmount {{{
       /**

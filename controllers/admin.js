@@ -21,124 +21,8 @@ import {ArticleCategory} from '../models/refs/articleCategory'
 /** Libs imports */
 import Password from '../lib/password'
 
-/** Exporting the controller */
-module.exports = {
-  // getIndex {{{
-  /**
-   * Returns the index view of the admin panel
-   *
-   * @async
-   * @param {HTTP} request
-   * @param {HTTP} response
-   */
-  getIndex: async (request, response) => {
-    response.render('admin/index', {
-      title: 'Administration'
-    })
-  },
-  // }}}
-  // getAuthentication {{{
-  /**
-   * Returns the authentication view
-   *
-   * @async
-   * @param {HTTP} request
-   * @param {HTTP} response
-   */
-  getAuthentication: async (request, response) => {
-    response.render('admin/authentication', {
-      title: 'Authentication'
-    })
-  },
-  // }}}
-  // postAuthentication {{{
-  /**
-   * Handles the user sent authentication form
-   *
-   * @async
-   * @param {HTTP} request
-   * @param {HTTP} response
-   */
-  postAuthentication: async (request, response) => {
-    try {
-      // Function: checkUsername {{{
-      /**
-       * Checks if the given username exist in the database
-       *
-       * @param {String} username The given username by the user
-       * @returns {Promise} Promise containing the amount of admin matching the given username
-       * @see Mongoose
-       */
-      const checkUsername = username => {
-        return Admin
-          .count({ username: username })
-          .exec()
-      }
-      // }}}
-      // Function: checkPassword {{{
-      /**
-       * Check if the given password is correct
-       *
-       * @param {Object} admin Current admin
-       * @param {Number} adminAmount Number of admin that matches the given username
-       * @param {Boolean} compare Password verification using bcrypt
-       * @see bcrypt
-       */
-      const checkPassword = (admin, adminAmount, compare) => {
-        /** If the username matches an admin */
-        if (adminAmount === 1) {
-          /** We can now check if the password is correct */
-          if (compare) {
-          /** We update its session */
-            request.session.admin = {
-              token: uuid(),
-              id: admin.id,
-              username: admin.username,
-              password: admin.password
-            }
-
-            /** Now we flash a message to the user after redirecting him */
-            request.flash('success', 'You successfully logged in as ' + username + '.')
-            response.redirect('/admin')
-          } else {
-            request.flash('error', 'The given password is not correct.')
-            response.redirect('back')
-          }
-        } else {
-          request.flash('error', 'The given username doesn\'t exist in the database.')
-          response.redirect('back')
-        }
-      }
-      // }}}
-      // Function: getAdmin {{{
-      /**
-       * Gets the info of the admin, if he exist
-       *
-       * @param {String} username Username given by the user
-       * @returns {Promise} Promise containing the info of the admin
-       * @see Mongoose
-       */
-      const getAdmin = username => {
-        return Admin
-          .findOne({ username: username })
-          .exec()
-      }
-      // }}}
-
-      /** We grab necessary informations for the verification */
-      const username = request.body.username
-      const password = request.body.password
-      const adminAmount = await checkUsername(username)
-      const admin = await getAdmin(username)
-      const compare = await Password.compare(password, admin.password)
-
-      /** We execute the function */
-      await checkPassword(admin, adminAmount, compare)
-    } catch (error) {
-      console.log(error)
-    }
-  },
-  // }}}
+/** GET */
+export const get = {
   // disconnect {{{
   /**
    * Disconnect from the current session
@@ -155,7 +39,21 @@ module.exports = {
     response.redirect('/')
   },
   // }}}
-  // getBlog {{{
+  // index {{{
+  /**
+   * Returns the index view of the admin panel
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  index: async (request, response) => {
+    response.render('admin/index', {
+      title: 'Administration'
+    })
+  },
+  // }}}
+  // blog {{{
   /**
    * Blog's administration index
    *
@@ -163,7 +61,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getBlog: async (request, response) => {
+  blog: async (request, response) => {
     try {
       // Function: getAmount {{{
       /**
@@ -243,7 +141,21 @@ module.exports = {
     }
   },
   // }}}
-  // getNewArticle {{{
+  // authentication {{{
+  /**
+   * Returns the authentication view
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  authentication: async (request, response) => {
+    response.render('admin/authentication', {
+      title: 'Authentication'
+    })
+  },
+  // }}}
+  // newArticle {{{
   /**
    * Page form to create a new article
    *
@@ -251,7 +163,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getNewArticle: async (request, response) => {
+  newArticle: async (request, response) => {
     try {
       // Function: getCategories {{{
       /**
@@ -278,52 +190,7 @@ module.exports = {
     }
   },
   // }}}
-  // postNewArticle {{{
-  /**
-   * Handles the user sent article via the form
-   *
-   * @async
-   * @param {HTTP} request
-   * @param {HTTP} response
-   */
-  postNewArticle: async (request, response) => {
-    try {
-      // Function: createArticle {{{
-      /**
-       * Create a new article
-       *
-       * @returns {Promise} Promise containing the query execution
-       * @see Mongoose
-       */
-      const createArticle = () => {
-        const created = new Date()
-        const title = request.body.title
-        const url = slug(title)
-        const category = request.body.category
-        const content = request.body.content
-        const query = {
-          created: created,
-          url: url,
-          category: category,
-          title: title,
-          content: content
-        }
-
-        return Article.create(query)
-      }
-      // }}}
-
-      /** We execute the creation of the article */
-      await createArticle()
-
-      request.flash('success', 'The article was successfully created.')
-      response.redirect('back')
-    } catch (error) {
-      console.log(error)
-    }
-  },
-  // }}}
-  // getEditArticle {{{
+  // editArticle {{{
   /**
    * Send to the user the form to edit an article
    *
@@ -331,7 +198,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getEditArticle: async (request, response) => {
+  editArticle: async (request, response) => {
     try {
       // Function: getArticle {{{
       /**
@@ -382,53 +249,36 @@ module.exports = {
     }
   },
   // }}}
-  // postEditArticle {{{
+  // account {{{
   /**
-   * Handle the information sent by the user in order to
-   * Update an article
+   * Page to manage administrators
    *
    * @async
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  postEditArticle: async (request, response) => {
+  account: async (request, response) => {
     try {
-      // Function: updateArticle {{{
+      // Function: getAdmins {{{
       /**
-       * Edit the article
+       * Get all the admins
        *
-       * @param {ObjectID} id ID of the article to edit
-       * @returns {Promise} Promise containing the update query
+       * @returns {Promise} Promise containing all the admins
        * @see Mongoose
        */
-      const updateArticle = id => {
-        const title = request.body.title
-        const url = slug(title)
-        const category = request.body.category
-        const content = request.body.content
-        const update = {
-          url: url,
-          category: category,
-          title: title,
-          content: content
-        }
-        const query = {
-          _id: id
-        }
-
-        return Article
-          .findOneAndUpdate(query, update)
+      const getAdmins = () => {
+        return Admin
+          .find({})
+          .exec()
       }
       // }}}
 
-      const id = request.params.id
+      const admins = await getAdmins()
 
-      /** We execute the asynchronous update query */
-      await updateArticle(id)
-
-      /** Then we redirect the user back with a message; middlewares will handle the error and checks */
-      request.flash('success', 'The article ' + request.body.title + ' has been updated successfully.')
-      response.redirect('back')
+      response.render('admin/account/index', {
+        title: 'Account management',
+        admins: admins
+      })
     } catch (error) {
       console.log(error)
     }
@@ -474,49 +324,6 @@ module.exports = {
 
       /** Now that it is done, redirect the user back and show him a confirmation message */
       request.flash('success', 'The article \'' + id + '\' has been deleted successfully.')
-      response.redirect('back')
-    } catch (error) {
-      console.log(error)
-    }
-  },
-  // }}}
-  // postCategory {{{
-  /**
-   * Handles the creation of a new article category
-   * Further verifications are done in the affected middleware
-   *
-   * @async
-   * @param {HTTP} request
-   * @param {HTTP} response
-   */
-  postArticleCategory: async (request, response) => {
-    try {
-      // Function: createCategory {{{
-      /**
-       * Creates the new category
-       * Using the user's sent data
-       *
-       * @param {String} title Title sent by the user
-       * @returns {Promise} Promise containing the creation request
-       */
-      const createCategory = title => {
-        const query = {
-          title: title
-        }
-
-        return ArticleCategory
-          .create(query)
-      }
-      // }}}
-
-      /** We get the title sent by the user as a POST method */
-      const title = request.body.title
-
-      /** Now we execute the creation request */
-      await createCategory(title)
-
-      /** Then we send to the user a confirmation message, after redirecting him back */
-      request.flash('success', 'The category \'' + title + '\' has been created successfully.')
       response.redirect('back')
     } catch (error) {
       console.log(error)
@@ -584,42 +391,279 @@ module.exports = {
     }
   },
   // }}}
-  // getAccount {{{
+  // deleteAccount {{{
   /**
-   * Page to manage administrators
+   * Handles the deletion of an account
    *
    * @async
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  getAccount: async (request, response) => {
+  deleteAccount: async (request, response) => {
     try {
-      // Function: getAdmins {{{
+      // Function: deleteAccount {{{
       /**
-       * Get all the admins
+       * Deletes the account matching the given id
        *
-       * @returns {Promise} Promise containing all the admins
+       * @param {ObjectID} id ID of the account to delete
+       * @returns {Promise} Promise containing the removal request
+       */
+      const deleteAccount = id => {
+        const query = {
+          _id: id
+        }
+
+        return Admin
+          .remove(query)
+      }
+      // }}}
+
+      /** We get the id provided by the user */
+      const id = request.params.id
+
+      /** Then we execute the delete function */
+      await deleteAccount(id)
+
+      request.flash('success', 'The account \'' + id + '\' has been deleted successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // }}}
+}
+
+/** POST */
+export const post = {
+  // authentication {{{
+  /**
+   * Handles the user sent authentication form
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  authentication: async (request, response) => {
+    try {
+      // Function: checkUsername {{{
+      /**
+       * Checks if the given username exist in the database
+       *
+       * @param {String} username The given username by the user
+       * @returns {Promise} Promise containing the amount of admin matching the given username
        * @see Mongoose
        */
-      const getAdmins = () => {
+      const checkUsername = username => {
         return Admin
-          .find({})
+          .count({ username: username })
+          .exec()
+      }
+      // }}}
+      // Function: checkPassword {{{
+      /**
+       * Check if the given password is correct
+       *
+       * @param {Object} admin Current admin
+       * @param {Number} adminAmount Number of admin that matches the given username
+       * @param {Boolean} compare Password verification using bcrypt
+       * @see bcrypt
+       */
+      const checkPassword = (admin, adminAmount, compare) => {
+        /** If the username matches an admin */
+        if (adminAmount === 1) {
+          /** We can now check if the password is correct */
+          if (compare) {
+          /** We update its session */
+            request.session.admin = {
+              token: uuid(),
+              id: admin.id,
+              username: admin.username,
+              password: admin.password
+            }
+
+            /** Now we flash a message to the user after redirecting him */
+            request.flash('success', 'You successfully logged in as ' + username + '.')
+            response.redirect('/admin')
+          } else {
+            request.flash('error', 'The given password is not correct.')
+            response.redirect('back')
+          }
+        } else {
+          request.flash('error', 'The given username doesn\'t exist in the database.')
+          response.redirect('back')
+        }
+      }
+      // }}}
+      // Function: getAdmin {{{
+      /**
+       * Gets the info of the admin, if he exist
+       *
+       * @param {String} username Username given by the user
+       * @returns {Promise} Promise containing the info of the admin
+       * @see Mongoose
+       */
+      const getAdmin = username => {
+        return Admin
+          .findOne({ username: username })
           .exec()
       }
       // }}}
 
-      const admins = await getAdmins()
+      /** We grab necessary informations for the verification */
+      const username = request.body.username
+      const password = request.body.password
+      const adminAmount = await checkUsername(username)
+      const admin = await getAdmin(username)
+      const compare = await Password.compare(password, admin.password)
 
-      response.render('admin/account/index', {
-        title: 'Account management',
-        admins: admins
-      })
+      /** We execute the function */
+      await checkPassword(admin, adminAmount, compare)
     } catch (error) {
       console.log(error)
     }
   },
   // }}}
-  // postAccount {{{
+  // newArticle {{{
+  /**
+   * Handles the user sent article via the form
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  newArticle: async (request, response) => {
+    try {
+      // Function: createArticle {{{
+      /**
+       * Create a new article
+       *
+       * @returns {Promise} Promise containing the query execution
+       * @see Mongoose
+       */
+      const createArticle = () => {
+        const created = new Date()
+        const title = request.body.title
+        const url = slug(title)
+        const category = request.body.category
+        const content = request.body.content
+        const query = {
+          created: created,
+          url: url,
+          category: category,
+          title: title,
+          content: content
+        }
+
+        return Article.create(query)
+      }
+      // }}}
+
+      /** We execute the creation of the article */
+      await createArticle()
+
+      request.flash('success', 'The article was successfully created.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // editArticle {{{
+  /**
+   * Handle the information sent by the user in order to
+   * Update an article
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  editArticle: async (request, response) => {
+    try {
+      // Function: updateArticle {{{
+      /**
+       * Edit the article
+       *
+       * @param {ObjectID} id ID of the article to edit
+       * @returns {Promise} Promise containing the update query
+       * @see Mongoose
+       */
+      const updateArticle = id => {
+        const title = request.body.title
+        const url = slug(title)
+        const category = request.body.category
+        const content = request.body.content
+        const update = {
+          url: url,
+          category: category,
+          title: title,
+          content: content
+        }
+        const query = {
+          _id: id
+        }
+
+        return Article
+          .findOneAndUpdate(query, update)
+      }
+      // }}}
+
+      const id = request.params.id
+
+      /** We execute the asynchronous update query */
+      await updateArticle(id)
+
+      /** Then we redirect the user back with a message; middlewares will handle the error and checks */
+      request.flash('success', 'The article ' + request.body.title + ' has been updated successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // articleCategory {{{
+  /**
+   * Handles the creation of a new article category
+   * Further verifications are done in the affected middleware
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  articleCategory: async (request, response) => {
+    try {
+      // Function: createCategory {{{
+      /**
+       * Creates the new category
+       * Using the user's sent data
+       *
+       * @param {String} title Title sent by the user
+       * @returns {Promise} Promise containing the creation request
+       */
+      const createCategory = title => {
+        const query = {
+          title: title
+        }
+
+        return ArticleCategory
+          .create(query)
+      }
+      // }}}
+
+      /** We get the title sent by the user as a POST method */
+      const title = request.body.title
+
+      /** Now we execute the creation request */
+      await createCategory(title)
+
+      /** Then we send to the user a confirmation message, after redirecting him back */
+      request.flash('success', 'The category \'' + title + '\' has been created successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // account {{{
   /**
    * Handles the creation of a new administrator account
    *
@@ -627,7 +671,7 @@ module.exports = {
    * @param {HTTP} request
    * @param {HTTP} response
    */
-  postAccount: async (request, response) => {
+  account: async (request, response) => {
     try {
       // Function: createAccount {{{
       /**
@@ -668,46 +712,6 @@ module.exports = {
        * After redirecting him back
        */
       request.flash('success', 'The administrator account has been created successfully.')
-      response.redirect('back')
-    } catch (error) {
-      console.log(error)
-    }
-  },
-  // }}}
-  // deleteAccount {{{
-  /**
-   * Handles the deletion of an account
-   *
-   * @async
-   * @param {HTTP} request
-   * @param {HTTP} response
-   */
-  deleteAccount: async (request, response) => {
-    try {
-      // Function: deleteAccount {{{
-      /**
-       * Deletes the account matching the given id
-       *
-       * @param {ObjectID} id ID of the account to delete
-       * @returns {Promise} Promise containing the removal request
-       */
-      const deleteAccount = id => {
-        const query = {
-          _id: id
-        }
-
-        return Admin
-          .remove(query)
-      }
-      // }}}
-
-      /** We get the id provided by the user */
-      const id = request.params.id
-
-      /** Then we execute the delete function */
-      await deleteAccount(id)
-
-      request.flash('success', 'The account \'' + id + '\' has been deleted successfully.')
       response.redirect('back')
     } catch (error) {
       console.log(error)

@@ -16,8 +16,8 @@ import Article from '../models/article'
 
 /** Libs imports */
 
-/** Exporting the middleware */
-module.exports = {
+/** GET */
+export const get = {
   // articleExist {{{
   /**
    * Checks if the article do exist
