@@ -22,202 +22,181 @@ module.exports = {
   /**
    * Checks if the article do exist
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  articleExist: function (request, response, next) {
-    /**
-     * Gets the amount of article matching the given URL
-     *
-     * @async
-     * @param {String} url Url given by the user
-     * @returns {Promise} Promise containg the amount of article
-     * @see Mongoose
-     */
-    async function getCount (url) {
-      /** The returned count can only be 1 or 0, because there can be no URL duplication */
-      return Article.count({ url: url }).exec()
-    }
+  articleExist: async (request, response, next) => {
+    try {
+      // Function: getCount {{{
+      /**
+       * Gets the amount of article matching the given URL
+       *
+       * @param {String} url Url given by the user
+       * @returns {Promise} Promise containg the amount of article
+       * @see Mongoose
+       */
+      const getCount = url => Article.count({ url: url }).exec()
+      // }}}
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        /** We get the article's URL given by the user */
-        let url = request.params.url
+      /** We get the article's URL given by the user */
+      const url = request.params.url
 
-        /** We get the number of article matching the URL */
-        let count = await getCount(url)
+      /** We get the number of article matching the URL */
+      const count = await getCount(url)
 
-        /** If there is no article matching the URL, return an error */
-        if (count === 0) {
-          response.status('404')
-            .render('error/404', { title: 'ERROR' })
-        } else {
-          /** Else, he may pass */
-          next()
-        }
-      } catch (error) {
-        console.log(error)
+      /** If there is no article matching the URL, return an error */
+      if (count === 0) {
+        response.status('404')
+          .render('error/404', { title: 'ERROR' })
+      } else {
+        /** Else, he may pass */
+        next()
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // views {{{
   /**
    * Manages the view count of an article
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  views: function (request, response, next) {
-    /** We get the user's remote address (ip) */
-    let remoteAddress = request.connection.remoteAddress
+  views: async (request, response, next) => {
+    try {
+      /** We get the user's remote address (ip) */
+      const remoteAddress = request.connection.remoteAddress
 
-    /**
-     * Get the current article's info
-     *
-     * @async
-     * @returns {Promise} Promise containing the article's info
-     * @see Mongoose
-     */
-    async function getArticle (url) {
-      return Article
-        .findOne({ url: url })
-        .exec()
-    }
-
-    /**
-     * Update the view amount for the current article
-     *
-     * @async
-     * @param {Object} article Object containing all information of the current article
-     * @returns {Promise} Promise containing the current article's update function
-     * @see Mongoose
-     */
-    async function updateViews (article) {
+      // Function: getArticle {{{
+      /**
+       * Get the current article's info
+       *
+       * @returns {Promise} Promise containing the article's info
+       * @see Mongoose
+       */
+      const getArticle = url => {
+        return Article
+          .findOne({ url: url })
+          .exec()
+      }
+      // }}}
+      // Function: updateViews {{{
+      /**
+       * Update the view amount for the current article
+       *
+       * @param {Object} article Object containing all information of the current article
+       * @returns {Promise} Promise containing the current article's update function
+       * @see Mongoose
+       */
+      const updateViews = article => {
       /** If the views object inside the article doesn't have the user's remote address */
-      if (!article.views.ip.includes(remoteAddress)) {
+        if (!article.views.ip.includes(remoteAddress)) {
         /** We push the new remote address, while updating the views object */
-        article.views.ip.push(remoteAddress)
-      }
-
-      /** We return the views array, whether an ip has been pushed inside or not */
-      return {
-        ip: article.views.ip
-      }
-    }
-
-    /**
-     * Update the current article with the new view array
-     *
-     * @async
-     * @param {ObjectID} id ObjectID of the article to update
-     * @param {Array} view Updated view array
-     * @returns {Promise} Promise containing the update query
-     * @see Mongoose
-     */
-    async function updateArticle (id, view) {
-      let query = {
-        _id: id
-      }
-      let update = {
-        views: view
-      }
-
-      return Article.findOneAndUpdate(query, update)
-    }
-
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        /** We get the URL provided by the user */
-        let url = request.params.url
-
-        /** We get the article matching the uRL */
-        let article = await getArticle(url)
-
-        /** We then see if we update the article's views object */
-        let updatedViews = await updateViews(article)
-
-        /** This is to be tested; might cause issues */
-        /** If the views object has been updated, we update the article */
-        if (updatedViews.ip.length > 0) {
-          let update = await updateArticle(article.id, updatedViews) // eslint-disable-line
+          article.views.ip.push(remoteAddress)
         }
 
-        next()
-      } catch (error) {
-        console.log(error)
+        /** We return the views array, whether an ip has been pushed inside or not */
+        return {
+          ip: article.views.ip
+        }
       }
-    }())
+      // }}}
+      // Function: updateArticle {{{
+      /**
+       * Update the current article with the new view array
+       *
+       * @param {ObjectID} id ObjectID of the article to update
+       * @param {Array} view Updated view array
+       * @returns {Promise} Promise containing the update query
+       * @see Mongoose
+       */
+      const updateArticle = (id, view) => {
+        const query = {
+          _id: id
+        }
+        const update = {
+          views: view
+        }
+
+        return Article.findOneAndUpdate(query, update)
+      }
+      // }}}
+
+      /** We get the URL provided by the user */
+      const url = request.params.url
+
+      /** We get the article matching the uRL */
+      const article = await getArticle(url)
+
+      /** We then see if we update the article's views object */
+      const updatedViews = await updateViews(article)
+
+      /** This is to be tested; might cause issues */
+      /** If the views object has been updated, we update the article */
+      if (updatedViews.ip.length > 0) {
+        await updateArticle(article.id, updatedViews)
+      }
+
+      next()
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
   // archivePageCheck {{{
   /**
    * Ensure that the user doesn't go to a page that does not exist, at the archive
    *
+   * @async
    * @param {HTTP} request
    * @param {HTTP} response
    * @param {HTTP} next
    */
-  archivePageCheck: function (request, response, next) {
-    /**
-     * Get the total amount of existing article
-     *
-     * @async
-     * @returns {Promise} Promise containing the total count of article
-     * @see Mongoose
-     */
-    async function getAmount () {
-      return Article.count({}).exec()
-    }
+  archivePageCheck: async (request, response, next) => {
+    try {
+      // Function: getAmount {{{
+      /**
+       * Get the total amount of existing article
+       *
+       * @returns {Promise} Promise containing the total count of article
+       * @see Mongoose
+       */
+      const getAmount = () => {
+        return Article.count({}).exec()
+      }
+      // }}}
 
-    /**
-     * Asynchronous code execution
-     *
-     * @async
-     * @throws Will throw an error to the console if it catches one
-     */
-    (async function () {
-      try {
-        /**
-         * If the page given by the user is superior to one
-         * We set it as it's one value; else, we set it to 1
-         * Thus avoiding the access to a page 0, and empty page value
-         */
-        let page = (request.params.page > 1) ? request.params.page : 1
+      /**
+       * If the page given by the user is superior to one
+       * We set it as it's one value; else, we set it to 1
+       * Thus avoiding the access to a page 0, and empty page value
+       */
+      const page = (request.params.page > 1) ? request.params.page : 1
 
-        /** We get the Promise's awaited value containing the total amount of existing article */
-        let amount = await getAmount()
+      /** We get the Promise's awaited value containing the total amount of existing article */
+      const amount = await getAmount()
 
-        /** To get the maximum number of page, we divide the total amount by the chosen item per page */
-        let maxPage = Math.ceil(amount / archiveItemPerPage)
+      /** To get the maximum number of page, we divide the total amount by the chosen item per page */
+      const maxPage = Math.ceil(amount / archiveItemPerPage)
 
-        /**
+      /**
          * If the current page is inferior or equal to the last page, we can pass
          * Thus avoiding access to a non existing page
          */
-        if (page <= maxPage) {
-          next()
-        } else {
-          response.redirect('/archive')
-        }
-      } catch (error) {
-        console.log(error)
+      if (page <= maxPage) {
+        next()
+      } else {
+        response.redirect('/archive')
       }
-    }())
+    } catch (error) {
+      console.log(error)
+    }
   }
   // }}}
 }

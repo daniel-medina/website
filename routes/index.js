@@ -24,7 +24,6 @@ router.get('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/admi
 router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', require('../middlewares/admin').articleCategoryIdExist)
 // }}}
 // }}}
-
 // --->>> CONTROLLERS <<<--- {{{
 // Blog {{{
 router.get('/', require('../controllers/blog').getIndex)
@@ -49,7 +48,6 @@ router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', require('../contr
 // }}}
 // }}}
 // }}}
-
 // POST REQUESTS {{{
 // --->>> MIDDLEWARES <<<--- {{{
 // Global {{{
@@ -69,7 +67,6 @@ router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/adm
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', require('../middlewares/admin').articleTitleExist)
 // }}}
 // }}}
-
 // --->>> CONTROLLERS <<<--- {{{
 // Admin {{{
 router.post('/admin/account', require('../controllers/admin').postAccount)

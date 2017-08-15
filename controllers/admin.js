@@ -61,6 +61,7 @@ module.exports = {
    */
   postAuthentication: async (request, response) => {
     try {
+      // Function: checkUsername {{{
       /**
        * Checks if the given username exist in the database
        *
@@ -73,20 +74,8 @@ module.exports = {
           .count({ username: username })
           .exec()
       }
-
-      /**
-       * Gets the info of the admin, if he exist
-       *
-       * @param {String} username Username given by the user
-       * @returns {Promise} Promise containing the info of the admin
-       * @see Mongoose
-       */
-      const getAdmin = username => {
-        return Admin
-          .findOne({ username: username })
-          .exec()
-      }
-
+      // }}}
+      // Function: checkPassword {{{
       /**
        * Check if the given password is correct
        *
@@ -120,6 +109,21 @@ module.exports = {
           response.redirect('back')
         }
       }
+      // }}}
+      // Function: getAdmin {{{
+      /**
+       * Gets the info of the admin, if he exist
+       *
+       * @param {String} username Username given by the user
+       * @returns {Promise} Promise containing the info of the admin
+       * @see Mongoose
+       */
+      const getAdmin = username => {
+        return Admin
+          .findOne({ username: username })
+          .exec()
+      }
+      // }}}
 
       /** We grab necessary informations for the verification */
       const username = request.body.username
@@ -161,6 +165,7 @@ module.exports = {
    */
   getBlog: async (request, response) => {
     try {
+      // Function: getAmount {{{
       /**
        * Get the amount of existing article
        *
@@ -172,7 +177,8 @@ module.exports = {
           .count({})
           .exec()
       }
-
+      // }}}
+      // Function: getArticles {{{
       /**
        * Gets all existing articles
        *
@@ -198,7 +204,8 @@ module.exports = {
           .populate('category', 'title')
           .exec()
       }
-
+      // }}}
+      // Function: getArticleCategories {{{
       /**
        * Gets article's categories
        *
@@ -210,6 +217,7 @@ module.exports = {
           .find({})
           .exec()
       }
+      // }}}
 
       /** We get all the article to display them */
       /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
@@ -245,6 +253,7 @@ module.exports = {
    */
   getNewArticle: async (request, response) => {
     try {
+      // Function: getCategories {{{
       /**
        * Get all article categories
        *
@@ -256,6 +265,7 @@ module.exports = {
           .find({})
           .exec()
       }
+      // }}}
 
       const categories = await getCategories()
 
@@ -278,6 +288,7 @@ module.exports = {
    */
   postNewArticle: async (request, response) => {
     try {
+      // Function: createArticle {{{
       /**
        * Create a new article
        *
@@ -300,6 +311,7 @@ module.exports = {
 
         return Article.create(query)
       }
+      // }}}
 
       /** We execute the creation of the article */
       await createArticle()
@@ -321,6 +333,7 @@ module.exports = {
    */
   getEditArticle: async (request, response) => {
     try {
+      // Function: getArticle {{{
       /**
        * Get the information of the article
        *
@@ -338,7 +351,8 @@ module.exports = {
           .populate('category', 'title')
           .exec()
       }
-
+      // }}}
+      // Function: getCategories {{{
       /**
        * Get all article categories
        *
@@ -346,6 +360,7 @@ module.exports = {
        * @see Mongoose
        */
       const getCategories = () => ArticleCategory.find({}).exec()
+      // }}}
 
       /**
        * We get the id given by the user on the route, then get the article from it
@@ -378,6 +393,7 @@ module.exports = {
    */
   postEditArticle: async (request, response) => {
     try {
+      // Function: updateArticle {{{
       /**
        * Edit the article
        *
@@ -403,6 +419,7 @@ module.exports = {
         return Article
           .findOneAndUpdate(query, update)
       }
+      // }}}
 
       const id = request.params.id
 
@@ -427,6 +444,7 @@ module.exports = {
    */
   deleteArticle: async (request, response) => {
     try {
+      // Function: deleteArticle {{{
       /**
        * Deletes the article
        *
@@ -443,6 +461,7 @@ module.exports = {
           .remove(query)
           .exec()
       }
+      // }}}
 
       /**
        * We get the given ID by the user
@@ -472,6 +491,7 @@ module.exports = {
    */
   postArticleCategory: async (request, response) => {
     try {
+      // Function: createCategory {{{
       /**
        * Creates the new category
        * Using the user's sent data
@@ -487,6 +507,7 @@ module.exports = {
         return ArticleCategory
           .create(query)
       }
+      // }}}
 
       /** We get the title sent by the user as a POST method */
       const title = request.body.title
@@ -512,6 +533,7 @@ module.exports = {
    */
   deleteCategory: async (request, response) => {
     try {
+      // Function: deleteCategory {{{
       /**
        * Delete the category
        *
@@ -527,7 +549,8 @@ module.exports = {
         return ArticleCategory
           .remove(query)
       }
-
+      // }}}
+      // Function: deleteArticles {{{
       /**
        * Delete every article related to the deleted category
        *
@@ -545,6 +568,7 @@ module.exports = {
         return Article
           .remove(query)
       }
+      // }}}
 
       const id = request.params.id
 
@@ -570,10 +594,10 @@ module.exports = {
    */
   getAccount: async (request, response) => {
     try {
+      // Function: getAdmins {{{
       /**
        * Get all the admins
        *
-       * @async
        * @returns {Promise} Promise containing all the admins
        * @see Mongoose
        */
@@ -582,6 +606,7 @@ module.exports = {
           .find({})
           .exec()
       }
+      // }}}
 
       const admins = await getAdmins()
 
@@ -604,6 +629,7 @@ module.exports = {
    */
   postAccount: async (request, response) => {
     try {
+      // Function: createAccount {{{
       /**
        * Creates the new account
        *
@@ -628,6 +654,7 @@ module.exports = {
         return Admin
           .create(query)
       }
+      // }}}
 
       /** We hash the given password */
       const username = request.body.username
@@ -657,6 +684,7 @@ module.exports = {
    */
   deleteAccount: async (request, response) => {
     try {
+      // Function: deleteAccount {{{
       /**
        * Deletes the account matching the given id
        *
@@ -671,6 +699,7 @@ module.exports = {
         return Admin
           .remove(query)
       }
+      // }}}
 
       /** We get the id provided by the user */
       const id = request.params.id

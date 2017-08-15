@@ -35,6 +35,7 @@ module.exports = {
         _id: -1
       }
 
+      // Function: getArticles {{{
       /**
        * Get the recent articles
        *
@@ -54,7 +55,8 @@ module.exports = {
           .sort(query.sort)
           .exec()
       }
-
+      // }}}
+      // Function: getOldArticles {{{
       /**
        * The the old articles
        *
@@ -74,6 +76,7 @@ module.exports = {
           .skip(query.skip)
           .exec()
       }
+      // }}}
 
       const articles = await getArticles()
       const oldArticles = await getOldArticles()
@@ -99,6 +102,7 @@ module.exports = {
    */
   getArticle: async (request, response) => {
     try {
+      // Function: getArticle {{{
       /**
        * Get the article matching the given URL
        *
@@ -112,6 +116,7 @@ module.exports = {
           .populate('category', 'title')
           .exec()
       }
+      // }}}
 
       const article = await getArticle()
 
@@ -134,26 +139,28 @@ module.exports = {
    */
   getArchive: async (request, response) => {
     try {
-    /**
-     * Get the amount of existing article
-     *
-     * @returns {Promise} Promise containing the amount of existing article
-     * @see Mongoose
-     */
+      // Function: getAmount {{{
+      /**
+       * Get the amount of existing article
+       *
+       * @returns {Promise} Promise containing the amount of existing article
+       * @see Mongoose
+       */
       const getAmount = () => {
         return Article
           .count({})
           .exec()
       }
-
+      // }}}
+      // Function: getArticle {{{
       /**
-     * Get all existing article, relative to the current page
-     *
-     * @param {Number} page Current page
-     * @returns {Promise} Promise containing all the article, relative to the current page
-     * @see Mongoose
-     * @see Pagination
-     */
+       * Get all existing article, relative to the current page
+       *
+       * @param {Number} page Current page
+       * @returns {Promise} Promise containing all the article, relative to the current page
+       * @see Mongoose
+       * @see Pagination
+       */
       const getArticle = page => {
         const rawSkip = Math.floor(page * archiveItemPerPage)
         const skip = Math.floor(rawSkip - archiveItemPerPage)
@@ -173,6 +180,7 @@ module.exports = {
           .skip(query.skip)
           .exec()
       }
+      // }}}
 
       /** If the current page is superior to 1, we use the url's parameter, else we set it to 1 */
       const page = Number((request.params.page > 1) ? request.params.page : 1)

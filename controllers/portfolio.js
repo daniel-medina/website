@@ -44,19 +44,21 @@ module.exports = {
    * @param {HTTP} response
    */
   getProjects: async function (request, response) {
-    /**
-     * Returns all projects of the portfolio
-     *
-     * @returns {Promise} Promise containing all projects
-     * @see Mongoose
-     */
-    const getProjects = () => {
-      return Portfolio
-        .find({})
-        .exec()
-    }
-
     try {
+      // Function: getProjects {{{
+      /**
+       * Returns all projects of the portfolio
+       *
+       * @returns {Promise} Promise containing all projects
+       * @see Mongoose
+       */
+      const getProjects = () => {
+        return Portfolio
+          .find({})
+          .exec()
+      }
+      // }}}
+
       const projects = await getProjects()
 
       /** The global middleware ensure that this controller may only be executed as a xhr request */

@@ -101,10 +101,10 @@ module.exports = {
    */
   postAccount: async (request, response, next) => {
     try {
+      // Function: checkUsername {{{
       /**
        * Checks if the username is valid
        *
-       * @async
        * @param {String} username Username provided by the user
        * @returns {Promise} Promise giving a true or false response, depending on if the username matches the controls
        */
@@ -119,11 +119,11 @@ module.exports = {
           }
         })
       }
-
+      // }}}
+      // Function: checkPassword {{{
       /**
        * Checks if the password is valid
        *
-       * @async
        * @param {String} password Password provided by the user
        * @returns {Promise} Promise giving a true or false response, depending on if the password matches the controls
        */
@@ -138,6 +138,7 @@ module.exports = {
           }
         })
       }
+      // }}}
 
       /** Getting form input */
       const username = request.body.username
@@ -179,10 +180,10 @@ module.exports = {
    */
   accountUsernameExist: async (request, response, next) => {
     try {
+      // Function: countUsername {{{
       /**
        * Returns the amount of username that matches the provided username
        *
-       * @async
        * @param {String} username Username provided by the user with a form
        * @returns {Promise} Promise containing the amount of account matching the username
        * @see Mongoose
@@ -195,6 +196,7 @@ module.exports = {
         return Admin
           .count(query)
       }
+      // }}}
 
       /**
        * We get the username provided by the user
@@ -228,6 +230,7 @@ module.exports = {
    */
   accountIdExist: async (request, response, next) => {
     try {
+      // Function: countAccount {{{
       /**
        * Counts the amount of account matching the given id
        *
@@ -244,6 +247,7 @@ module.exports = {
           .count(query)
           .exec()
       }
+      // }}}
 
       /**
        * We get the amount of account matching the id
@@ -279,6 +283,7 @@ module.exports = {
    */
   accountDeleteSelf: async (request, response, next) => {
     try {
+      // Function: checkSession {{{
       /**
        * Checks if the given account id to delete is equal to the session id
        *
@@ -296,6 +301,7 @@ module.exports = {
           }
         })
       }
+      // }}}
 
       const session = request.session
       const id = request.params.id
@@ -327,6 +333,7 @@ module.exports = {
    */
   articleCategoryExist: async (request, response, next) => {
     try {
+      // Function: countCategory {{{
       /**
        * Returns the amount of category matching the selected category id by the user
        *
@@ -339,6 +346,7 @@ module.exports = {
       /** Returns either 1 or 0, there can't be duplicate ids */
         return ArticleCategory.count({ _id: category }).exec()
       }
+      // }}}
 
       const category = request.body.category
       const count = await countCategory(category)
@@ -366,16 +374,17 @@ module.exports = {
    */
   articleTitleExist: async (request, response, next) => {
     try {
+      // Function: countArticle {{{
       /**
        * Returns the amount of article matching the written title
        * Converted to url
        *
-       * @async
        * @returns {Promise} Promise containing the article count
        * @see Mongoose
        * @see slug
        */
       const countArticle = url => Article.count({ url: url }).exec()
+      // }}}
 
       /** Convertion of the title to its url form, using slug */
       const url = slug(request.body.title)
@@ -407,16 +416,17 @@ module.exports = {
    */
   articleCategoryTitleExist: async (request, response, next) => {
     try {
+      // Function: countArticleCategory {{{
       /**
        * Returns the amount of article matching the written title
        * Converted to url
        *
-       * @async
        * @returns {Promise} Promise containing the article count
        * @see Mongoose
        * @see slug
        */
       const countArticleCategory = title => ArticleCategory.count({ title: title }).exec()
+      // }}}
 
       const title = request.body.title
 
@@ -447,11 +457,11 @@ module.exports = {
    */
   articleIdExist: async (request, response, next) => {
     try {
+      // Function: countArticle {{{
       /**
        * Count the number of article matching the given ID
        * It's either 1 or 0 since IDs cannot be duplicated
        *
-       * @async
        * @param {ObjectID} id ObjectID of the article
        * @returns {Promise} Promise containing the count
        * @see Mongoose
@@ -465,6 +475,7 @@ module.exports = {
           .count(query)
           .exec()
       }
+      // }}}
 
       const id = request.params.id
       const count = await countArticle(id)
@@ -496,11 +507,11 @@ module.exports = {
    */
   articleCategoryIdExist: async (request, response, next) => {
     try {
+      // Function: countArticleCategory {{{
       /**
        * Count the number of category matching the given ID
        * It's either 1 or 0 since IDs cannot be duplicated
        *
-       * @async
        * @param {ObjectID} id ObjectID of the article
        * @returns {Promise} Promise containing the count
        * @see Mongoose
@@ -514,6 +525,7 @@ module.exports = {
           .count(query)
           .exec()
       }
+      // }}}
 
       const id = request.params.id
       const count = await countArticleCategory(id)
@@ -545,6 +557,7 @@ module.exports = {
    */
   isAuth: async (request, response, next) => {
     try {
+      // Function: adminCount {{{
       /**
        * Count the number of admin account
        *
@@ -552,7 +565,8 @@ module.exports = {
        * @see Mongoose
        */
       const adminCount = () => Admin.count({}).exec()
-
+      // }}}
+      // Function: createDefaultAdmin {{{
       /**
        * Create a default admin account
        *
@@ -564,7 +578,8 @@ module.exports = {
         username: username,
         password: password
       })
-
+      // }}}
+      // Function: checkAuth {{{
       /**
        * Check if the user is logged in as an admin
        *
@@ -610,6 +625,7 @@ module.exports = {
           }
         }
       }
+      // }}}
 
       const adminAmount = await adminCount()
 
