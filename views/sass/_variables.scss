@@ -26,7 +26,7 @@ $a-hover-color: $color2;
 $container-max-width: 1142px;
 // }}}
 // Html & body {{{
-$body-background: url('../images/background.jpg');
+$body-background: url('/assets/images/background.jpg');
 // }}}
 // Button {{{
 $btn-border-radius: 1px;
@@ -76,7 +76,7 @@ $block-list-font-size: 14px;
 $block-font-color: white;
 // }}}
 // Content {{{
-$content-wrap-padding: 10px 5px;
+$content-wrap-padding: 0 5px 10px 5px;
 $content-background: $background;
 $content-shadow: 0 0 5px grey;
 $content-border: 1px solid $color4;
@@ -186,6 +186,15 @@ $authentication-input-label-color: grey;
 $authentication-icon-width: 60px;
 $authentication-icon-size: 26px;
 $authentication-input-submit-padding: 5px 0;
+// }}}
+// Portfolio {{{
+$portfolio-margin: 5px;
+$portfolio-project-padding-hover: 5px 3px;
+$portfolio-project-padding: 10px 3px;
+$portfolio-project-shadow: 1px 1px 2px $color9;
+$portfolio-project-screenshot-img-width: 100%;
+$portfolio-project-screenshot-img-height: 200px;
+$portfolio-project-description-padding: 3px;
 // }}}
 // Footer {{{
 $footer-bottom-pos: 63px;

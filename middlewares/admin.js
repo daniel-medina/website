@@ -38,7 +38,7 @@ slug.defaults.mode = 'rfc3986'
 
 /** ALL */
 export const all = {
-  // isAuth {{{
+  // Middleware: isAuth {{{
   /**
    * Checks if the user is authenticated as an admin
    *
@@ -147,7 +147,7 @@ export const all = {
 
 /** GET */
 export const get = {
-  // accountIdExist {{{
+  // Middleware: accountIdExist {{{
   /**
    * Verifies that the provided account ID exist
    *
@@ -200,7 +200,7 @@ export const get = {
     }
   },
   // }}}
-  // accountDeleteSelf {{{
+  // Middleware: accountDeleteSelf {{{
   /**
    * Prevent the administrator from deleting his own account
    *
@@ -250,7 +250,7 @@ export const get = {
     }
   },
   // }}}
-  // articleCategoryExist {{{
+  // Middleware: articleCategoryExist {{{
   /**
    * Checks if the chosen article's category exist
    *
@@ -290,7 +290,7 @@ export const get = {
     }
   },
   // }}}
-  // articleIdExist {{{
+  // Middleware: articleIdExist {{{
   /**
    * Checks if the given article's id exist
    *
@@ -340,7 +340,7 @@ export const get = {
     }
   },
   // }}}
-  // articleCategoryIdExist {{{
+  // Middleware: articleCategoryIdExist {{{
   /**
    * Checks if the given article's id exist
    *
@@ -394,7 +394,7 @@ export const get = {
 
 /** POST */
 export const post = {
-  // accountUsernameExist {{{
+  // Middleware: accountUsernameExist {{{
   /**
    * Checks if the account created already exist in the database
    *
@@ -444,7 +444,7 @@ export const post = {
     }
   },
   // }}}
-  // article {{{
+  // Middleware: article {{{
   /**
    * Verify user sent information for the creation of an article
    *
@@ -470,7 +470,7 @@ export const post = {
     }
   },
   // }}}
-  // articleTitleExist {{{
+  // Middleware: articleTitleExist {{{
   /**
    * Checks if the written article's title doesn't already exist
    * Because article's title are used as url, so there must not be any duplicate
@@ -513,7 +513,7 @@ export const post = {
     }
   },
   // }}}
-  // articleCategory {{{
+  // Middleware: articleCategory {{{
   /**
    * Secure the creation of article category
    *
@@ -539,7 +539,7 @@ export const post = {
     }
   },
   // }}}
-  // articleCategoryExist {{{
+  // Middleware: articleCategoryExist {{{
   /**
    * Checks if the chosen article's category exist
    *
@@ -579,7 +579,7 @@ export const post = {
     }
   },
   // }}}
-  // articleCategoryTitleExist {{{
+  // Middleware: articleCategoryTitleExist {{{
   /**
    * Checks if the written article's category title doesn't already exist
    *
@@ -620,7 +620,7 @@ export const post = {
     }
   },
   // }}}
-  // account {{{
+  // Middleware: account {{{
   /**
    * Checks the variables used to create an administrator account
    *

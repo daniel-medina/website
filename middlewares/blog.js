@@ -18,7 +18,7 @@ import Article from '../models/article'
 
 /** GET */
 export const get = {
-  // articleExist {{{
+  // Middleware: articleExist {{{
   /**
    * Checks if the article do exist
    *
@@ -59,7 +59,7 @@ export const get = {
     }
   },
   // }}}
-  // views {{{
+  // Middleware: views {{{
   /**
    * Manages the view count of an article
    *
@@ -149,7 +149,7 @@ export const get = {
     }
   },
   // }}}
-  // archivePageCheck {{{
+  // Middleware: archivePageCheck {{{
   /**
    * Ensure that the user doesn't go to a page that does not exist, at the archive
    *

@@ -9,38 +9,38 @@ html
     else
       title= 'Daniel Medina | ' + title
 
-    link(rel='shortcut icon' type='image/png' href='/images/favicon.png')
-    link(rel='stylesheet' href='/css/styles.css')
+    link(rel='shortcut icon' type='image/png' href='/assets/images/favicon.png')
+    link(rel='stylesheet' href='/assets/styles.css')
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono")
 
   body
-    div#website.row.wrap
-      div.container.wrap
-        div.content
-          div#menu.hidden-xs
-            div.pull-left
+    #website.row.wrap
+      .container.wrap
+        .content
+          #menu.hidden-xs
+            .pull-left
               li #[a(class='active' href='/') #[i.fa.fa-newspaper-o] Blog]
               li #[a(href='/portfolio') #[i.fa.fa-picture-o] Portfolio]
-            div.pull-right
+            .pull-right
               li #[a(href='/about-me') #[i.fa.fa-address-card-o] About me]
               li #[a(href='/contact') #[i.fa.fa-envelope-o] Contact]
               if (session.admin)
                 li #[a(href='/admin/disconnect') #[i.fa.fa-power-off] Disconnect]
           menuxs.visible-xs
-            div.text-center
+            .text-center
               br
               strong You need JavaScript enabled to see the mobile version of the menu.
               hr
           if (error.length > 0)
-            div.alert.alert-danger
+            .alert.alert-danger
               p= error
           if (success.length > 0)
-            div.alert.alert-success
+            .alert.alert-success
               p= success
-          div.content-wrap
+          .content-wrap
             block content
-        div#footer
+        #footer
           p.powered 
             if (env === 'development')
               | Development environment
@@ -49,11 +49,5 @@ html
           p.signature 
             a(href='https://github.com/daniel-medina/website' target='_blank') daniel-medina
 
-    // Loading Vue for reactive content - and because it is awesome
-    script(src='/js/vue.js')
-
-    // Loading Axios for ajax requests
-    script(src='/js/axios.min.js')
-
-    // Website frontend javascript using VueJS 2
-    script(src='/js/website.js')
+    // Vue.js components of the website
+    script(src='/assets/content.js')

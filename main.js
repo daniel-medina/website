@@ -9,6 +9,13 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import flash from 'connect-flash'
 import session from 'express-session'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import WebpackDashboard from 'webpack-dashboard/plugin'
+
+/** Importing webpack configs */
+import webpackConfig from './config/webpack.dev.config.js'
 
 /** Importing routes */
 import router from './routes/index'
@@ -16,6 +23,10 @@ import router from './routes/index'
 /** Declaring server variables */
 const app = express()
 const server = http.createServer(app)
+const compiler = webpack(webpackConfig)
+
+/** Getting the NODE_ENV variable */
+const env = process.env.NODE_ENV
 
 /**
  * Setting up the app :
@@ -25,14 +36,30 @@ const server = http.createServer(app)
  * >> Setting fonts public folders
  * >> Handling HTTP errors
  * >> Defining global variables/functions for views
+ * >> Webpack dev server initialization
  */
+
+/** Applying the webpack dev server - if in development environment */
+if (env === 'development') {
+  compiler.apply(new WebpackDashboard())
+
+  /** Applying webpack dev server for watching file's modifications */
+  app.use(webpackDevMiddleware(compiler, {
+    noIntro: true,
+    publicPath: webpackConfig.output.publicPath,
+    stats: { colors: true }
+  }))
+
+  /** Applying hot reload module's middleware */
+  app.use(webpackHotMiddleware(compiler))
+}
 
 /**
  * Applying stuff to the website
  * Including setting up pug view engine
  */
 app.set('view engine', 'pug')
-app.use(bodyParser())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 /** Session store method MUST be changed for production use */
 app.use(session({
@@ -64,3 +91,9 @@ app.use((request, response, next) => {
 })
 
 server.listen(port)
+
+/** Decorating the terminal */
+if (env === 'development') {
+  console.log('Website is running on development environment.')
+  console.log('Listening to port ' + port + '.')
+}

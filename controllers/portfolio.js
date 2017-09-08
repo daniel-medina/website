@@ -17,7 +17,7 @@ import Portfolio from '../models/portfolio'
 
 /** GET */
 export const get = {
-  // index {{{
+  // Controller: index {{{
   /**
    * Returns the index of the portfolio
    *
@@ -35,13 +35,14 @@ export const get = {
     }
   },
   // }}}
-  // projects{{{
+  // Controller: projects{{{
   /**
    * Returns all projects of the portfolio
    *
    * @async
    * @param {HTTP} request
    * @param {HTTP} response
+   * @see XHR
    */
   projects: async function (request, response) {
     try {

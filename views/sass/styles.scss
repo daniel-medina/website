@@ -1,7 +1,7 @@
-$icon-font-path: "node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 
 @import "/font-awesome/font-awesome.css";
-@import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 @import "./_variables.scss";
 
 // @media {{{
@@ -52,11 +52,6 @@ html, body {
   }
 }
 
-// }}}
-// breadcrumb {{{
-nav.breadcrumb {
-  background: orange;
-}
 // }}}
 // container {{{
 .container {
@@ -608,7 +603,6 @@ nav.breadcrumb {
       }
     }
 
-
     // }}}
 
     table {
@@ -667,7 +661,43 @@ nav.breadcrumb {
 // }}}
 // portfolio {{{
 #portfolio {
-  background: red;
+  padding: 0;
+  margin-top: $portfolio-margin;
+
+  .project {
+    &:hover {
+      padding: $portfolio-project-padding-hover;
+      cursor: pointer;
+    }
+    padding: $portfolio-project-padding;
+    transition: $transition;
+
+    .wrapper {
+      box-shadow: $portfolio-project-shadow;
+      padding: 0;
+      border: $block-border;
+      border-radius: $block-border-radius;
+      overflow: hidden;
+
+      .screenshot {
+        text-align: center;
+        padding: 0;
+
+        img {
+          width: $portfolio-project-screenshot-img-width;
+          height: $portfolio-project-screenshot-img-height;
+        }
+      }
+
+      .title {
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        background: $color9;
+        padding: $portfolio-project-description-padding;
+      }
+    }
+  }
 }
 
 // }}}

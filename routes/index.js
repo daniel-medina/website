@@ -5,6 +5,7 @@ import express from 'express'
 import * as AdminController from '../controllers/admin'
 import * as BlogController from '../controllers/blog'
 import * as PortfolioController from '../controllers/portfolio'
+import * as SessionController from '../controllers/session'
 
 /** Middlewares */
 import * as GlobalMiddleware from '../middlewares/global'
@@ -35,15 +36,6 @@ router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', AdminMiddleware.g
 // }}}
 // }}}
 // --->>> CONTROLLERS <<<--- {{{
-// Blog {{{
-router.get('/', BlogController.get.index)
-router.get('/article/:url([a-z0-9_-]{1,})?', BlogController.get.article)
-router.get('/archive/:page([0-9]{1,})?', BlogController.get.archive)
-// }}}
-// Portfolio {{{
-router.get('/portfolio', PortfolioController.get.index)
-router.get('/xhr/portfolio/projects', PortfolioController.get.projects)
-// }}}}
 // Admin {{{
 router.get('/admin', AdminController.get.index)
 router.get('/admin/authentication', AdminController.get.authentication)
@@ -56,6 +48,18 @@ router.get('/admin/article/edit/:id([a-z0-9]{1,})', AdminController.get.editArti
 router.get('/admin/article/delete/:id([a-z0-9]{1,})', AdminController.get.deleteArticle)
 router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', AdminController.get.deleteCategory)
 // }}}
+// Blog {{{
+router.get('/', BlogController.get.index)
+router.get('/article/:url([a-z0-9_-]{1,})?', BlogController.get.article)
+router.get('/archive/:page([0-9]{1,})?', BlogController.get.archive)
+// }}}
+// Portfolio {{{
+router.get('/portfolio', PortfolioController.get.index)
+router.get('/xhr/portfolio/projects', PortfolioController.get.projects)
+// }}}}
+// Sessions {{{
+router.get('/session/get', SessionController.get.session)
+// }}}}
 // }}}
 // }}}
 

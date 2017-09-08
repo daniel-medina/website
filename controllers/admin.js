@@ -23,7 +23,7 @@ import Password from '../lib/password'
 
 /** GET */
 export const get = {
-  // disconnect {{{
+  // Controller: disconnect {{{
   /**
    * Disconnect from the current session
    *
@@ -32,14 +32,18 @@ export const get = {
    * @param {HTTP} response
    */
   disconnect: async (request, response) => {
+    try {
     /** We destroy the session */
-    request.session.destroy()
+      request.session.destroy()
 
-    /** Then we redirect the user to the index */
-    response.redirect('/')
+      /** Then we redirect the user to the index */
+      response.redirect('/')
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
-  // index {{{
+  // Controller: index {{{
   /**
    * Returns the index view of the admin panel
    *
@@ -48,12 +52,16 @@ export const get = {
    * @param {HTTP} response
    */
   index: async (request, response) => {
-    response.render('admin/index', {
-      title: 'Administration'
-    })
+    try {
+      response.render('admin/index', {
+        title: 'Administration'
+      })
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
-  // blog {{{
+  // Controller: blog {{{
   /**
    * Blog's administration index
    *
@@ -141,7 +149,7 @@ export const get = {
     }
   },
   // }}}
-  // authentication {{{
+  // Controller: authentication {{{
   /**
    * Returns the authentication view
    *
@@ -150,12 +158,16 @@ export const get = {
    * @param {HTTP} response
    */
   authentication: async (request, response) => {
-    response.render('admin/authentication', {
-      title: 'Authentication'
-    })
+    try {
+      response.render('admin/authentication', {
+        title: 'Authentication'
+      })
+    } catch (error) {
+      console.log(error)
+    }
   },
   // }}}
-  // newArticle {{{
+  // Controller: newArticle {{{
   /**
    * Page form to create a new article
    *
@@ -190,7 +202,7 @@ export const get = {
     }
   },
   // }}}
-  // editArticle {{{
+  // Controller: editArticle {{{
   /**
    * Send to the user the form to edit an article
    *
@@ -249,7 +261,7 @@ export const get = {
     }
   },
   // }}}
-  // account {{{
+  // Controller: account {{{
   /**
    * Page to manage administrators
    *
@@ -284,7 +296,7 @@ export const get = {
     }
   },
   // }}}
-  // deleteArticle {{{
+  // Controller: deleteArticle {{{
   /**
    * Deletes an article
    *
@@ -330,7 +342,7 @@ export const get = {
     }
   },
   // }}}
-  // deleteCategory {{{
+  // Controller: deleteCategory {{{
   /**
    * Handles the deletion of a category
    *
@@ -391,7 +403,7 @@ export const get = {
     }
   },
   // }}}
-  // deleteAccount {{{
+  // Controller: deleteAccount {{{
   /**
    * Handles the deletion of an account
    *
@@ -435,7 +447,7 @@ export const get = {
 
 /** POST */
 export const post = {
-  // authentication {{{
+  // Controller: authentication {{{
   /**
    * Handles the user sent authentication form
    *
@@ -523,7 +535,7 @@ export const post = {
     }
   },
   // }}}
-  // newArticle {{{
+  // Controller: newArticle {{{
   /**
    * Handles the user sent article via the form
    *
@@ -568,7 +580,7 @@ export const post = {
     }
   },
   // }}}
-  // editArticle {{{
+  // Controller editArticle {{{
   /**
    * Handle the information sent by the user in order to
    * Update an article
@@ -620,7 +632,7 @@ export const post = {
     }
   },
   // }}}
-  // articleCategory {{{
+  // Controller: articleCategory {{{
   /**
    * Handles the creation of a new article category
    * Further verifications are done in the affected middleware
@@ -663,7 +675,7 @@ export const post = {
     }
   },
   // }}}
-  // account {{{
+  // Controller: account {{{
   /**
    * Handles the creation of a new administrator account
    *

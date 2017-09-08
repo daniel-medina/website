@@ -19,7 +19,7 @@ import Article from '../models/article'
 
 /** GET */
 export const get = {
-  // index {{{
+  // Controller: index {{{
   /**
    * Handles the index of the blog
    *
@@ -92,7 +92,7 @@ export const get = {
     }
   },
   // }}}
-  // article {{{
+  // Controller: article {{{
   /**
    * Handles the view of an article
    *
@@ -129,7 +129,7 @@ export const get = {
     }
   },
   // }}}
-  // archive {{{
+  // Controller: archive {{{
   /**
    * Handles the archive index view
    *
