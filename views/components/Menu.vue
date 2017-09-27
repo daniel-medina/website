@@ -64,9 +64,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-@import "/font-awesome/font-awesome.css";
+<style lang="scss" scoped>
+@import '../sass/styles.scss';
 
 // @media {{{
 @media (min-width: 1200px) {

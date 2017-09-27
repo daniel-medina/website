@@ -23,9 +23,6 @@ export default {
     }
   },
   created () {
-    setTimeout(function () {
-      console.log(this.$children)
-    }, 1000)
   },
   components: {
     detail: Detail
@@ -45,5 +42,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './views/sass/_variables';
+@import '../../sass/styles.scss';
 </style>

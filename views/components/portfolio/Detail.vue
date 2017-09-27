@@ -1,7 +1,10 @@
 <template lang='pug'>
 #detail
   .wrapper(:style="style")
-    | onche
+    .window.col-sm-10.col-md-10.col-lg-10.col-xs-12
+      .buttons
+        i.fa.fa-window-close(@click="$parent.display()")
+      | Test
 </template>
 
 <script>
@@ -16,7 +19,6 @@ export default {
   },
   created () {
     this.changeStyle()
-    console.log(this.style.opacity)
   },
   methods: {
     // Method: changeStyle {{{
@@ -40,17 +42,34 @@ export default {
       else this.style = hide
     }
     // }}}
+  },
+  watch: {
+    // Watch: show {{{
+    /**
+     * Watch for a change in this.show
+     * In order to update the display according to that variable
+     *
+     */
+    show: function () {
+      /** Update the style with the new value of this.show */
+      this.changeStyle()
+    }
+    // }}}
   }
 }
 </script>
 
-<style>
-@import './views/sass/_variables';
+<style lang="scss" scoped>
+@import '../../sass/styles.scss';
 
+/** Should be changed to a "modal" or "popup" class someday */
 #detail {
   .wrapper {
-    position: $color9;
+    transition: $transition;
+    position: fixed;
     display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 9999;
     top: 0;
     left: 0;
@@ -58,7 +77,25 @@ export default {
     height: 100%;
 
     .window {
-      background: red;
+      padding: 0;
+      border: $portfolio-project-popup-border;
+      background: $portfolio-project-popup-background;
+      height: $portfolio-project-popup-height;
+
+      .buttons {
+        text-align: right;
+        padding-right: $portfolio-project-popup-buttons-padding;
+        font-size: $portfolio-project-popup-buttons-size;
+        width: 100%;
+
+        i {
+          transition: $transition;
+          &:hover {
+            cursor: pointer;
+            color: $a-hover-color;
+          }
+        }
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 <template lang="pug">
 #portfolio.col-lg-12
-  project(:data='data')
+  div(v-for="item in data")
+    project(:data='item')
 
   // .clearfix every 3 item
 </template>
