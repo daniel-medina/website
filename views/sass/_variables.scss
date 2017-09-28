@@ -11,11 +11,17 @@ $color9: rgba(10, 30, 60, 0.75);
 $background: rgba(239, 242, 247, 1.0);
 $border: #D0D7E6;
 $text-black: #333333;
+$popup-background: rgba(10, 10, 10, 0.6);
+$popup-border: rgba(10, 10, 10, 0.8);
 // }}}
 // Fonts {{{
 $font-all: 'Arial';
 $font-title: 'Aclonica', sans-serif;
 $font-read: 'Ubuntu Mono', monospace;
+$font-tiny: 14px;
+$font-small: 16px;
+$font-medium: 18px;
+$font-big: 24px;
 // }}}
 // Global variables {{{
 $transition: 0.2s;
@@ -189,17 +195,46 @@ $authentication-input-submit-padding: 5px 0;
 // }}}
 // Portfolio {{{
 $portfolio-margin: 5px;
+$portfolio-project-name-margin: 30px;
 $portfolio-project-padding-hover: 5px 3px;
 $portfolio-project-padding: 10px 3px;
 $portfolio-project-shadow: 1px 1px 2px $color9;
 $portfolio-project-screenshot-img-width: 100%;
 $portfolio-project-screenshot-img-height: 200px;
 $portfolio-project-description-padding: 3px;
-$portfolio-project-popup-border: 14px solid $color9;
+$portfolio-project-popup-border: 16px solid $popup-border;
 $portfolio-project-popup-background: white;
 $portfolio-project-popup-height: 80%;
 $portfolio-project-popup-buttons-padding: 5px;
 $portfolio-project-popup-buttons-size: 24px;
+$portfolio-project-detail-image-min-height: 468px;
+$portfolio-project-detail-image-max-height: 648px;
+$portfolio-project-information-margin: 80px;
+$portfolio-project-information-category-tags-margin: 2px;
+$portfolio-project-information-tags-margin: 2px 3px;
+$portfolio-project-information-tags-border: 1px solid orange;
+$portfolio-project-information-tags-background-green: #45BF00;
+$portfolio-project-information-tags-background-red: #FF1F08;
+$portfolio-project-information-tags-background-orange: #FF5322;
+$portfolio-project-information-tags-background-black: #1A1A1A;
+$portfolio-project-information-tags-background-grey: #999999;
+$portfolio-project-information-tags-background-pink: #E60061;
+$portfolio-project-information-tags-border-green: 1px solid #41B300;
+$portfolio-project-information-tags-border-red: 1px solid #CC1906;
+$portfolio-project-information-tags-border-orange: 1px solid #CC301B;
+$portfolio-project-information-tags-border-black: 1px solid #030303;
+$portfolio-project-information-tags-border-grey: 1px solid #808080;
+$portfolio-project-information-tags-border-pink: 1px solid #B3004B;
+$portfolio-project-information-category-margin: 30px;
+$portfolio-project-information-category-title-border: 2px solid $color9;
+$portfolio-project-information-category-title-font-size: $font-medium;
+// }}}
+// Popup {{{
+$popup-shadow: 0 0 20px $popup-background;
+$popup-chevron-size: 42px;
+$popup-chevron-width: 60px;
+$popup-chevron-background: $popup-background;
+$popup-chevron-color: $color6;
 // }}}
 // Footer {{{
 $footer-bottom-pos: 63px;
