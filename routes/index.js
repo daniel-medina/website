@@ -47,6 +47,7 @@ router.get('/admin/article/create', AdminController.get.newArticle)
 router.get('/admin/article/edit/:id([a-z0-9]{1,})', AdminController.get.editArticle)
 router.get('/admin/article/delete/:id([a-z0-9]{1,})', AdminController.get.deleteArticle)
 router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', AdminController.get.deleteCategory)
+router.get('/admin/portfolio/framework', AdminController.get.frameworks)
 // }}}
 // Blog {{{
 router.get('/', BlogController.get.index)
@@ -80,6 +81,8 @@ router.post('/admin/article-category/create', AdminMiddleware.post.articleCatego
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.post.article)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.post.articleCategoryExist)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.post.articleTitleExist)
+router.post('/admin/portfolio/framework/create', AdminMiddleware.post.framework)
+router.post('/admin/portfolio/framework/create', AdminMiddleware.post.frameworkExist)
 // }}}
 // }}}
 // --->>> CONTROLLERS <<<--- {{{
@@ -88,6 +91,7 @@ router.post('/admin/account', AdminController.post.account)
 router.post('/admin/article/create', AdminController.post.newArticle)
 router.post('/admin/article-category/create', AdminController.post.articleCategory)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminController.post.editArticle)
+router.post('/admin/portfolio/framework/create', AdminController.post.newFramework)
 router.post('/admin/authentication', AdminController.post.authentication)
 // }}}
 // }}}

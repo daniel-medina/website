@@ -21,6 +21,11 @@ import {
   maxArticleTitleLength,
   maxArticleCategoryLength
 } from '../config/blog'
+import {
+  colors,
+  minFrameworkNameLength,
+  maxFrameworkNameLength
+} from '../config/portfolio'
 
 /** Modules imports */
 import slug from 'slug'
@@ -29,6 +34,7 @@ import slug from 'slug'
 import Admin from '../models/admin'
 import Article from '../models/article'
 import {ArticleCategory} from '../models/refs/articleCategory'
+import {Framework} from '../models/refs/framework'
 
 /** Libs imports */
 import Password from '../lib/password'
@@ -613,6 +619,80 @@ export const post = {
       } else {
         /** Else, we redirect the user back and show him an error message */
         request.flash('error', 'The article\'s category title already exist in the database.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: framework {{{
+  /**
+   * Checks values inserted from the user
+   * in order to create a new framework
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  framework: async (request, response, next) => {
+    try {
+      /** We get the user inputs sent via POST */
+      const name = request.body.name
+      const color = request.body.color
+
+      /** Checks if the given name's length is between the one provided by the configurations */
+      if (name.length > minFrameworkNameLength && name.length < maxFrameworkNameLength) {
+        if (colors.includes(color)) {
+          next()
+        } else {
+          /** Must flash POST data back in order to avoid pissing off the user */
+          request.flash('error', 'The chosen color must match one of the available colors.')
+          response.redirect('back')
+        }
+      } else {
+        /** Must flash POST data back in order to avoid pissing off the user */
+        request.flash('error', 'The name of the framework must be between ' + minFrameworkNameLength + ' and ' + maxFrameworkNameLength + ' character long.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: frameworkExist {{{
+  /**
+   * Checks if the given framework name already exist
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  frameworkExist: async (request, response, next) => {
+    try {
+      // Function: countFramework {{{
+      /**
+       * Runs the verification
+       *
+       * @param {Type} tag Description
+       * @returns {Type} tag
+       * @see Mongoose
+       */
+      const countFramework = name => Framework.count({ name: name }).exec()
+      // }}}
+
+      /** Framework's names are converted to lowercase */
+      const name = request.body.name.toLowerCase()
+      const count = await countFramework(name)
+
+      /** If there is no framework matching the given name, the user may pass */
+      if (count === 0) {
+        next()
+      } else {
+        /** It would be wise to give the user its input back ... */
+        request.flash('error', 'There is already a framework using this name.')
         response.redirect('back')
       }
     } catch (error) {

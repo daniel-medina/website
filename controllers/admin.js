@@ -8,6 +8,7 @@
 
 /** Configs imports */
 import {adminBlogItemPerPage} from '../config/blog'
+import {colors} from '../config/portfolio'
 
 /** Modules imports */
 import slug from 'slug'
@@ -17,6 +18,7 @@ import uuid from 'uuid/v4'
 import Admin from '../models/admin'
 import Article from '../models/article'
 import {ArticleCategory} from '../models/refs/articleCategory'
+import {Framework} from '../models/refs/framework'
 
 /** Libs imports */
 import Password from '../lib/password'
@@ -143,6 +145,38 @@ export const get = {
         pagination: pagination,
         articles: articles,
         categories: categories
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: frameworks {{{
+  /**
+   * Manages frameworks that are used on portfolio's projects
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  frameworks: async (request, response) => {
+    try {
+      // Function: getFrameworks {{{
+      /**
+       * Get frameworks available in the database
+       *
+       * @returns {Promise} object containing all frameworks
+       * @see Mongoose
+       */
+      const getFrameworks = () => Framework.find({}).exec()
+      // }}}
+
+      const frameworks = await getFrameworks()
+
+      response.render('admin/portfolio/framework', {
+        title: 'Frameworks management',
+        frameworks: frameworks,
+        colors: colors
       })
     } catch (error) {
       console.log(error)
@@ -580,7 +614,45 @@ export const post = {
     }
   },
   // }}}
-  // Controller editArticle {{{
+  // Controller: newFramework {{{
+  /**
+   * Handles the creation of a new framework
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  newFramework: async (request, response) => {
+    try {
+      // Function: create {{{
+      /**
+       * Inserts the new framework inside the database
+       *
+       * @param {String} name Name of the framework
+       * @param {String} color Color of the framework
+       * @returns {Promise} creation of the framework
+       * @see Mongoose
+       */
+      const create = (name, color) => Framework.create({
+        created: new Date(),
+        name: name,
+        color: color })
+      // }}}
+
+      /** We convert the name to lowercase because uppercase characters are not needed */
+      const name = request.body.name.toLowerCase()
+      const color = request.body.color
+
+      await create(name, color)
+
+      request.flash('success', 'The framework ' + name + ' was created successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: editArticle {{{
   /**
    * Handle the information sent by the user in order to
    * Update an article

@@ -21,6 +21,8 @@ const PortfolioSchema = new Schema({
   url: String,
   title: String,
   description: String,
+  frameworks: { type: String, ref: 'framework' },
+  languages: { type: String, ref: 'language' },
   images: Array,
   tags: Array
 }, {

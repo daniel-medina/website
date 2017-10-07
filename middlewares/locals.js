@@ -191,6 +191,7 @@ module.exports = {
       success: request.flash('success'),
       error: request.flash('error'),
       session: request.session,
+      path: request.path,
       previewStringLength: previewStringLength,
       marked: marked,
       env: process.env.NODE_ENV,
