@@ -33,6 +33,8 @@ router.get('/admin/account/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.accoun
 router.get('/admin/article/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.articleIdExist)
 router.get('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.get.articleIdExist)
 router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.articleCategoryIdExist)
+router.get('/admin/portfolio/framework/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.frameworkIdExist)
+router.get('/admin/portfolio/language/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.languageIdExist)
 // }}}
 // }}}
 // --->>> CONTROLLERS <<<--- {{{
@@ -48,6 +50,9 @@ router.get('/admin/article/edit/:id([a-z0-9]{1,})', AdminController.get.editArti
 router.get('/admin/article/delete/:id([a-z0-9]{1,})', AdminController.get.deleteArticle)
 router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', AdminController.get.deleteCategory)
 router.get('/admin/portfolio/framework', AdminController.get.frameworks)
+router.get('/admin/portfolio/framework/delete/:id([a-z0-9]{1,})', AdminController.get.deleteFramework)
+router.get('/admin/portfolio/language', AdminController.get.languages)
+router.get('/admin/portfolio/language/delete/:id([a-z0-9]{1,})', AdminController.get.deleteLanguage)
 // }}}
 // Blog {{{
 router.get('/', BlogController.get.index)
@@ -83,6 +88,8 @@ router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.post.articl
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.post.articleTitleExist)
 router.post('/admin/portfolio/framework/create', AdminMiddleware.post.framework)
 router.post('/admin/portfolio/framework/create', AdminMiddleware.post.frameworkExist)
+router.post('/admin/portfolio/language/create', AdminMiddleware.post.language)
+router.post('/admin/portfolio/language/create', AdminMiddleware.post.languageExist)
 // }}}
 // }}}
 // --->>> CONTROLLERS <<<--- {{{
@@ -92,6 +99,7 @@ router.post('/admin/article/create', AdminController.post.newArticle)
 router.post('/admin/article-category/create', AdminController.post.articleCategory)
 router.post('/admin/article/edit/:id([a-z0-9]{1,})', AdminController.post.editArticle)
 router.post('/admin/portfolio/framework/create', AdminController.post.newFramework)
+router.post('/admin/portfolio/language/create', AdminController.post.newLanguage)
 router.post('/admin/authentication', AdminController.post.authentication)
 // }}}
 // }}}

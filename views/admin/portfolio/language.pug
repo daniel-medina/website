@@ -4,18 +4,18 @@ block content
   #block.col-lg-8.col-md-8.col-xs-12
     .block-content
       .middle
-        each framework in frameworks
+        each language in languages
           li
-            | #[a.btn.btn-xs.btn-danger(href='/admin/portfolio/framework/delete/' + framework.id) #[i.fa.fa-times]] #{framework.name} [#{framework.color}]
+            | #[a.btn.btn-xs.btn-danger(href='/admin/portfolio/language/delete/' + language.id) #[i.fa.fa-times]] #{language.name} [#{language.color}]
 
   #block.col-lg-4.col-md-4.col-xs-12
     .block-content
       .top
         .title= 'Creation'
-        form(method='POST', action='./framework/create')
+        form(method='POST', action='./language/create')
           .middle
             .form-group
-              label(for='name') Name of the new framework
+              label(for='name') Name of the new language
               input.form-control(type='text', name='name')
             .form-group
               label(for='color') Choose a color

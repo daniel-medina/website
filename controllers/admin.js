@@ -19,6 +19,7 @@ import Admin from '../models/admin'
 import Article from '../models/article'
 import {ArticleCategory} from '../models/refs/articleCategory'
 import {Framework} from '../models/refs/framework'
+import {Language} from '../models/refs/language'
 
 /** Libs imports */
 import Password from '../lib/password'
@@ -176,6 +177,38 @@ export const get = {
       response.render('admin/portfolio/framework', {
         title: 'Frameworks management',
         frameworks: frameworks,
+        colors: colors
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: languages {{{
+  /**
+   * Manages languages that are used on portfolio's projects
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  languages: async (request, response) => {
+    try {
+      // Function: getLanguages {{{
+      /**
+       * Get languages available in the database
+       *
+       * @returns {Promise} object containing all languages
+       * @see Mongoose
+       */
+      const getLanguages = () => Language.find({}).exec()
+      // }}}
+
+      const languages = await getLanguages()
+
+      response.render('admin/portfolio/language', {
+        title: 'Languages management',
+        languages: languages,
         colors: colors
       })
     } catch (error) {
@@ -475,6 +508,74 @@ export const get = {
     } catch (error) {
       console.log(error)
     }
+  },
+  // }}}
+  // Controller: deleteFramework {{{
+  /**
+   * Handles the deletion of a framework
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteFramework: async (request, response) => {
+    try {
+      // Function: deleteFramework {{{
+      /**
+       * Delete the selected framework
+       *
+       * @param {ObjectID} id Id of the framework to delete
+       * @returns {Promise} Promise containing the execution of the deletion
+       */
+      const deleteFramework = id => Framework.findOneAndRemove({ _id: id }).exec()
+      // }}}
+
+      /** We get the id provided by the user in the url */
+      const id = request.params.id
+
+      /** We delete the framework */
+      await deleteFramework(id)
+
+      /** Then we redirect the user back */
+      request.flash('success', 'The framework was successfully deleted.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: deleteLanguage {{{
+  /**
+   * Handles the deletion of a language
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteLanguage: async (request, response) => {
+    try {
+      // Function: deleteLanguage {{{
+      /**
+       * Delete the selected language
+       *
+       * @param {ObjectID} id Id of the language to delete
+       * @returns {Promise} Promise containing the execution of the deletion
+       */
+      const deleteLanguage = id => Language.findOneAndRemove({ _id: id }).exec()
+      // }}}
+
+      /** We get the id provided by the user in the url */
+      const id = request.params.id
+
+      /** We delete the framework */
+      await deleteLanguage(id)
+
+      /** Then we redirect the user back */
+      request.flash('success', 'The language was successfully deleted.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
   }
   // }}}
 }
@@ -643,9 +744,51 @@ export const post = {
       const name = request.body.name.toLowerCase()
       const color = request.body.color
 
+      /** Execute the creation of the framework */
       await create(name, color)
 
+      /** Redirect the user back when it's done */
       request.flash('success', 'The framework ' + name + ' was created successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: newLanguage {{{
+  /**
+   * Handles the creation of a new language
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  newLanguage: async (request, response) => {
+    try {
+      // Function: create {{{
+      /**
+       * Inserts the new language inside the database
+       *
+       * @param {String} name Name of the language
+       * @param {String} color Color of the language
+       * @returns {Promise} creation of the language
+       * @see Mongoose
+       */
+      const create = (name, color) => Language.create({
+        created: new Date(),
+        name: name,
+        color: color })
+      // }}}
+
+      /** We convert the name to lowercase because uppercase characters are not needed */
+      const name = request.body.name.toLowerCase()
+      const color = request.body.color
+
+      /** Execute the creation of the language */
+      await create(name, color)
+
+      /** Redirect the user back when it's done */
+      request.flash('success', 'The language ' + name + ' was created successfully.')
       response.redirect('back')
     } catch (error) {
       console.log(error)
