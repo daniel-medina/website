@@ -2,6 +2,8 @@
 export const colors = ['black', 'grey', 'red', 'orange', 'green', 'pink']
 
 /** Configs for the administration */
+export const minProjectTitleLength = 1
+export const maxProjectTitleLength = 15
 export const minFrameworkNameLength = 1
 export const maxFrameworkNameLength = 10
 export const minLanguageNameLength = 1

@@ -23,6 +23,8 @@ import {
 } from '../config/blog'
 import {
   colors,
+  minProjectTitleLength,
+  maxProjectTitleLength,
   minFrameworkNameLength,
   maxFrameworkNameLength,
   minLanguageNameLength,
@@ -35,6 +37,7 @@ import slug from 'slug'
 /** Models imports */
 import Admin from '../models/admin'
 import Article from '../models/article'
+import Project from '../models/project'
 import {ArticleCategory} from '../models/refs/articleCategory'
 import {Framework} from '../models/refs/framework'
 import {Language} from '../models/refs/language'
@@ -694,6 +697,68 @@ export const post = {
       } else {
         /** Else, we redirect the user back and show him an error message */
         request.flash('error', 'The article\'s category title already exist in the database.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: project {{{
+  /**
+   * Protects the creation of a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  project: async (request, response, next) => {
+    try {
+      const title = request.body.title
+
+      if (title.length > minProjectTitleLength && title.length < maxProjectTitleLength) {
+        next()
+      } else {
+        /** Must flash the data entered by the user in order to avoid pissing him off */
+        request.flash('error', 'The project\'s title must be between ' + minProjectTitleLength + ' and ' + maxProjectTitleLength + ' character long.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectExist {{{
+  /**
+   * Checks if the given title is already used by a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectExist: async (request, response, next) => {
+    try {
+      // Function: check {{{
+      /**
+       * Returns the amount of project matching the given title
+       *
+       * @param {String} title Title given by the user
+       * @returns {Promise} Promise containing the amount of project matching the given title
+       */
+      const check = title => Project.count({ title: title })
+      // }}}
+
+      const title = request.body.title
+      const count = await check(title)
+
+      /** If there is no project matching the given title, the request may pass */
+      if (count === 0) {
+        next()
+      } else {
+        /** If there is already a project using that title, refuse the request */
+        request.flash('error', 'The given title is already used.')
         response.redirect('back')
       }
     } catch (error) {

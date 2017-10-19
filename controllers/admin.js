@@ -17,6 +17,7 @@ import uuid from 'uuid/v4'
 /** Models imports */
 import Admin from '../models/admin'
 import Article from '../models/article'
+import Project from '../models/project'
 import {ArticleCategory} from '../models/refs/articleCategory'
 import {Framework} from '../models/refs/framework'
 import {Language} from '../models/refs/language'
@@ -146,6 +147,24 @@ export const get = {
         pagination: pagination,
         articles: articles,
         categories: categories
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: portfolio {{{
+  /**
+   * Handles the portfolio management
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  portfolio: async (request, response) => {
+    try {
+      response.render('admin/portfolio/index', {
+        title: 'Portfolio'
       })
     } catch (error) {
       console.log(error)
@@ -709,6 +728,72 @@ export const post = {
       await createArticle()
 
       request.flash('success', 'The article was successfully created.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: newProject {{{
+  /**
+   * Handles the creation of a project on the portfolio
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  newProject: async (request, response) => {
+    try {
+      // Function: create {{{
+      /**
+       * Create the project
+       * We take only the title, the user will be able to
+       * Modify the project later on
+       *
+       * @param {Date} created Creation date of the project
+       * @param {String} title Title of the project
+       * @param {String} description Description of the project
+       * @param {Object} frameworks Frameworks used on the project
+       * @param {Object} languages Languages used on the project
+       * @param {Array} images Images of the project
+       * @param {Array} tags Tags affected to the project
+       * @param {String} url Url to access the project
+       * @param {String} visible Whether the project is public or private
+       * @returns {Promise} Promise executing the creation of the project
+       */
+      const create = (created, title, description, frameworks, languages, images, tags, url, visibility) => Project.create({
+        created: created,
+        title: title,
+        description: description,
+        frameworks: frameworks,
+        languages: languages,
+        images: images,
+        tags: tags,
+        url: url,
+        visibility: visibility
+      })
+      // }}}
+
+      /** We get the title sent by the user via POST */
+      const title = request.body.title
+
+      /** We generate placeholder variables for the project */
+      const description = ''
+      const frameworks = []
+      const languages = []
+      const images = []
+      const tags = []
+      const url = ''
+      const visibility = 'private'
+
+      /** We get the date to define the creation date */
+      const created = new Date()
+
+      /** We now create the project */
+      await create(created, title, description, frameworks, languages, images, tags, url, visibility)
+
+      /** We may now redirect the user back and flash him a success message */
+      request.flash('success', 'The project \'' + title + '\' was created successfully.')
       response.redirect('back')
     } catch (error) {
       console.log(error)

@@ -1,5 +1,5 @@
 /**
- * Portfolio Model
+ * Project Model
  *
  * @author Daniel Medina
  * Date: 07/31/2017
@@ -16,17 +16,18 @@ import mongoose from 'mongoose'
 const connection = mongoose.createConnection(url)
 mongoose.Promise = global.Promise
 const Schema = mongoose.Schema
-const PortfolioSchema = new Schema({
+const ProjectSchema = new Schema({
   created: Date,
-  url: String,
   title: String,
   description: String,
   frameworks: { type: String, ref: 'framework' },
   languages: { type: String, ref: 'language' },
   images: Array,
-  tags: Array
+  tags: Array,
+  url: String,
+  visibility: { type: String, enum: ['public', 'private'] }
 }, {
-  collection: 'portfolio'
+  collection: 'project'
 })
 
-module.exports = connection.model('Portfolio', PortfolioSchema)
+module.exports = connection.model('Project', ProjectSchema)

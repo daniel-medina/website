@@ -11,7 +11,7 @@
 /** Modules imports */
 
 /** Models imports */
-import Portfolio from '../models/portfolio'
+import Project from '../models/project'
 
 /** Libs imports */
 
@@ -54,7 +54,7 @@ export const get = {
        * @see Mongoose
        */
       const getProjects = () => {
-        return Portfolio
+        return Project
           .find({})
           .exec()
       }
