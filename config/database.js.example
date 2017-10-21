@@ -1,0 +1,2 @@
+/** Exporting database configuration */
+export const url = 'mongodb://0.0.0.1:port/database'
