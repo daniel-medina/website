@@ -267,6 +267,136 @@ export const get = {
     }
   },
   // }}}
+  // Controller: projectUnsetFramework {{{
+  /**
+   * Remove a framework from a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  projectUnsetFramework: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get the project and all its information
+       *
+       * @param {ObjectID} idProject Id of the current project
+       * @returns {Promise} Promise containing the information of the project
+       */
+      const getProject = idProject => Project.findOne({ _id: idProject }).exec()
+      // }}}
+      // Function: unset {{{
+      /**
+       * Remove the framework from the project
+       *
+       * @param {Object} project Object containing the current project
+       * @param {ObjectID} idFramework Id of the chosen framework
+       * @returns {Promise} Promise containing the unaffection of the chosen framework from the current project
+       */
+      const unset = (project, idFramework) => {
+        /**
+         * We make a loop inside the framework's array in order to detect the desired framework to remove
+         * Returning something as a promise only when the id is detected is dangerous - yet, the middleware insures bad behaviour doesn't happen
+         */
+        for (var i = 0; i < project.frameworks.length; i++) {
+          /** Id of the current iteration's framework */
+          const id = project.frameworks[i]
+
+          /** If the current framework is equal to the given framework's id */
+          if (id === idFramework) {
+            /** If the framework is found, we delete it from the project */
+            project.frameworks.splice(i, 1)
+
+            return Project.findOneAndUpdate({ _id: project._id }, { $set: { frameworks: project.frameworks } }).exec()
+          }
+        }
+      }
+      // }}}
+
+      /** Getting GET data */
+      const idProject = request.params.idProject
+      const idFramework = request.params.idFramework
+
+      /** We get information of the project that we will use to update it after removing the chosen framework */
+      const project = await getProject(idProject)
+
+      /** Now we execute the unaffection */
+      await unset(project, idFramework)
+
+      /** And now we redirect the user back with a confirmation message */
+      request.flash('success', 'The chosen framework was successfully removed from the project.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: projectUnsetLanguage {{{
+  /**
+   * Remove a language from a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  projectUnsetLanguage: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get the project and all its information
+       *
+       * @param {ObjectID} idProject Id of the current project
+       * @returns {Promise} Promise containing the information of the project
+       */
+      const getProject = idProject => Project.findOne({ _id: idProject }).exec()
+      // }}}
+      // Function: unset {{{
+      /**
+       * Remove the language from the project
+       *
+       * @param {Object} project Object containing the current project
+       * @param {ObjectID} idLanguage Id of the chosen language
+       * @returns {Promise} Promise containing the unaffection of the chosen language from the current project
+       */
+      const unset = (project, idLanguage) => {
+        /**
+         * We make a loop inside the language's array in order to detect the desired language to remove
+         * Returning something as a promise only when the id is detected is dangerous - yet, the middleware insures bad behaviour doesn't happen
+         */
+        for (var i = 0; i < project.languages.length; i++) {
+          /** Id of the current iteration's language */
+          const id = project.languages[i]
+
+          /** If the current lanugage is equal to the given language's id */
+          if (id === idLanguage) {
+            /** If the language is found, we delete it from the project */
+            project.languages.splice(i, 1)
+
+            return Project.findOneAndUpdate({ _id: project._id }, { $set: { languages: project.languages } }).exec()
+          }
+        }
+      }
+      // }}}
+
+      /** Getting GET data */
+      const idProject = request.params.idProject
+      const idLanguage = request.params.idLanguage
+
+      /** We get information of the project that we will use to update it after removing the chosen language */
+      const project = await getProject(idProject)
+
+      /** Now we execute the unaffection */
+      await unset(project, idLanguage)
+
+      /** And now we redirect the user back with a confirmation message */
+      request.flash('success', 'The chosen language was successfully removed from the project.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
   // Controller: authentication {{{
   /**
    * Returns the authentication view

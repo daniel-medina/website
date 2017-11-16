@@ -35,6 +35,8 @@ router.get('/admin/article/edit/:id([a-z0-9]{1,})', AdminMiddleware.get.articleI
 router.get('/admin/article-category/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.articleCategoryIdExist)
 router.get('/admin/portfolio/framework/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.frameworkIdExist)
 router.get('/admin/portfolio/language/delete/:id([a-z0-9]{1,})', AdminMiddleware.get.languageIdExist)
+router.get('/admin/portfolio/project/:idProject([a-z0-9]{1,})/unset/framework/:idFramework([a-z0-9]{1,})', AdminMiddleware.get.projectUnsetFramework)
+router.get('/admin/portfolio/project/:idProject([a-z0-9]{1,})/unset/language/:idLanguage([a-z0-9]{1,})', AdminMiddleware.get.projectUnsetLanguage)
 // }}}
 // }}}
 // --->>> CONTROLLERS <<<--- {{{
@@ -54,6 +56,8 @@ router.get('/admin/portfolio/framework', AdminController.get.frameworks)
 router.get('/admin/portfolio/framework/delete/:id([a-z0-9]{1,})', AdminController.get.deleteFramework)
 router.get('/admin/portfolio/language', AdminController.get.languages)
 router.get('/admin/portfolio/language/delete/:id([a-z0-9]{1,})', AdminController.get.deleteLanguage)
+router.get('/admin/portfolio/project/:idProject([a-z0-9]{1,})/unset/framework/:idFramework([a-z0-9]{1,})', AdminController.get.projectUnsetFramework)
+router.get('/admin/portfolio/project/:idProject([a-z0-9]{1,})/unset/language/:idLanguage([a-z0-9]{1,})', AdminController.get.projectUnsetLanguage)
 // }}}
 // Blog {{{
 router.get('/', BlogController.get.index)
