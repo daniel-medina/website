@@ -1,23 +1,46 @@
 extends ../../layout.pug
 
 block content
-  #block.col-lg-8.col-md-8.col-xs-12
-    .block-content
-      .top
-        | Test !
-      .middle
-        | Test !
-      .bottom
-        | Test !
+  .no-padding.col-lg-8.col-md-8.col-xs-12
+    each project in projects
+      #block.col-lg-12.col-md-12
+        .block-content
+          .top= project.title
+          .middle
+            b Manage frameworks
+            br
+            each framework in project.frameworks
+              li
+                b #[a.btn.btn-xs.btn-danger(href='./portfolio/project/' + project._id + '/unset/framework/' + framework._id) delete] #{framework.name}
+            form(method='POST', action='./portfolio/project/set/framework')
+              .form-group
+                input(type='hidden', name='id', value=project._id)
+                select(name='framework')
+                  each framework in frameworks
+                    option(value=framework._id)= framework.name 
+                input.btn.btn-xs.btn-success(type='submit', value='Add')
+            b Manage languages
+            br
+            each language in project.languages
+              li
+                b #[a.btn.btn-xs.btn-danger(href='./portfolio/project/' + project._id + '/unset/language/' + language._id) delete] #{language.name}
+            form(method='POST', action='./portfolio/project/set/language')
+              .form-group
+                input(type='hidden', name='id', value=project._id)
+                select(name='language')
+                  each language in languages
+                    option(value=language._id)= language.name 
+                input.btn.btn-xs.btn-success(type='submit', value='Add')
 
-  #block.col-lg-4.col-md-4.col-xs-12
-    .block-content
-      .top.dark
-        .title New project
-      form(method='POST', action='./portfolio/project/create')
-        .middle
-          .form-group
-            label(for='title') Title
-            input.form-control(name='title')
-        .bottom
-          input.btn.btn-xs.btn-primary.col-md-12(type='submit', value='Create')
+  .no-padding.col-lg-4.col-md-4.col-xs-12
+    #block.col-lg-12.col-md-12
+      .block-content
+        .top.dark
+          .title New project
+        form(method='POST', action='./portfolio/project/create')
+          .middle
+            .form-group
+              label(for='title') Title
+              input.form-control(name='title')
+          .bottom
+            input.btn.btn-xs.btn-primary.col-md-12(type='submit', value='Create')

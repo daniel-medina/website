@@ -840,6 +840,226 @@ export const post = {
     }
   },
   // }}}
+  // Middleware: projectFrameworkExist {{{
+  /**
+   * Checks if the given framework is already affected to the current project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectFrameworkExist: async (request, response, next) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Returns all information of the current project
+       *
+       * @param {ObjectID} project Project's id
+       * @returns {Promise} Promise containing information of the project
+       */
+      const getProject = project => Project.findOne({ _id: project }).exec()
+      // }}}
+      // Function: check {{{
+      /**
+       * Returns whether the given framework's id exists inside the current project
+       *
+       * @param {Object} project Information of the project
+       * @param {ObjectID} framework Id of the given framework
+       * @returns {Promise} Promise containing the verification
+       */
+      const check = (project, framework) => {
+        return project.frameworks.includes(framework)
+      }
+      // }}}
+
+      /** Getting POST data */
+      const id = request.body.id
+      const framework = request.body.framework
+
+      /** We get all information of the current project */
+      const project = await getProject(id)
+
+      /** We get the result of the verification */
+      const exist = await check(project, framework)
+
+      /** If the given framework does not exist inside the project */
+      if (!exist) {
+        next()
+      } else {
+        request.flash('error', 'The provided framework is already affected to this project.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectFrameworkNotExist {{{
+  /**
+   * Checks if the given framework is already affected to the current project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectFrameworkNotExist: async (request, response, next) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Returns all information of the current project
+       *
+       * @param {ObjectID} project Project's id
+       * @returns {Promise} Promise containing information of the project
+       */
+      const getProject = project => Project.findOne({ _id: project }).exec()
+      // }}}
+      // Function: check {{{
+      /**
+       * Returns whether the given framework's id exists inside the current project
+       *
+       * @param {Object} project Information of the project
+       * @param {ObjectID} framework Id of the given framework
+       * @returns {Promise} Promise containing the verification
+       */
+      const check = (project, framework) => {
+        return project.frameworks.includes(framework)
+      }
+      // }}}
+
+      /** Getting POST data */
+      const id = request.body.id
+      const framework = request.body.framework
+
+      /** We get all information of the current project */
+      const project = await getProject(id)
+
+      /** We get the result of the verification */
+      const exist = await check(project, framework)
+
+      /** If the given framework exists inside the project */
+      if (exist) {
+        next()
+      } else {
+        request.flash('error', 'The chosen framework does not exist inside this project.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectLanguageExist {{{
+  /**
+   * Checks if the given language is already affected to the current project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectLanguageExist: async (request, response, next) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Returns all information of the current project
+       *
+       * @param {ObjectID} project Project's id
+       * @returns {Promise} Promise containing information of the project
+       */
+      const getProject = project => Project.findOne({ _id: project }).exec()
+      // }}}
+      // Function: check {{{
+      /**
+       * Returns whether the given language's id exists inside the current project
+       *
+       * @param {Object} project Information of the project
+       * @param {ObjectID} language Id of the given language
+       * @returns {Promise} Promise containing the verification
+       */
+      const check = (project, language) => {
+        return project.languages.includes(language)
+      }
+      // }}}
+
+      /** Getting POST data */
+      const id = request.body.id
+      const language = request.body.language
+
+      /** We get all information of the current project */
+      const project = await getProject(id)
+
+      /** We get the result of the verification */
+      const exist = await check(project, language)
+
+      /** If the given language does not exist inside the project */
+      if (!exist) {
+        next()
+      } else {
+        request.flash('error', 'The provided language is already affected to this project.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectLanguageNotExist {{{
+  /**
+   * Checks if the given language is already affected to the current project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectLanguageNotExist: async (request, response, next) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Returns all information of the current project
+       *
+       * @param {ObjectID} project Project's id
+       * @returns {Promise} Promise containing information of the project
+       */
+      const getProject = project => Project.findOne({ _id: project }).exec()
+      // }}}
+      // Function: check {{{
+      /**
+       * Returns whether the given language's id exists inside the current project
+       *
+       * @param {Object} project Information of the project
+       * @param {ObjectID} language Id of the given language
+       * @returns {Promise} Promise containing the verification
+       */
+      const check = (project, language) => {
+        return project.languages.includes(language)
+      }
+      // }}}
+
+      /** Getting POST data */
+      const id = request.body.id
+      const language = request.body.language
+
+      /** We get all information of the current project */
+      const project = await getProject(id)
+
+      /** We get the result of the verification */
+      const exist = await check(project, language)
+
+      /** If the given language exists inside the project */
+      if (exist) {
+        next()
+      } else {
+        request.flash('error', 'The chosen language does not exist inside this project.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
   // Middleware: language {{{
   /**
    * Checks values inserted from the user

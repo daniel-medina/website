@@ -163,8 +163,40 @@ export const get = {
    */
   portfolio: async (request, response) => {
     try {
+      // Function: getProjects {{{
+      /**
+       * Get all projects to display and manage them
+       *
+       * @returns {Promise} Promise containing every projects in the database
+       */
+      const getProjects = () => Project.find({}).populate('frameworks').populate('languages').exec()
+      // }}}
+      // Function: getFrameworks {{{
+      /**
+       * Get frameworks in order to affect them to projects
+       *
+       * @returns {Promise} Promise containing every frameworks in the database
+       */
+      const getFrameworks = () => Framework.find({}).exec()
+      // }}}
+      // Function: getLanguages {{{
+      /**
+       * Get languages in order to affect them to projects
+       *
+       * @returns {Promise} Promise containing every languages in the database
+       */
+      const getLanguages = () => Language.find({}).exec()
+      // }}}
+
+      const projects = await getProjects()
+      const frameworks = await getFrameworks()
+      const languages = await getLanguages()
+
       response.render('admin/portfolio/index', {
-        title: 'Portfolio'
+        title: 'Portfolio',
+        projects: projects,
+        frameworks: frameworks,
+        languages: languages
       })
     } catch (error) {
       console.log(error)
@@ -874,6 +906,116 @@ export const post = {
 
       /** Redirect the user back when it's done */
       request.flash('success', 'The language ' + name + ' was created successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: setFramework {{{
+  /**
+   * Affects a framework to a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  setFramework: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get the current projet's information
+       *
+       * @param {ObjectID} id Id of the current project
+       * @returns {Promise} Promise containing all information of the current project
+       */
+      const getProject = id => Project.findOne({ _id: id }).exec()
+      // }}}
+      // Function: affect {{{
+      /**
+       * Affect the chosen framework to the project
+       *
+       * @param {Object} project Information of the current project
+       * @param {ObjectID} frameworkID Id of the given framework
+       * @returns {Promise} Promise containing the affection's execution
+       */
+      const affect = (project, frameworkId) => {
+        /** Pushing the new framework's id into the project's frameworks array */
+        project.frameworks.push(frameworkId)
+
+        return Project.update({ _id: project._id }, { $set: { frameworks: project.frameworks } }).exec()
+      }
+      // }}}
+
+      /** The project's id in the database */
+      const id = request.body.id
+
+      /** Current project */
+      const project = await getProject(id)
+
+      /** The framework's id in the database */
+      const framework = request.body.framework
+
+      /** Executing the framework's affectation */
+      await affect(project, framework)
+
+      /** Now redirects the user back and show him a confirmation message */
+      request.flash('success', 'The framework has been affected successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: setLanguage {{{
+  /**
+   * Affects a language to a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  setLanguage: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get the current projet's information
+       *
+       * @param {ObjectID} id Id of the current project
+       * @returns {Promise} Promise containing all information of the current project
+       */
+      const getProject = id => Project.findOne({ _id: id }).exec()
+      // }}}
+      // Function: affect {{{
+      /**
+       * Affect the chosen language to the project
+       *
+       * @param {Object} project Current project's information
+       * @param {ObjectID} languageId Given language's id
+       * @returns {Promise} Promise containing the affectation's execution
+       */
+      const affect = (project, languageId) => {
+        /** Pushing the new language's id into the project's language array */
+        project.languages.push(languageId)
+
+        return Project.update({ _id: project._id }, { $set: { languages: project.languages } }).exec()
+      }
+      // }}}
+
+      /** The project's id in the database */
+      const id = request.body.id
+
+      /** Current project */
+      const project = await getProject(id)
+
+      /** The language's id in the database */
+      const language = request.body.language
+
+      /** Executing the language's affectation */
+      await affect(project, language)
+
+      /** Now redirects the user back and show him a confirmation message */
+      request.flash('success', 'The language has been affected successfully.')
       response.redirect('back')
     } catch (error) {
       console.log(error)

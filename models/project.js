@@ -12,6 +12,8 @@ import {url} from '../config/database'
 import mongoose from 'mongoose'
 
 /** Models imports */
+import { FrameworkSchema } from './refs/framework'
+import { LanguageSchema } from './refs/language'
 
 const connection = mongoose.createConnection(url)
 mongoose.Promise = global.Promise
@@ -20,8 +22,8 @@ const ProjectSchema = new Schema({
   created: Date,
   title: String,
   description: String,
-  frameworks: { type: String, ref: 'framework' },
-  languages: { type: String, ref: 'language' },
+  frameworks: [{ type: String, ref: 'Framework' }],
+  languages: [{ type: String, ref: 'Language' }],
   images: Array,
   tags: Array,
   url: String,
@@ -29,5 +31,8 @@ const ProjectSchema = new Schema({
 }, {
   collection: 'project'
 })
+
+connection.model('Framework', FrameworkSchema)
+connection.model('Language', LanguageSchema)
 
 module.exports = connection.model('Project', ProjectSchema)
