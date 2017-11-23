@@ -25,6 +25,8 @@ import {
   colors,
   minProjectTitleLength,
   maxProjectTitleLength,
+  minProjectDescriptionLength,
+  maxProjectDescriptionLength,
   minFrameworkNameLength,
   maxFrameworkNameLength,
   minLanguageNameLength,
@@ -149,6 +151,49 @@ export const all = {
       } else {
         /** We check if he's authenticated */
         await checkAuth()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectIdExist {{{
+  /**
+   * Checks if the given project's id exist in the database
+   * Works for both POST and GET requests
+   * Though for GET requests, it only works if the id variable is idProject
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectIdExist: async (request, response, next) => {
+    try {
+      // Function: check {{{
+      /**
+       * Returns the amount of project matching the given id
+       *
+       * @param {ObjectID} id Project's id given by the user
+       * @returns {Promise} Promise containing the amount of project matching the given id
+       */
+      const check = id => Project.count({ _id: id }).exec()
+      // }}}
+
+      /**
+       * Getting POST data sent by the user
+       * Ternary condition to work for both POST data and GET data, where for this last one, the id is provided as idProject
+       */
+      const id = (request.body.id === undefined) ? request.params.idProject : request.body.id
+      const count = await check(id)
+
+      /** If the project's id exists in the database, the user may pass */
+      if (count !== 0) {
+        next()
+      } else {
+        /** If the project's id does not exist in the database, return an error to the user */
+        request.flash('error', 'The provided project\'s id doesn\'t exist in the database.')
+        response.redirect('back')
       }
     } catch (error) {
       console.log(error)
@@ -577,6 +622,73 @@ export const get = {
         next()
       } else {
         request.flash('error', 'The chosen language does not exist inside the project.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: deleteImage {{{
+  /**
+   * Handles the security around the removal of a project's image
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  deleteImage: async (request, response, next) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get current project's object
+       *
+       * @param {ObjectID} id Project's id
+       * @returns {Promise} Promise containing the current project's object
+       */
+      const getProject = id => Project.findOne({ _id: id })
+      // }}}
+      // Function: check {{{
+      /**
+       * We check if the given image's uuid exist in the chosen project
+       *
+       * @param {Object} project The current project's object
+       * @param {UUID} uuid The image's uuid
+       * @returns {Promise} Promise containing whether the image exists or not
+       */
+      const check = (project, uuid) => {
+        let result = false
+
+        for (var i = 0; i < project.images.length; i++) {
+          const image = project.images[i]
+
+          /** If the current iteration's image is equal to the image's uuid we are looking for, we set the result to true because it exists */
+          if (image.uuid === uuid) {
+            result = true
+          }
+        }
+
+        return result
+      }
+      // }}}
+
+      /** We get all GET data given by the user */
+      const id = request.params.idProject
+      const uuid = request.params.imageUuid
+
+      /** We get the project's object */
+      const project = await getProject(id)
+
+      /** We assemble the verification's value that will be used for the condition */
+      const verification = await check(project, uuid)
+
+      /** If the image's uuid does exist in the project's images array, then the request may pass */
+      if (verification) {
+        next()
+      } else {
+        /** If it's not, we return an error to the user */
+        request.flash('error', 'The given image could not be found inside the chosen project.')
         response.redirect('back')
       }
     } catch (error) {
@@ -1053,6 +1165,62 @@ export const post = {
         next()
       } else {
         request.flash('error', 'The provided language is already affected to this project.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectDescription {{{
+  /**
+   * Handles the security around the description's update controller
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectDescription: async (request, response, next) => {
+    try {
+      /** First, we catch POST data sent by the user */
+      const description = request.body.description
+
+      /** The description must match the min and max characters defined in the configuration file */
+      if (description.length > minProjectDescriptionLength && description.length < maxProjectDescriptionLength) {
+        next()
+      } else {
+        request.flash('error', 'The description must be between ' + minProjectDescriptionLength + ' and ' + maxProjectDescriptionLength + ' character long.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: uploadImage {{{
+  /**
+   * Protects the upload of an image inside a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  uploadImage: async (request, response, next) => {
+    try {
+      const image = request.files.image
+      const allowedMimeTypes = [
+        'image/png',
+        'image/jpeg'
+      ]
+
+      /** If the image uploaded by the user matches one of the allowed mimetypes, the request shall pass */
+      if (allowedMimeTypes.includes(image.mimetype)) {
+        next()
+      } else {
+        /** Else, returns an error to the user */
+        request.flash('error', 'The uploaded image must be of one of the following mimetypes : ' + allowedMimeTypes)
         response.redirect('back')
       }
     } catch (error) {

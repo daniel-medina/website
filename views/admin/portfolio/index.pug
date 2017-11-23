@@ -5,8 +5,15 @@ block content
     each project in projects
       #block.col-lg-12.col-md-12
         .block-content
-          .top= project.title
+          .top #[a(href='./portfolio/project/delete/' + project._id).btn.btn-xs.btn-danger #[i.fa.fa-times]] #{project.title}
           .middle
+            b Description
+            form(method='POST', action='./portfolio/project/set/description')
+              .form-group
+                input(type='hidden', name='id', value=project._id)
+                textarea(class='form-control', name='description', placeholder='Description of the project.')= project.description 
+              input.btn.btn-xs.btn-info(type='submit', value='Update')
+            br
             b Manage frameworks
             br
             each framework in project.frameworks
@@ -15,7 +22,7 @@ block content
             form(method='POST', action='./portfolio/project/set/framework')
               .form-group
                 input(type='hidden', name='id', value=project._id)
-                select(name='framework')
+                select(name='framework', class='form-control')
                   each framework in frameworks
                     option(value=framework._id)= framework.name 
                 input.btn.btn-xs.btn-success(type='submit', value='Add')
@@ -27,10 +34,45 @@ block content
             form(method='POST', action='./portfolio/project/set/language')
               .form-group
                 input(type='hidden', name='id', value=project._id)
-                select(name='language')
+                select(name='language', class='form-control')
                   each language in languages
                     option(value=language._id)= language.name 
                 input.btn.btn-xs.btn-success(type='submit', value='Add')
+            hr
+            b Manage images
+            br
+            .col-md-12
+            each image in project.images
+              li.thumbnail.col-md-4 #[img(src='/assets' + image.path, alt='')] #[p.text-center #[a.btn.btn-xs.btn-danger(href='./portfolio/project/' + project._id + '/delete/image/' + image.uuid) #[i.fa.fa-times]]] 
+            .col-md-12
+              b Add an image
+              br
+              form(method='POST', action='./portfolio/project/upload/image', enctype='multipart/form-data')
+                input(type='hidden', name='id', value=project._id)
+                input(type='file', name='image')
+                input.btn.btn-xs.btn-success(type='submit', value='Upload')
+            hr
+            br
+            br
+            b Set availability
+            br
+            form(method='POST', action='./portfolio/project/set/visibility')
+              input(type='hidden', name='id', value=project._id)
+              .radio
+                label
+                  if project.visibility === 'private'
+                    input(type='radio', name='visibility', value='private', checked)
+                  else
+                    input(type='radio', name='visibility', value='private')
+                  | private
+              .radio
+                label
+                  if project.visibility === 'public'
+                    input(type='radio', name='visibility', value='public', checked)
+                  else
+                    input(type='radio', name='visibility', value='public')
+                  | public
+              input(type='submit', value='Update').btn.btn-xs.btn-success
 
   .no-padding.col-lg-4.col-md-4.col-xs-12
     #block.col-lg-12.col-md-12

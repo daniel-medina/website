@@ -13,6 +13,8 @@ import {colors} from '../config/portfolio'
 /** Modules imports */
 import slug from 'slug'
 import uuid from 'uuid/v4'
+import fs from 'fs-extra'
+import path from 'path'
 
 /** Models imports */
 import Admin from '../models/admin'
@@ -544,6 +546,74 @@ export const get = {
     }
   },
   // }}}
+  // Controller: deleteProject {{{
+  /**
+   * Handles the removal of a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteProject: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get current project's object
+       *
+       * @param {ObjectID} id Project's id
+       * @returns {Promise} Promise containing the current project's object
+       */
+      const getProject = id => Project.findOne({ _id: id })
+      // }}}
+      // Function: removeImages {{{
+      /**
+       * Remove all images affected to the given project
+       *
+       * @param {Object} project Object of the project to remove
+       * @returns {Promise} Promise containing a simple true statement
+       */
+      const removeImages = project => {
+        /** We loop into the project's images array */
+        for (var i = 0; i < project.images.length; i++) {
+          /** We collect info on the current iteration's image */
+          const image = project.images[i]
+          const uuid = image.uuid
+
+          /** Remove the image from the server */
+          fs.remove(path.join(process.cwd(), 'public/assets/images/' + uuid))
+        }
+
+        return true
+      }
+      // }}}
+      // Function: remove {{{
+      /**
+       * Execute the removal of the project
+       *
+       * @param {ObjectID} id Id of the project to remove
+       * @returns {Promise} Promise containing the execution of the removal of the project
+       */
+      const remove = id => Project.remove({ _id: id }).exec()
+      // }}}
+
+      /** Getting GET data given by the user */
+      const id = request.params.idProject
+
+      /** We also get the project's object */
+      const project = await getProject(id)
+
+      /** Now executing the project's removal - we take care of its images first */
+      await removeImages(project)
+      await remove(id)
+
+      /** Then we can redirect the user back */
+      request.flash('success', 'The chosen project has been deleted successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
   // Controller: deleteArticle {{{
   /**
    * Deletes an article
@@ -753,6 +823,85 @@ export const get = {
 
       /** Then we redirect the user back */
       request.flash('success', 'The language was successfully deleted.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: deleteImage {{{
+  /**
+   * Handles the removal of an image from a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  deleteImage: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get current project's object
+       *
+       * @param {ObjectID} id Project's id
+       * @returns {Promise} Promise containing the current project's object
+       */
+      const getProject = id => Project.findOne({ _id: id })
+      // }}}
+      // Function: deleteFromProject {{{
+      /**
+       * Removes the image from the project's images array
+       *
+       * @param {Object} project Project's object
+       * @param {UUID} uuid Uuid of the image
+       * @returns {Promise} Promise containing the execution of the update of the project
+       */
+      const deleteFromProject = (project, uuid) => {
+        /** We initialize this variable, that will be changed by the for loop */
+        var index = 0
+
+        /** We enter inside the project's images array in order to find the image's uuid to remove */
+        for (var i = 0; i < project.images.length; i++) {
+          /** We get the current image in the current iteration */
+          const image = project.images[i]
+
+          if (image.uuid === uuid) {
+            index = i
+          }
+        }
+
+        /** We remove the image using the index we found */
+        project.images.splice(index, 1)
+
+        /** Now we use the changed content of the images array to update the project in the database */
+        return Project.findOneAndUpdate({ _id: project._id }, { $set: { images: project.images } })
+      }
+      // }}}
+      // Function: deleteFromServer {{{
+      /**
+       * Delete the image from the server
+       *
+       * @param {UUID} uuid Uuid of the image
+       * @returns {Promise} Promise containing the removal of the image from the server
+       */
+      const deleteFromServer = uuid => fs.remove(path.join(process.cwd(), 'public/assets/images/' + uuid))
+      // }}}
+
+      /** We get the project's id given by the user */
+      const id = request.params.idProject
+
+      /** And the image's uuid also given by the user */
+      const uuid = request.params.imageUuid
+
+      /** We get the project's object that we will use to update it */
+      const project = await getProject(id)
+
+      /** We can now execute the image's removal */
+      await deleteFromProject(project, uuid)
+      await deleteFromServer(uuid)
+
+      /** Then we can show a confirmation message to the user */
+      request.flash('success', 'The image has been deleted successfully from the server.')
       response.redirect('back')
     } catch (error) {
       console.log(error)
@@ -1146,6 +1295,144 @@ export const post = {
 
       /** Now redirects the user back and show him a confirmation message */
       request.flash('success', 'The language has been affected successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: setDescription {{{
+  /**
+   * Handles the modification of the description of a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  setDescription: async (request, response) => {
+    try {
+      // Function: update {{{
+      /**
+       * Function description
+       *
+       * @param {ObjectID} id Id of the project to affect the new description
+       * @param {String} description Description sent by the user
+       * @returns {Promise} Promise containing the update of the project
+       */
+      const update = (id, description) => Project.findOneAndUpdate({ _id: id }, { $set: { description: description } })
+      // }}}
+
+      /** We catch the POST data sent by the user */
+      const id = request.body.id
+      const description = request.body.description
+
+      /** Execute the modification of the project's description */
+      await update(id, description)
+
+      /** Then we redirect the user back with a confirmation message */
+      request.flash('success', 'The project\'s description has been updated successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: setVisibility {{{
+  /**
+   * Sets the visibility of a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  setVisibility: async (request, response) => {
+    try {
+      // Function: update {{{
+      /**
+       * Updates the chosen project with the new availability
+       *
+       * @param {ObjectID} id Id of the project to update
+       * @param {String} visibility New visibility value to set on the project
+       * @returns {Promise} Promise containing the update of the project
+       */
+      const update = (id, visibility) => Project.findOneAndUpdate({ _id: id }, { $set: { visibility: visibility } }).exec()
+      // }}}
+
+      /** Gets POST data given by the user */
+      const id = request.body.id
+      const visibility = request.body.visibility
+
+      /** Executes the update function */
+      await update(id, visibility)
+
+      /** Now returns the user back with a confirmation message */
+      request.flash('success', 'The project\'s visibility has been updated successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: uploadImage {{{
+  /**
+   * Handles the upload of an image affected to a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  uploadImage: async (request, response) => {
+    try {
+      // Function: getProject {{{
+      /**
+       * Get current project's object
+       *
+       * @param {ObjectID} id Project's id
+       * @returns {Promise} Promise containing the current project's object
+       */
+      const getProject = id => Project.findOne({ _id: id })
+      // }}}
+      // Function: upload {{{
+      /**
+       * Uploads the image to the server
+       *
+       * @param {ObjectID} id Id of the project
+       * @param {String} url Url given by the user
+       * @returns {Type} tag
+       */
+      const upload = (project, url) => {
+        const uuid = request.files.image.uuid
+        const name = request.files.image.filename
+
+        /**
+         * Assemble the file's uuid and name, and puts it with the previous folder that is 'images'
+         * So it can be easily used to show the image to the user
+         */
+        const path = '/images/' + uuid + '/image/' + name
+        const object = {
+          uuid: uuid,
+          path: path
+        }
+
+        project.images.push(object)
+
+        /** Now that the project's images array has been updated with the currently uploaded image, we update it into the database */
+        return project.save()
+      }
+      // }}}
+
+      /** Getting POST data sent by the user */
+      const id = request.body.id
+      const url = request.files
+
+      /** We get the current project's object in order to add the image into it */
+      const project = await getProject(id)
+
+      /** Execute the upload of the image */
+      await upload(project, url)
+
+      /** Once it's done, redirect the user back with a confirmation message */
+      request.flash('success', 'The image has been successfully updated to the server and affected to the chosen project.')
       response.redirect('back')
     } catch (error) {
       console.log(error)

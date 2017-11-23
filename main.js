@@ -5,8 +5,8 @@ import {port} from './config/server'
 import path from 'path'
 import express from 'express'
 import http from 'http'
-import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import busboy from 'express-busboy'
 import flash from 'connect-flash'
 import session from 'express-session'
 import webpack from 'webpack'
@@ -59,8 +59,13 @@ if (env === 'development') {
  * Including setting up pug view engine
  */
 app.set('view engine', 'pug')
-app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
+busboy.extend(app, {
+  upload: true,
+  path: './public/assets/images',
+  allowedPath: /./
+})
+
 /** Session store method MUST be changed for production use */
 app.use(session({
   secret: 'e6YoQ9RiQ9WzrNBoPVniT653FG7fHvMK8gyHXmJ4kxUegEz3DyjCK5BHog8KNKce',
