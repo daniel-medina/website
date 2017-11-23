@@ -1,5 +1,6 @@
 node_modules
 public/css/*
+public/assets/images/*
 config/database.js
 .tern-port
 .tern-project
