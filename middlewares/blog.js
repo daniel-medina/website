@@ -189,10 +189,10 @@ export const get = {
          * If the current page is inferior or equal to the last page, we can pass
          * Thus avoiding access to a non existing page
          */
-      if (page <= maxPage) {
+      if (page <= maxPage && maxPage > 1) {
         next()
       } else {
-        response.redirect('/archive')
+        response.redirect('/')
       }
     } catch (error) {
       console.log(error)

@@ -7,7 +7,22 @@ block content
         .block-content
           .top #[a(href='./portfolio/project/delete/' + project._id).btn.btn-xs.btn-danger #[i.fa.fa-times]] #{project.title}
           .middle
+            b Url to access the project
+            br
+            form(method='POST', action='./portfolio/project/set/url')
+              .form-group
+                input(type='hidden', name='id', value=project._id)
+                input(type='text', name='url', class='form-control', placeholder='Leave empty if there is no url to access it.', value=project.url)
+              input(type='submit', value='Update').btn.btn-xs.btn-info
+            b Source code location
+            br
+            form(method='POST', action='./portfolio/project/set/source')
+              .form-group
+                input(type='hidden', name='id', value=project._id)
+                input(type='text', name='source', class='form-control', placeholder='Leave empty if the source code is not publicly available in the internet.', value=project.source)
+              input(type='submit', value='Update').btn.btn-xs.btn-info
             b Description
+            br
             form(method='POST', action='./portfolio/project/set/description')
               .form-group
                 input(type='hidden', name='id', value=project._id)
@@ -43,7 +58,7 @@ block content
             br
             .col-md-12
             each image in project.images
-              li.thumbnail.col-md-4 #[img(src='/assets' + image.path, alt='')] #[p.text-center #[a.btn.btn-xs.btn-danger(href='./portfolio/project/' + project._id + '/delete/image/' + image.uuid) #[i.fa.fa-times]]] 
+              li.thumbnail.col-md-4 #[img(src='/assets/' + image.path, alt='')] #[p.text-center #[a.btn.btn-xs.btn-danger(href='./portfolio/project/' + project._id + '/delete/image/' + image.uuid) #[i.fa.fa-times]]] 
             .col-md-12
               b Add an image
               br
@@ -51,28 +66,27 @@ block content
                 input(type='hidden', name='id', value=project._id)
                 input(type='file', name='image')
                 input.btn.btn-xs.btn-success(type='submit', value='Upload')
-            hr
-            br
-            br
-            b Set availability
-            br
-            form(method='POST', action='./portfolio/project/set/visibility')
-              input(type='hidden', name='id', value=project._id)
-              .radio
-                label
-                  if project.visibility === 'private'
-                    input(type='radio', name='visibility', value='private', checked)
-                  else
-                    input(type='radio', name='visibility', value='private')
-                  | private
-              .radio
-                label
-                  if project.visibility === 'public'
-                    input(type='radio', name='visibility', value='public', checked)
-                  else
-                    input(type='radio', name='visibility', value='public')
-                  | public
-              input(type='submit', value='Update').btn.btn-xs.btn-success
+            .col-md-12
+              hr
+              b Set availability
+              br
+              form(method='POST', action='./portfolio/project/set/visibility')
+                input(type='hidden', name='id', value=project._id)
+                .radio
+                  label
+                    if project.visibility === 'private'
+                      input(type='radio', name='visibility', value='private', checked)
+                    else
+                      input(type='radio', name='visibility', value='private')
+                    | private
+                .radio
+                  label
+                    if project.visibility === 'public'
+                      input(type='radio', name='visibility', value='public', checked)
+                    else
+                      input(type='radio', name='visibility', value='public')
+                    | public
+                input(type='submit', value='Update').btn.btn-xs.btn-success
 
   .no-padding.col-lg-4.col-md-4.col-xs-12
     #block.col-lg-12.col-md-12

@@ -171,7 +171,12 @@ export const get = {
        *
        * @returns {Promise} Promise containing every projects in the database
        */
-      const getProjects = () => Project.find({}).populate('frameworks').populate('languages').exec()
+      const getProjects = () => Project
+        .find({})
+        .populate('frameworks')
+        .populate('languages')
+        .sort({ _id: -1 })
+        .exec()
       // }}}
       // Function: getFrameworks {{{
       /**
@@ -1069,10 +1074,11 @@ export const post = {
        * @param {Array} images Images of the project
        * @param {Array} tags Tags affected to the project
        * @param {String} url Url to access the project
+       * @param {String} source Source code of the project
        * @param {String} visible Whether the project is public or private
        * @returns {Promise} Promise executing the creation of the project
        */
-      const create = (created, title, description, frameworks, languages, images, tags, url, visibility) => Project.create({
+      const create = (created, title, description, frameworks, languages, images, tags, url, source, visibility) => Project.create({
         created: created,
         title: title,
         description: description,
@@ -1081,6 +1087,7 @@ export const post = {
         images: images,
         tags: tags,
         url: url,
+        source: source,
         visibility: visibility
       })
       // }}}
@@ -1095,13 +1102,14 @@ export const post = {
       const images = []
       const tags = []
       const url = ''
+      const source = ''
       const visibility = 'private'
 
       /** We get the date to define the creation date */
       const created = new Date()
 
       /** We now create the project */
-      await create(created, title, description, frameworks, languages, images, tags, url, visibility)
+      await create(created, title, description, frameworks, languages, images, tags, url, source, visibility)
 
       /** We may now redirect the user back and flash him a success message */
       request.flash('success', 'The project \'' + title + '\' was created successfully.')
@@ -1313,7 +1321,7 @@ export const post = {
     try {
       // Function: update {{{
       /**
-       * Function description
+       * Updates the database with the new description
        *
        * @param {ObjectID} id Id of the project to affect the new description
        * @param {String} description Description sent by the user
@@ -1331,6 +1339,78 @@ export const post = {
 
       /** Then we redirect the user back with a confirmation message */
       request.flash('success', 'The project\'s description has been updated successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: setUrl {{{
+  /**
+   * Handles the modification of the url of a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  setUrl: async (request, response) => {
+    try {
+      // Function: update {{{
+      /**
+       * Updates the database with the new url
+       *
+       * @param {ObjectID} id Id of the project to affect the new description
+       * @param {String} url Url string sent by the user
+       * @returns {Promise} Promise containing the update of the project
+       */
+      const update = (id, url) => Project.findOneAndUpdate({ _id: id }, { $set: { url: url } })
+      // }}}
+
+      /** We catch the POST data sent by the user */
+      const id = request.body.id
+      const url = request.body.url
+
+      /** Execute the modification of the project's url */
+      await update(id, url)
+
+      /** Then we redirect the user back with a confirmation message */
+      request.flash('success', 'The project\'s url has been updated successfully.')
+      response.redirect('back')
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Controller: setSource {{{
+  /**
+   * Handles the modification of the source code of a project
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   */
+  setSource: async (request, response) => {
+    try {
+      // Function: update {{{
+      /**
+       * Updates the database with the new source code location
+       *
+       * @param {ObjectID} id Id of the project to affect the new description
+       * @param {String} source Source code location's string sent by the user
+       * @returns {Promise} Promise containing the update of the project
+       */
+      const update = (id, url) => Project.findOneAndUpdate({ _id: id }, { $set: { source: source } })
+      // }}}
+
+      /** We catch the POST data sent by the user */
+      const id = request.body.id
+      const source = request.body.source
+
+      /** Execute the modification of the project's source code location */
+      await update(id, source)
+
+      /** Then we redirect the user back with a confirmation message */
+      request.flash('success', 'The project\'s source code location has been updated successfully.')
       response.redirect('back')
     } catch (error) {
       console.log(error)
@@ -1408,7 +1488,7 @@ export const post = {
          * Assemble the file's uuid and name, and puts it with the previous folder that is 'images'
          * So it can be easily used to show the image to the user
          */
-        const path = '/images/' + uuid + '/image/' + name
+        const path = 'images/' + uuid + '/image/' + name
         const object = {
           uuid: uuid,
           path: path

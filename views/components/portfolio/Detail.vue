@@ -1,57 +1,54 @@
 <template lang='pug'>
 #detail
-  .wrapper(:style="style")
-    .window.col-sm-10.col-md-10.col-lg-10.col-xs-12
+  .wrapper(:style='style')
+    .window.col-sm-12.col-md-10.col-lg-10.col-xs-12
       .buttons
-        i.fa.fa-window-close(@click="$parent.display()")
+        i.fa.fa-window-close(@click='$parent.display()')
         .name
-          | #[i.fa.fa-arrow-circle-o-right] Project's name
+          | #[i.fa.fa-arrow-circle-o-right] {{ this.data.title }}
       .images-wrapper.col-md-7.col-lg-7.col-xs-12
         .images
-          img(src='https://www.oxalide.com/wp-content/uploads_prod/2014/02/nodejs-new-pantone-black.png').col-md-12
-          .to-left
+          a(:href='/assets/ + data.images[currentImage].path', target='_blank') #[img(:src='/assets/ + data.images[currentImage].path')]
+          .to-left(v-if='data.images.length > 1',@click='previousImage')
             i.fa.fa-chevron-left
-          .to-right
+          .to-right(v-if='data.images.length > 1', @click='nextImage')
             i.fa.fa-chevron-right
       .information.col-md-5.col-xs-12
-        .category
+        .category(v-if='data.description.length > 0')
           .title
             | Description #[i.fa.fa-info-circle]
           .description
-            | Test
-
-        .category
+            nl2br(tag='p', :text='data.description')
+        .category(v-if='data.languages.length > 0')
           .title
             | Languages #[i.fa.fa-tags]
           .tags
-            li #[button.green='JavaScript']
-            li #[button.red='PHP']
-            li #[button.black='css']
-            li #[button.grey='python']
-        .category
+            li(v-for='language in this.data.languages') #[button(:class='language.color') {{ language.name }}]
+        .category(v-if='data.frameworks.length > 0')
           .title
             | Frameworks #[i.fa.fa-tags]
           .tags
-            li #[button.green='Node.JS']
-            li #[button.red='Laravel']
-            li #[button.orange='React']
-            li #[button.pink='SASS']
-        .category
+            li(v-for='framework in this.data.frameworks') #[button(:class='framework.color') {{ framework.name }}]
+        .category(v-if='data.url.length > 0 || data.source.length > 0')
           .title
             | Links #[i.fa.fa-external-link]
           .links
-            a.button.btn.btn-xs.btn-success(href='#', target='_blank') Access
-            a.button.pull-right.btn.btn-xs.btn-danger(href='#', target='_blank') Source code
+            a.button.btn.btn-xs.btn-success(v-if='data.url.length > 0', :href='data.url', target='_blank') Access
+            a.button.pull-right.btn.btn-xs.btn-danger(v-if='data.source.length > 0' :href='data.source', target='_blank') Source code
 </template>
 
 <script>
+/** Importing components */
+import nl2br from 'vue-nl2br'
+
 export default {
   props: ['data', 'show'],
   data () {
     return {
       style: {
         opacity: '0'
-      }
+      },
+      currentImage: 0
     }
   },
   created () {
@@ -77,6 +74,36 @@ export default {
       /** If we have to display it OR hide it, we change the style to the proper variable */
       if (this.show) this.style = display
       else this.style = hide
+    },
+    // }}}
+    // Method: previousImage {{{
+    /**
+     * Goes to the previous image
+     *
+     */
+    previousImage: function () {
+      /** If the previous image is not the first one */
+      if (this.currentImage - 1 > 0) {
+        this.currentImage--
+      } else {
+        /** If it is, go back to the last index */
+        this.currentImage = this.data.images.length - 1
+      }
+    },
+    // }}}
+    // Method: nextImage {{{
+    /**
+     * Goes to the next image
+     *
+     */
+    nextImage: function () {
+      /** If the next image is not the last one */
+      if (this.currentImage + 1 < this.data.images.length) {
+        this.currentImage++
+      } else {
+        /** If it is, go back to the first index */
+        this.currentImage = 0
+      }
     }
     // }}}
   },
@@ -92,6 +119,9 @@ export default {
       this.changeStyle()
     }
     // }}}
+  },
+  components: {
+    nl2br: nl2br
   }
 }
 </script>
@@ -114,26 +144,29 @@ export default {
     width: 100%;
     height: 100%;
     min-height: 88px;
-    overflow: auto;
 
     .window {
       overflow-x: hidden;
       overflow-y: auto;
       padding: 0;
+      padding-bottom: $portfolio-project-popup-padding;
       border: $portfolio-project-popup-border;
       background: $portfolio-project-popup-background;
       box-shadow: $popup-shadow;
       height: $portfolio-project-popup-height;
 
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
       .buttons {
-        position: absolute;
         text-align: right;
-        padding-right: $portfolio-project-popup-buttons-padding;
         font-size: $portfolio-project-popup-buttons-size;
         width: 100%;
         z-index: 999999;
 
         i {
+          padding-right: $portfolio-project-popup-buttons-padding;
           transition: $transition;
           &:hover {
             cursor: pointer;
@@ -146,10 +179,9 @@ export default {
         text-align: left;
         overflow: hidden;
         max-height: 80px;
-        position: absolute;
         background: $color9;
         color: $color1;
-        top: $portfolio-project-name-margin;
+        margin-bottom: $portfolio-project-name-margin;
         width: 100%;
         padding: 5px;
         font-family: $font-all;
@@ -161,7 +193,6 @@ export default {
       .images-wrapper {
         display: flex;
         align-items: center;
-        height: 100%;
 
         .images {
           display: flex;
@@ -169,13 +200,15 @@ export default {
           overflow: hidden;
           align-items: center;
 
+          height: 0;
           min-height: $portfolio-project-detail-image-min-height;
           max-height: $portfolio-project-detail-image-max-height;
-          height: auto;
           width: 100%;
 
           img {
-            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            padding: 0;
           }
           .to-left {
             position: absolute;
@@ -222,8 +255,6 @@ export default {
         }
       }
       .information {
-        margin-top: $portfolio-project-information-margin;
-
         .category {
           margin-top: $portfolio-project-information-category-margin;
           .title {

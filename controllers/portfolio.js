@@ -54,8 +54,14 @@ export const get = {
        * @see Mongoose
        */
       const getProjects = () => {
+        /** We want to fetch projects that were only made visible for the public */
+        const visible = 'public'
+
         return Project
-          .find({})
+          .find({ visibility: visible })
+          .populate('frameworks')
+          .populate('languages')
+          .sort({ _id: -1 })
           .exec()
       }
       // }}}

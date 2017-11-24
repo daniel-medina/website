@@ -27,6 +27,7 @@ const ProjectSchema = new Schema({
   images: Array,
   tags: Array,
   url: String,
+  source: String,
   visibility: { type: String, enum: ['public', 'private'] }
 }, {
   collection: 'project'

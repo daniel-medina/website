@@ -197,7 +197,7 @@ $authentication-input-submit-padding: 5px 0;
 // }}}
 // Portfolio {{{
 $portfolio-margin: 5px;
-$portfolio-project-name-margin: 30px;
+$portfolio-project-name-margin: 5px;
 $portfolio-project-padding-hover: 5px 3px;
 $portfolio-project-padding: 10px 3px;
 $portfolio-project-shadow: 1px 1px 2px $color9;
@@ -206,7 +206,8 @@ $portfolio-project-screenshot-img-height: 200px;
 $portfolio-project-description-padding: 3px;
 $portfolio-project-popup-border: 16px solid $popup-border;
 $portfolio-project-popup-background: white;
-$portfolio-project-popup-height: 80%;
+$portfolio-project-popup-padding: 5px;
+$portfolio-project-popup-height: 95%;
 $portfolio-project-popup-buttons-padding: 5px;
 $portfolio-project-popup-buttons-size: 24px;
 $portfolio-project-detail-image-min-height: 468px;

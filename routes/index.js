@@ -71,7 +71,7 @@ router.get('/archive/:page([0-9]{1,})?', BlogController.get.archive)
 // }}}
 // Portfolio {{{
 router.get('/portfolio', PortfolioController.get.index)
-router.get('/xhr/portfolio/projects', PortfolioController.get.projects)
+router.get('/portfolio/projects', PortfolioController.get.projects)
 // }}}}
 // Sessions {{{
 router.get('/session/get', SessionController.get.session)
@@ -102,6 +102,8 @@ router.post('/admin/portfolio/project/set/*', AdminMiddleware.all.projectIdExist
 router.post('/admin/portfolio/project/set/framework', AdminMiddleware.post.projectFrameworkExist)
 router.post('/admin/portfolio/project/set/language', AdminMiddleware.post.projectLanguageExist)
 router.post('/admin/portfolio/project/set/description', AdminMiddleware.post.projectDescription)
+router.post('/admin/portfolio/project/set/url', AdminMiddleware.post.projectUrl)
+router.post('/admin/portfolio/project/set/source', AdminMiddleware.post.projectSource)
 router.post('/admin/portfolio/project/upload/image', AdminMiddleware.post.uploadImage)
 router.post('/admin/portfolio/framework/create', AdminMiddleware.post.framework)
 router.post('/admin/portfolio/framework/create', AdminMiddleware.post.frameworkExist)
@@ -119,6 +121,8 @@ router.post('/admin/portfolio/project/create', AdminController.post.newProject)
 router.post('/admin/portfolio/project/set/framework', AdminController.post.setFramework)
 router.post('/admin/portfolio/project/set/language', AdminController.post.setLanguage)
 router.post('/admin/portfolio/project/set/description', AdminController.post.setDescription)
+router.post('/admin/portfolio/project/set/url', AdminController.post.setUrl)
+router.post('/admin/portfolio/project/set/source', AdminController.post.setSource)
 router.post('/admin/portfolio/project/set/visibility', AdminController.post.setVisibility)
 router.post('/admin/portfolio/project/upload/image', AdminController.post.uploadImage)
 router.post('/admin/portfolio/framework/create', AdminController.post.newFramework)

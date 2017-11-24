@@ -1198,6 +1198,80 @@ export const post = {
     }
   },
   // }}}
+  // Middleware: projectUrl {{{
+  /**
+   * Handles the security around the project's url update controller
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectUrl: async (request, response, next) => {
+    try {
+      /** First, we catch POST data sent by the user */
+      const url = request.body.url
+
+      /**
+       * Then we use a regular expression to check if the url is a valid one
+       * This might need to be made more difficult to passthrough in the future
+       *
+       * Urls must match the following style :
+       * http://something.something - where between something and something, anything can be there
+       * This expression is copy-pasted with projectSource's middleware
+       * Also, the expression is used only if the given url is not empty
+       */
+      const expression = (url.length > 0) ? /^http(s)?:\/\/.{1,}\..{1,}/.test(url) : true
+
+      /** The given url must be a valid one */
+      if (expression) {
+        next()
+      } else {
+        request.flash('error', 'The given project\'s url must be a valid url.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
+  // Middleware: projectSource {{{
+  /**
+   * Handles the security around the project's source update controller
+   *
+   * @async
+   * @param {HTTP} request
+   * @param {HTTP} response
+   * @param {HTTP} next
+   */
+  projectSource: async (request, response, next) => {
+    try {
+      /** First, we catch POST data sent by the user */
+      const source = request.body.source
+
+      /**
+       * Then we use a regular expression to check if the source code location's url is a valid one
+       * This might need to be made more difficult to passthrough in the future
+       *
+       * Urls must match the following style :
+       * http://something.something - where between something and something, anything can be there
+       * This expression is copy-pasted with projectUrl's middleware
+       * Also, the expression is used only if the url is not empty
+       */
+      const expression = (source.length > 0) ? /^http(s)?:\/\/.{1,}\..{1,}/.test(source) : true
+
+      /** The given source code location must be a valid one */
+      if (expression) {
+        next()
+      } else {
+        request.flash('error', 'The given project\'s source code location must be a valid url.')
+        response.redirect('back')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // }}}
   // Middleware: uploadImage {{{
   /**
    * Protects the upload of an image inside a project

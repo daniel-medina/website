@@ -1,14 +1,13 @@
 <template lang='pug'>
 //- This shit is necessary to be able to display 
 div
-  detail(:data='data', :show='show')
+  detail(:data="data", :show="show")
 
-  .project.col-md-4(@click="display()")
+  .project.col-md-4.col-xs-4.col-sm-4.col-lg-3(@click="display()")
     .wrapper
       .screenshot
-        img(src='/assets/images/projects/rice-1.png')
-      .title
-        | Project's title
+        img(:src="/assets/ + this.data.images[0].path")
+        .title {{ this.data.title }}
 </template>
 
 <script>
