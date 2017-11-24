@@ -4,11 +4,11 @@ import {port} from './config/server'
 /** Importing used NodeJS modules */
 import path from 'path'
 import express from 'express'
+import session from 'express-session'
 import http from 'http'
 import cookieParser from 'cookie-parser'
 import busboy from 'express-busboy'
 import flash from 'connect-flash'
-import session from 'express-session'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
@@ -22,6 +22,7 @@ import router from './routes/index'
 
 /** Declaring server variables */
 const app = express()
+const MemoryStore = require('memorystore')(session)
 const server = http.createServer(app)
 const compiler = webpack(webpackConfig)
 
@@ -69,15 +70,11 @@ busboy.extend(app, {
 /** Session store method MUST be changed for production use */
 app.use(session({
   secret: 'e6YoQ9RiQ9WzrNBoPVniT653FG7fHvMK8gyHXmJ4kxUegEz3DyjCK5BHog8KNKce',
-  cookie: {
-    /** 1000 ms * 60 seconds * 60 minutes * 24 hours * 7 days */
-    maxAge: 1000 * 60 * 60 * 24 * 7, // one week
-    httpOnly: true,
-    /** Only set to true when HTTPS is enabled */
-    secure: false
-  },
-  resave: true,
-  saveUninitialized: true
+  store: new MemoryStore({
+    checkPeriod: 86400000
+  }),
+  resave: false,
+  saveUninitialized: false
 }))
 app.use(flash())
 

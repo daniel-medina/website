@@ -324,6 +324,14 @@ html, body {
 }
 
 // }}}
+// contact {{{
+#contact {
+  .form-control {
+    border: 0;
+    border-bottom: 1px solid $border;
+  }
+}
+// }}}
 // article {{{
 #article {
   h1 {

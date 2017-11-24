@@ -12,7 +12,8 @@
     "test": "npm run test:backend && npm run test:end-to-end",
     "test:backend": "./node_modules/.bin/mocha ./test/backend.js",
     "gulp": "gulp sass-compile && gulp",
-    "build": "./node_modules/.bin/webpack --config ./config/webpack.config.js"
+    "build": "./node_modules/.bin/webpack --config ./config/webpack.config.js",
+    "start-production": "./node_modules/.bin/standard && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/babel-cli/bin/babel-node.js main.js --presets es2015,stage-2"
   },
   "standard": {
     "ignore": [
@@ -35,10 +36,11 @@
     "fs-extra": "^4.0.2",
     "graceful-fs": "^4.1.11",
     "marked": "^0.3.6",
+    "memorystore": "^1.6.0",
     "minimatch": "^3.0.4",
     "moment": "^2.19.2",
     "mongodb": "^2.2.33",
-    "mongoose": "^4.13.4",
+    "mongoose": "^4.13.5",
     "multer": "^1.3.0",
     "nl2br": "0.0.3",
     "pug": "^2.0.0-rc.4",
