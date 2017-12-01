@@ -1,2 +1,14 @@
-/** Exporting database configuration */
-export const url = 'mongodb://0.0.0.1:port/database'
+/** Initializing the url variable */
+let url = ''
+
+/** We separate the MongoDB's url for production / development environment */
+if (process.env.NODE_ENV !== 'development') {
+  /** Production environment */
+  url = 'mongodb://username:password@ip:port/database?authSource=admin'
+} else {
+  /** Development environment */
+  url = 'mongodb://username:password@ip:port/database?authSource=admin'
+}
+
+/** Now exporting the url */
+export { url }

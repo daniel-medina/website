@@ -1,0 +1,38 @@
+"registry"
+{
+	"HKCU"
+	{
+		"Software"
+		{
+			"Valve"
+			{
+				"Steam"
+				{
+					"Apps"
+					{
+						"211820"
+						{
+							"installed"		"1"
+							"Updating"		"0"
+							"Running"		"0"
+						}
+						"107410"
+						{
+							"Updating"		"0"
+						}
+						"233780"
+						{
+							"installed"		"1"
+							"Updating"		"0"
+							"Running"		"0"
+						}
+						"47410"
+						{
+							"Updating"		"0"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -8,12 +8,10 @@
   "main": "main.js",
   "scripts": {
     "start": "./node_modules/.bin/standard && ./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/.bin/webpack-dashboard -- ./node_modules/babel-cli/bin/babel-node.js main.js --presets es2015,stage-2",
-    "start-dashboardless": "./node_modules/.bin/standard && ./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/babel-cli/bin/babel-node.js main.js --presets es2015,stage-2",
     "test": "npm run test:backend && npm run test:end-to-end",
     "test:backend": "./node_modules/.bin/mocha ./test/backend.js",
     "gulp": "gulp sass-compile && gulp",
-    "build": "./node_modules/.bin/webpack --config ./config/webpack.config.js",
-    "start-production": "./node_modules/.bin/standard && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/babel-cli/bin/babel-node.js main.js --presets es2015,stage-2"
+    "compile": "rm -rf ./website && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --config ./config/webpack.config.js && ./node_modules/.bin/babel ./ --out-dir website --ignore 'node_modules',./public/assets/content.js --copy-files --no-comments && cp ./public/assets/content.js ./website/public/assets/content.js"
   },
   "standard": {
     "ignore": [
@@ -53,7 +51,6 @@
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",

@@ -1,3 +1,6 @@
+/** Importing polyfill for babel */
+import 'babel-polyfill'
+
 /** Importing configurations */
 import {port} from './config/server'
 
@@ -13,6 +16,7 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import WebpackDashboard from 'webpack-dashboard/plugin'
+import password from './lib/password'
 
 /** Importing webpack configs */
 import webpackConfig from './config/webpack.dev.config.js'
@@ -25,6 +29,7 @@ const app = express()
 const MemoryStore = require('memorystore')(session)
 const server = http.createServer(app)
 const compiler = webpack(webpackConfig)
+console.log(password.hash('ypSZ358YweSa4NsuoedZyrB8HwCs6cpqiS88dhZ2bJLMfTM8qEcaV2'))
 
 /** Getting the NODE_ENV variable */
 const env = process.env.NODE_ENV
@@ -60,6 +65,7 @@ if (env === 'development') {
  * Including setting up pug view engine
  */
 app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'))
 app.use(cookieParser())
 busboy.extend(app, {
   upload: true,
@@ -92,10 +98,12 @@ app.use((request, response, next) => {
   response.render('error/404', { title: 'ERROR' })
 })
 
-server.listen(port)
-
 /** Decorating the terminal */
 if (env === 'development') {
+  /** The server listening is only used in development - in production, the vhost handles it */
+  server.listen(port)
   console.log('Website is running on development environment.')
   console.log('Listening to port ' + port + '.')
 }
+
+exports.app = app

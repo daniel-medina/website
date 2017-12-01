@@ -81,7 +81,7 @@ export const get = {
       const articles = await getArticles()
       const oldArticles = await getOldArticles()
 
-      response.render('blog/index', {
+      response.render('./blog/index', {
         title: 'Blog',
         articles: articles,
         old: oldArticles,
@@ -120,7 +120,7 @@ export const get = {
 
       const article = await getArticle()
 
-      response.render('blog/article', {
+      response.render('./blog/article', {
         title: article.title,
         article: article
       })
@@ -190,7 +190,7 @@ export const get = {
       const pagination = await response.locals.pagination.links(amount, page, maxPage, archiveItemPerPage)
 
       /** We now render the page */
-      response.render('blog/archive', {
+      response.render('./blog/archive', {
         title: 'Archive',
         articles: articles,
         amount: amount,

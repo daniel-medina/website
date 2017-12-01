@@ -1,6 +1,9 @@
 /** We get necessary node modules */
+const webpack = require('webpack')
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+console.log(process.env.NODE_ENV)
 
 /** We compile the files instead of using dev server or hot reload */
 const config = {
@@ -21,7 +24,12 @@ const config = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        query: {
+          plugins: [
+            'transform-runtime'
+          ]
+        }
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -41,11 +49,15 @@ const config = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('styles.css')
+    new ExtractTextPlugin('styles.css'),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"',
+      'process.env.VERSION': JSON.stringify(process.env.VERSION)
+    })
   ],
   resolve: {
     alias: {
-      vue: 'vue/dist/vue.js'
+      vue: 'vue/dist/vue.min.js'
     }
   }
 }
