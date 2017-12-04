@@ -586,7 +586,7 @@ export const get = {
           const uuid = image.uuid
 
           /** Remove the image from the server */
-          fs.remove(path.join(process.cwd(), 'public/assets/images/' + uuid))
+          fs.remove(path.join(appRootPath.path, 'public/assets/images/' + uuid))
         }
 
         return true
