@@ -1283,18 +1283,31 @@ export const post = {
    */
   uploadImage: async (request, response, next) => {
     try {
+      /** We get POST data sent by the user */
       const image = request.files.image
+
+      /** The size is in bits and then converted to megabits */
+      const size = (request.files.image.size / 1024 / 1024)
+      const maxSize = 5 // Should be changed to a config variable ASAP
+
+      /** We define the only allowed mimetypes */
       const allowedMimeTypes = [
         'image/png',
-        'image/jpeg'
+        'image/jpeg',
+        'image/jpg'
       ]
 
       /** If the image uploaded by the user matches one of the allowed mimetypes, the request shall pass */
       if (allowedMimeTypes.includes(image.mimetype)) {
-        next()
+        if (size <= maxSize) {
+          next()
+        } else {
+          request.flash('error', 'The image\'s size must not be above ' + maxSize + ' MB.')
+          response.redirect('back')
+        }
       } else {
         /** Else, returns an error to the user */
-        request.flash('error', 'The uploaded image must be of one of the following mimetypes : ' + allowedMimeTypes)
+        request.flash('error', 'The uploaded file\'s mimetype must be a valid image mimetype.')
         response.redirect('back')
       }
     } catch (error) {

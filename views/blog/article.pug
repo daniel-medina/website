@@ -4,12 +4,9 @@ block content
   #block.col-lg-12.col-md-12.col-sm-12.col-xs-12
     .block-content
       #article
-        // No .top use for articles
         .header-read= article.title 
         .info.col-lg-12.col-md-12.col-sm-12.col-xs-12
           .pull-left #{parse.article.created(article.created)} - #{parse.article.views(article.views.ip.length)}
           .pull-right= article.category.title
         .read
-          p!= marked(nl2br(escapeHtml(article.content)))
-        .comments
-          | Comments are in W.I.P
+          p!= marked(escapeHtml(article.content))

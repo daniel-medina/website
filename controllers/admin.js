@@ -12,7 +12,7 @@ import {colors} from '../config/portfolio'
 
 /** Modules imports */
 import slug from 'slug'
-import uuid from 'uuid/v4'
+import uuidv4 from 'uuid/v4'
 import fs from 'fs-extra'
 import path from 'path'
 
@@ -957,7 +957,7 @@ export const post = {
           if (compare) {
           /** We update its session */
             request.session.admin = {
-              token: uuid(),
+              token: uuidv4(),
               id: admin.id,
               username: admin.username,
               password: admin.password
@@ -1472,23 +1472,21 @@ export const post = {
        */
       const getProject = id => Project.findOne({ _id: id })
       // }}}
-      // Function: upload {{{
+      // Function: uploadToDatabase {{{
       /**
        * Uploads the image to the server
        *
        * @param {ObjectID} id Id of the project
-       * @param {String} url Url given by the user
-       * @returns {Type} tag
+       * @param {String} uuid Unique ID generated for the image
+       * @param {String} name Filename of the image
+       * @returns {Promise} Promise saving the changes to the database
        */
-      const upload = (project, url) => {
-        const uuid = request.files.image.uuid
-        const name = request.files.image.filename
-
+      const uploadToDatabase = (project, uuid, name) => {
         /**
-         * Assemble the file's uuid and name, and puts it with the previous folder that is 'images'
+         * Assemble the file's uuid and name
          * So it can be easily used to show the image to the user
          */
-        const path = 'images/' + uuid + '/image/' + name
+        const path = 'images/' + uuid + '/' + name
         const object = {
           uuid: uuid,
           path: path
@@ -1500,20 +1498,61 @@ export const post = {
         return project.save()
       }
       // }}}
+      // Function: uploadToServer {{{
+      /**
+       * Uploads the image to the server
+       *
+       * @param {Buffer} image Buffer containing the image
+       * @param {String} uuid Unique ID generated for the image
+       * @param {String} name Filename of the image
+       * @returns {Promise} Promise uploading the image to the server
+       */
+      const uploadToServer = (image, uuid, name) => {
+        /** We create the directories first */
+        fs.mkdir(path.join(process.cwd(), 'public/assets/images/' + uuid))
+
+        /** Then we figure out the location of the image */
+        const location = path.join(process.cwd(), 'public/assets/images/' + uuid) + '/' + name
+
+        /** Then we write the file */
+        return new Promise((resolve, reject) => {
+          fs.writeFile(location, image, function (error) {
+            if (error) {
+              reject(error)
+
+              /** And we send a small error message to the user. */
+              response.send('There was an error uploading the image.')
+            } else {
+              resolve(true)
+            }
+          })
+        })
+      }
+      // }}}
 
       /** Getting POST data sent by the user */
       const id = request.body.id
-      const url = request.files
+      const uuid = uuidv4()
+      const upload = request.files.image
+      const image = upload.data
+      const name = upload.name
 
       /** We get the current project's object in order to add the image into it */
       const project = await getProject(id)
 
-      /** Execute the upload of the image */
-      await upload(project, url)
+      /** Uploads the image to the server */
+      if (await uploadToServer(image, uuid, name)) {
+        /** If it succeeds, we update the database */
+        await uploadToDatabase(project, uuid, name)
 
-      /** Once it's done, redirect the user back with a confirmation message */
-      request.flash('success', 'The image has been successfully updated to the server and affected to the chosen project.')
-      response.redirect('back')
+        /** Once it's done, redirect the user back with a confirmation message */
+        request.flash('success', 'The image has been successfully updated to the server and affected to the chosen project.')
+        response.redirect('back')
+      } else {
+        /** If the image could not be uploaded - permission error i.e */
+        request.flash('error', 'There was an error uploading the image. Verify that you have the correct permissions set in the server in order to accept uploads.')
+        response.redirect('back')
+      }
     } catch (error) {
       console.log(error)
     }

@@ -353,7 +353,14 @@ html, body {
   }
 
   p {
-    margin: 0;
+    margin: $article-paragraph-margin;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: $article-image-max-width;
+    max-height: $article-image-max-height;
   }
 
   padding: 0;

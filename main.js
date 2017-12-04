@@ -10,13 +10,13 @@ import express from 'express'
 import session from 'express-session'
 import http from 'http'
 import cookieParser from 'cookie-parser'
-import busboy from 'express-busboy'
+import bodyParser from 'body-parser'
+import busboy from 'busboy-body-parser'
 import flash from 'connect-flash'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import WebpackDashboard from 'webpack-dashboard/plugin'
-import password from './lib/password'
 
 /** Importing webpack configs */
 import webpackConfig from './config/webpack.dev.config.js'
@@ -29,7 +29,6 @@ const app = express()
 const MemoryStore = require('memorystore')(session)
 const server = http.createServer(app)
 const compiler = webpack(webpackConfig)
-console.log(password.hash('ypSZ358YweSa4NsuoedZyrB8HwCs6cpqiS88dhZ2bJLMfTM8qEcaV2'))
 
 /** Getting the NODE_ENV variable */
 const env = process.env.NODE_ENV
@@ -67,11 +66,8 @@ if (env === 'development') {
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
 app.use(cookieParser())
-busboy.extend(app, {
-  upload: true,
-  path: './public/assets/images',
-  allowedPath: /./
-})
+app.use(busboy())
+app.use(bodyParser())
 
 /** Session store method MUST be changed for production use */
 app.use(session({
