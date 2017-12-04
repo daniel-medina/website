@@ -15,6 +15,7 @@ import slug from 'slug'
 import uuidv4 from 'uuid/v4'
 import fs from 'fs-extra'
 import path from 'path'
+import appRootPath from 'app-root-path'
 
 /** Models imports */
 import Admin from '../models/admin'
@@ -1509,10 +1510,10 @@ export const post = {
        */
       const uploadToServer = (image, uuid, name) => {
         /** We create the directories first */
-        fs.mkdir(path.join(process.cwd(), 'public/assets/images/' + uuid))
+        fs.mkdir(path.join(appRootPath.path, 'public/assets/images/' + uuid))
 
         /** Then we figure out the location of the image */
-        const location = path.join(process.cwd(), 'public/assets/images/' + uuid) + '/' + name
+        const location = path.join(appRootPath.path, 'public/assets/images/' + uuid) + '/' + name
 
         /** Then we write the file */
         return new Promise((resolve, reject) => {
