@@ -3,7 +3,7 @@
  * Protects everything in the website
  *
  * @author Daniel Medina
- * Date: 31/07/2017
+ * Date: 07/31/2017
  */
 
 /** Configs imports */
