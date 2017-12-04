@@ -890,7 +890,7 @@ export const get = {
        * @param {UUID} uuid Uuid of the image
        * @returns {Promise} Promise containing the removal of the image from the server
        */
-      const deleteFromServer = uuid => fs.remove(path.join(process.cwd(), 'public/assets/images/' + uuid))
+      const deleteFromServer = uuid => fs.remove(path.join(appRootPath.path, 'public/assets/images/' + uuid))
       // }}}
 
       /** We get the project's id given by the user */
