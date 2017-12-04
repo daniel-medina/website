@@ -3,8 +3,6 @@ const webpack = require('webpack')
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-console.log(process.env.NODE_ENV)
-
 /** We compile the files instead of using dev server or hot reload */
 const config = {
   entry: [
