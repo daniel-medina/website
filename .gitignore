@@ -1,10 +1,5 @@
-build
 node_modules
-public/css/*
-public/assets/images/*
-public/assets/*.js
-public/assets/styles.css
-website
-config/database.js
-.tern-port
-.tern-project
+build
+yarn.lock
+yarn-error.log
+package-lock.json
